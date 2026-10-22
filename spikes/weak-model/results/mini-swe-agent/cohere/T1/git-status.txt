@@ -1,0 +1,7 @@
+ A edit_room.cjs
+ A edit_room.py
+ A fix_room.py
+ A manual_edit.py
+ M src/scenes/Room.ts
+ A src/scenes/Room.ts.backup
+ A temp_room.ts

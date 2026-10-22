@@ -1,0 +1,10 @@
+{
+  "model": "nvidia/nemotron-3-super-120b-a12b:free",
+  "task": "T1",
+  "calls": 1,
+  "wallSeconds": 3,
+  "exit": "infra",
+  "rateLimited": 0,
+  "infraFailure": true,
+  "notes": "OpenRouter's only provider (Nvidia) answers every request with HTTP 404 'Function ac74040f-...: Not found for account ...' -- the model is listed with tools support but its backend function has been deleted. Reproduced with 3 direct curl probes 60 s apart (11:16-11:18) plus the harness attempt; LiteLLM maps it to NotFoundError, which mini-swe-agent treats as non-retryable, so the agent died before its first observation. No code was changed; grade.json is the unmodified copy (typecheck+loadCheck pass, feature fails) as a grader sanity check. Harness note: a first attempt crashed before any model call on 'No module named mcp' (missing litellm dependency in the venv, installed `mcp` and relaunched)."
+}

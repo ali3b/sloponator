@@ -1,0 +1,4858 @@
+This is mini-swe-agent version 2.4.6.
+Check the v2 migration guide at https://klieret.short.gy/mini-v2-migration
+Loading global config from '/home/andrew/.config/mini-swe-agent/.env'
+Warning: Input is not a terminal (fd=0).
+Building agent config from specs: ['mini.yaml', '/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/msa-overlay.yaml']
+
+System:
+You are a helpful assistant that can interact with a computer.
+
+User:
+Please solve this issue: Add a new creature to this Phaser 3 game: a skeleton knight called `guard`.
+
+- Every sprite in this game is declared in `ssg.assets.json` and built by `npm run assets` from the Synty Sprite
+  Generator (see AGENTS.md for the CLI). Add a sprite named `guard` that uses the library asset
+  `POLYGON_Dungeon_Pack/Character_Skeleton_Knight` with the moves `Idle_Standing` and `Walk_F`, declared the same way
+  as the existing `skeleton` sprite, then build the assets. The build renders on a shared machine and can take a few
+  minutes; wait for it.
+- Show one `guard` standing (idle animation playing) in the first room, on the floor next to Joe's start position,
+  facing him. It does not need to move or hurt Joe.
+- Keep the change small and in TypeScript. Never hand-edit `public/assets`.
+
+Before you finish, run `npm run typecheck` and `node scripts/load-check.mjs http://localhost:<port> room` (the port is in AGENTS.md) (start the
+dev server first as AGENTS.md says; restart it after `npm run assets`),
+and make sure both pass.
+
+You can execute bash commands and edit files to implement the necessary changes.
+
+## Recommended Workflow
+
+This workflow should be done step-by-step so that you can iterate on your changes and any possible problems.
+
+1. Analyze the codebase by finding and reading relevant files
+2. Create a script to reproduce the issue
+3. Edit the source code to resolve the issue
+4. Verify your fix works by running your script again
+5. Test edge cases to ensure your fix is robust
+6. Submit your changes and finish your work by issuing the following command: `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT`.
+   Do not combine it with any other command. <important>After this command, you cannot continue working on this task.</important>
+
+## Command Execution Rules
+
+You are operating in an environment where
+
+1. You issue at least one command
+2. The system executes the command(s) in a subshell
+3. You see the result(s)
+4. You write your next command(s)
+
+Each response should include:
+
+1. **Reasoning text** where you explain your analysis and plan
+2. At least one tool call with your command
+
+**CRITICAL REQUIREMENTS:**
+
+- Your response SHOULD include reasoning text explaining what you're doing
+- Your response MUST include AT LEAST ONE bash tool call
+- Directory or environment variable changes are not persistent. Every action is executed in a new subshell.
+- However, you can prefix any action with `MY_ENV_VAR=MY_VALUE cd /path/to/working/dir && ...` or write/load environment variables from files
+- Submit your changes and finish your work by issuing the following command: `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT`.
+  Do not combine it with any other command. <important>After this command, you cannot continue working on this task.</important>
+
+Example of a CORRECT response:
+<example_response>
+I need to understand the structure of the repository first. Let me check what files are in the current directory to get a better understanding of the codebase.
+
+[Makes bash tool call with {"command": "ls -la"} as arguments]
+</example_response>
+
+<system_information>
+Linux 7.0.0-38-generic #38~24.04.4-Ubuntu SMP PREEMPT_DYNAMIC Mon Sep 14 16:37:11 UTC 2 x86_64
+</system_information>
+
+## Useful command examples
+
+### Create a new file:
+
+```bash
+cat <<'EOF' > newfile.py
+import numpy as np
+hello = "world"
+print(hello)
+EOF
+```
+
+### Edit files with sed:```bash
+# Replace all occurrences
+sed -i 's/old_string/new_string/g' filename.py
+
+# Replace only first occurrence
+sed -i 's/old_string/new_string/' filename.py
+
+# Replace first occurrence on line 1
+sed -i '1s/old_string/new_string/' filename.py
+
+# Replace all occurrences in lines 1-10
+sed -i '1,10s/old_string/new_string/g' filename.py
+```
+
+### View file content:
+
+```bash
+# View specific lines with numbers
+nl -ba filename.py | sed -n '10,20p'
+```
+
+### Any other command you want to run
+
+```bash
+anything
+```
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 1, $0.00):
+I'll start by exploring the repository structure to understand the codebase.
+
+```
+ls -la && cat AGENTS.md
+```
+
+```
+cat package.json && ls -R src scripts 2>/dev/null | head -50
+```
+
+Tool:
+<returncode>
+0
+<output>
+total 96
+drwxrwxr-x 7 andrew andrew  4096 Oct 22 11:27 .
+drwxrwxr-x 5 andrew andrew  4096 Oct 22 11:27 ..
+drwxrwxr-x 8 andrew andrew  4096 Oct 22 11:27 .git
+-rw-rw-r-- 1 andrew andrew    52 Oct 22 11:27 .gitignore
+-rw-rw-r-- 1 andrew andrew  1145 Oct 22 11:27 AGENTS.md
+-rw-rw-r-- 1 andrew andrew  3144 Oct 22 11:27 README.md
+drwxrwxr-x 2 andrew andrew  4096 Oct 22 11:27 docs
+-rw-rw-r-- 1 andrew andrew   647 Oct 22 11:27 index.html
+lrwxrwxrwx 1 andrew andrew    40 Oct 22 11:27 node_modules -> /home/andrew/projects/monty/node_modules
+-rw-rw-r-- 1 andrew andrew 32881 Oct 22 11:27 package-lock.json
+-rw-rw-r-- 1 andrew andrew   476 Oct 22 11:27 package.json
+drwxrwxr-x 4 andrew andrew  4096 Oct 22 11:27 public
+drwxrwxr-x 2 andrew andrew  4096 Oct 22 11:27 scripts
+drwxrwxr-x 3 andrew andrew  4096 Oct 22 11:27 src
+-rw-rw-r-- 1 andrew andrew  3471 Oct 22 11:27 ssg.assets.json
+-rw-rw-r-- 1 andrew andrew   277 Oct 22 11:27 tsconfig.json
+-rw-rw-r-- 1 andrew andrew   231 Oct 22 11:27 vite.config.ts
+# Monty (scratch copy for a test run)
+
+A Phaser 3.80 + TypeScript + Vite game. Source in `src/` (scenes in `src/scenes/`, the player in `src/joe.ts`,
+sprite loading in `src/assets.ts`). Sprites come from the Synty Sprite Generator and are declared in
+`ssg.assets.json`; `npm run assets` builds them into `public/assets/` (generated: never edit by hand).
+
+Commands:
+- `npm run typecheck` — TypeScript check (must pass).
+- `npx vite` — dev server on port 5325 (run it in the background: `nohup npx vite > vite.log 2>&1 &`). It does not watch files: restart it (kill its PID from `ss -ltnp`) after you change code or run 
+`npm run assets`.
+- `node scripts/load-check.mjs http://localhost:5325 room` — plays the first room headlessly and fails on errors (must pass).
+- Generator CLI: `node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --help` (e.g. `ssg assets skeleton`, `ssg sprite --help`). Use it only through `npm run assets` unless you need
+to look something up.
+
+Rules: stay inside this folder; do not kill processes by name (use the PID from vite.log or `ss -ltnp`); do not run more than one asset build at a time.
+
+
+Tool:
+<returncode>
+0
+<output>
+{
+  "name": "monty",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "assets": "node scripts/build-assets.mjs",
+    "check": "node scripts/load-check.mjs"
+  },
+  "dependencies": {
+    "phaser": "3.80.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.48.2",
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  }
+}scripts:
+build-assets.mjs
+check-rooms.mjs
+deploy-pages.mjs
+load-check.mjs
+make-rooms.mjs
+tour.mjs
+
+src:
+assets.ts
+hud.ts
+joe.ts
+main.ts
+rooms.json
+rooms.ts
+scenes
+sfx.ts
+state.ts
+world.ts
+
+src/scenes:
+Boot.ts
+GameOver.ts
+Room.ts
+Title.ts
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 2, $0.00):
+```
+cat ssg.assets.json && cat src/assets.ts && cat scripts/build-assets.mjs
+```
+
+```
+cat src/joe.ts && cat src/rooms.ts
+```
+
+Tool:
+<returncode>
+0
+<output_head>
+{
+  "project": "Spike2 msa-minimax-T2",
+  "tilesets": [
+    {
+      "name": "tomb",
+      "tile": "32x32",
+      "terrains": [
+        {
+          "name": "void",
+          "kind": "custom",
+          "color": "#241a20",
+          "noise": 0.1
+        },
+        {
+          "name": "brick",
+          "kind": "custom",
+          "color": "#7a5a3c",
+          "noise": 0.3
+        },
+        {
+          "name": "stone",
+          "kind": "rock",
+          "color": "#a78a5e",
+          "noise": 0.2
+        },
+        {
+          "name": "floor",
+          "kind": "dirt",
+          "color": "#5c4634",
+          "noise": 0.25
+        },
+        {
+          "name": "ember",
+          "kind": "custom",
+          "color": "#c4471a",
+          "noise": 0.35
+        }
+      ]
+    }
+  ],
+  "sprites": [
+    {
+      "name": "joe",
+      "asset": "POLYGON_War/Character_GentleMan_01",
+      "class": "martial_arts",
+      "anim": [
+        "idle",
+        "walk_forward",
+        "walk_back",
+        "jump",
+        "crouch_idle",
+        "hit_head",
+        "get_up",
+        "ko"
+      ],
+      "with": [
+        "POLYGON_Palm_City/SM_Chr_Attach_Hat_03"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "asset": "POLYGON_Dungeon_Pack/Character_Skeleton_Slave_01",
+      "set": "builtin_locomotion",
+      "anim": [
+        "Idle_Standing",
+        "Walk_F",
+        "Run_F"
+      ],
+      "template": [
+        "hit_react",
+        "death_fall"
+      ]
+    },
+    {
+      "name": "skull",
+      "asset": "POLYGON_Dark_Fantasy/SM_Prop_Skull_01",
+      "kind": "prop",
+      "template": "bounce"
+    },
+    {
+      "name": "key_gold",
+      "asset": "POLYGON_Dark_Fortress/SM_Prop_Key_01",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "key_silver",
+      "asset": "POLYGON_Dark_Fortress/SM_Prop_Key_02",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "key_red",
+      "asset": "POLYGON_Dark_Fortress/SM_Prop_Key_03",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "jewel",
+      "asset": "POLYGON_Dungeon_Pack/SM_Prop_Gem_01",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "gold",
+      "asset": "POLYGON_Dungeon_Pack/SM_Item_Coins_01",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "torch",
+      "asset": "POLYGON_Dark_Fantasy/SM_Prop_Torch_01",
+      "kind": "prop",
+      "template": "still"
+    },
+    {
+      "name": "sword",
+      "asset": "POLYGON_Dark_Fantasy/SM_Wep_Sword_01",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "flame",
+      "asset": "POLYGON_Particle_FX/SM_Flame_FX",
+      "kind": "prop",
+      "template": "still",
+      "fx": {
+        "enabled": true,
+        "tint": "#ff7a20",
+        "intensity": 1.2
+      }
+    },
+    {
+      "name": "ladder",
+      "asset": "POLYGON_Dark_Fortress/SM_Prop_Ladder_01"
+    },
+    {
+      "name": "door",
+      "asset": "POLYGON_Dungeon_Pack/SM_Env_Door_01",
+      "kind": "prop",
+      "template": "still"
+    },
+    {
+      "name": "web",
+      "asset": "POLYGON_Dark_Fortress/SM_Env_Spiderweb_01",
+      "kind": "prop",
+      "template": "still"
+    },
+    {
+      "name": "vase",
+      "asset": "POLYGON_Dungeon_Pack/SM_Prop_Vase_01",
+      "kind": "prop",
+      "template": "still"
+    },
+    {
+      "name": "skull_pile",
+      "asset": "POLYGON_Dark_Fantasy/SM_Prop_Skull_03",
+      "kind": "prop",
+      "template": "still"
+    }
+  ]
+}
+import Phaser from 'phaser';
+
+/** One entry of public/assets/manifest.json (written by scripts/build-assets.mjs). */
+export interface SpriteEntry {
+  name: string;
+  asset: string;
+  textureKey: string;
+  atlas: string;
+  path: string;
+  anims: string;
+  /** Prefix of the exported animation keys (`<base>/`). */
+  animPrefix: string;
+  meta: string | null;
+  pixelsPerMetre: number | null;
+  /** Untrimmed frame size in pixels. */
+  frameSize: [number, number] | null;
+  dirs: string[];
+  clips: string[];
+  clipInfo: Record<string, { frames: number | null; speedMps: number | null; events: { frame: number; name: string }[] }>;
+  validation: unknown[];
+}
+
+export interface TilesetEntry {
+  name: string;
+  image: string;
+  tsj: string;
+  tile: string;
+  width: number;
+  height: number;
+  columns: number;
+  /** Terrain name -> tile id in the atlas (the plain tile of that terrain). */
+  terrains: Record<string, number>;
+}
+
+export interface AssetManifest {
+  project: string;
+  view: string;
+  format: string;
+  fps: number;
+  ppm: number;
+  sprites: Record<string, SpriteEntry>;
+  tilesets: Record<string, TilesetEntry>;
+}
+
+interface AnimJson {
+  anims: { key: string; frameRate: number; repeat: number; frames: { key: string; frame: string }[] }[];
+}
+
+/** Queue the manifest; once it arrives, queue every sprite's atlas, animations and meta, and the tilesets. Call from preload(). */
+export function preloadAssets(scene: Phaser.Scene) {
+  scene.load.json('manifest', 'assets/manifest.json');
+  scene.load.once('filecomplete-
+<output_tail>
+
+  }
+  if (Object.keys(terrainIds).length !== names.length) throw new Error(`could not read every terrain id from ${tsj}`);
+  return {
+    name: t.name,
+    image: `assets/tileset/${png}`,
+    tsj: `assets/tileset/${tsj}`,
+    tile: t.tile ?? '32x32',
+    width: doc.tilewidth ?? 32,
+    height: doc.tileheight ?? 32,
+    columns: doc.columns ?? doc.imagewidth / (doc.tilewidth ?? 32),
+    terrains: terrainIds,
+  };
+}
+
+fs.mkdirSync(out, { recursive: true });
+const args = process.argv.slice(2);
+const only = args.filter((a) => !a.startsWith('--'));
+const unknown = only.filter((n) => !spec.sprites.some((s) => s.name === n));
+if (unknown.length) {
+  console.error(`unknown sprite name(s): ${unknown.join(', ')} (see ssg.assets.json)`);
+  process.exit(1);
+}
+const manifestPath = path.join(out, 'manifest.json');
+const manifest = fs.existsSync(manifestPath) ? readJson(manifestPath) : {};
+manifest.sprites ??= {};
+// The shared settings of the project the sprites live in, read back from the generator so the manifest says what
+// they were actually rendered with.
+let project = null;
+try {
+  const r = await ssg(['projects', 'list']);
+  project = (r.json ?? []).find((p) => p.name === spec.project) ?? null;
+} catch {
+  /* the manifest is still useful without them */
+}
+const defaults = project?.defaults ?? {};
+Object.assign(manifest, {
+  project: spec.project,
+  view: defaults.viewCardId ?? spec.view ?? null,
+  look: defaults.lookId ?? null,
+  size: defaults.sizeId ?? null,
+  format: defaults.profileId ?? spec.format ?? null,
+  fps: defaults.view?.fps ?? spec.fps ?? null,
+  generatedBy: 'Synty Sprite Generator (ssg CLI)',
+});
+
+const t0 = Date.now();
+const failed = [];
+const sprites = spec.sprites.filter((s) => !only.length || only.includes(s.name));
+const tilesets = only.length ? [] : spec.tilesets ?? [];
+console.error(`=== project "${spec.project}": sprites ${sprites.map((s) => s.name).join(', ')}`);
+try {
+  // One call declares the sprites and the tilesets: both are created/updated by name.
+  const payload = { ...spec, sprites, tilesets };
+  const r = await ssg(['sprite', 'apply', '-', '--render', '--download', 'public/assets', '--minutes', '120'], { input: JSON.stringify(payload) });
+  fs.mkdirSync(path.join(root, 'test-results'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'test-results/sprite-apply.json'), r.stdout);
+  if (r.code !== 0) console.error(`  ssg sprite apply exited ${r.code}: ${r.json ? '' : r.stdout.trim().slice(0, 400)}`);
+  for (const x of r.json?.sprites ?? []) console.error(`  ${x.name}: ${[x.action, x.render?.status ?? x.render, x.download?.status ?? x.download].filter((v) => typeof v === 'string').join(' · ')}`);
+  for (const t of r.json?.tilesets ?? []) console.error(`  ${t.name} (tileset): ${[t.action, `${t.tiles ?? 0} tiles`].join(' · ')}`);
+} catch (e) {
+  console.error(`  FAILED: ${String(e.message).split('\n')[0]}`);
+}
+for (const s of sprites) {
+  try {
+    fs.rmSync(path.join(out, s.name, 'previews'), { recursive: true, force: true });
+    manifest.sprites[s.name] = describe(s);
+  } catch (e) {
+    failed.push(s.name);
+    console.error(`  ${s.name} FAILED: ${String(e.message).split('\n')[0]}`);
+  }
+}
+for (const k of Object.keys(manifest.sprites)) if (!spec.sprites.some((s) => s.name === k)) delete manifest.sprites[k];
+manifest.tilesets ??= {};
+for (const t of tilesets) {
+  try {
+    const dir = path.join(out, 'tileset');
+    fs.rmSync(dir, { recursive: true, force: true });
+    fs.mkdirSync(dir, { recursive: true });
+    const r = await ssg(['tileset', 'render', t.name, '--project', spec.project, '--out', 'public/assets/tileset', '--format', 'tsj']);
+    if (r.code !== 0) throw new Error(`ssg tileset render ${t.name} exited ${r.code}: ${(r.stdout || '').trim().slice(0, 300)}`);
+    manifest.tilesets[t.name] = describeTileset(t);
+  } catch (e) {
+    failed.push(`tileset:${t.name}`);
+    console.error(`  tileset ${t.name} FAILED: ${String(e.message).split('\n')[0]}`);
+  }
+}
+for (const k of Object.keys(manifest.tilesets)) if (!tilesets.some((t) => t.name === k)) delete manifest.tilesets[k];
+const ppms = [...new Set(Object.values(manifest.sprites).map((x) => x.pixelsPerMetre).filter(Boolean).map((v) => v.toFixed(3)))];
+if (ppms.length > 1) console.error(`  WARNING: sprites disagree on pixels per metre: ${ppms.join(', ')}`);
+manifest.ppm = Number(ppms[0] ?? spec.ppm ?? 0);
+manifest.builtAt = new Date().toISOString();
+fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+console.error(
+  `\n${Object.keys(manifest.sprites).length} sprites and ${Object.keys(manifest.tilesets).length} tilesets in the manifest, built in ${(
+    (Date.now() - t0) /
+    1000
+  ).toFixed(1)} s${failed.length ? `; FAILED: ${failed.join(', ')}` : ''}`
+);
+// Vite's dev server can miss sprite folders that the download replaced: restart `npm run dev` if they 404.
+console.error('(restart npm run dev if it was running: Vite may not see replaced public/assets folders)');
+process.exit(failed.length ? 1 : 0);
+<elided_chars>
+9240
+<warning>
+Output too long.
+
+Tool:
+<returncode>
+0
+<output_head>
+import Phaser from 'phaser';
+import { clipKey } from './assets';
+import { Facing } from './rooms';
+import { FALL_LIMIT, JUMP_SPEED, TILE, WALK_SPEED } from './main';
+import { Mover, World } from './world';
+
+export type JoeState = 'idle' | 'walk' | 'back' | 'jump' | 'crouch' | 'climb' | 'dead' | 'win';
+
+/** A ladder Joe can climb both ways, or a rope he can only slide down, as in the original. */
+export interface Climbable {
+  col: number;
+  /** Topmost and bottom row of the climbable, in tiles. */
+  top: number;
+  bottom: number;
+  rope: boolean;
+}
+
+const CLIMB_SPEED = 108;
+
+// FB-007: the walk clip stands in for climbing, because the library has no ladder or rope clip. The game keeps
+// every ladder move (walk up, walk down, step off) on that one clip.
+const CLIP = {
+  idle: 'martial_arts_idle',
+  walk: 'martial_arts_walk_forward',
+  back: 'martial_arts_walk_back',
+  jump: 'martial_arts_jump',
+  crouch: 'martial_arts_crouch_idle',
+  dead: 'martial_arts_ko',
+} as const;
+
+export class Joe {
+  readonly mover = new Mover();
+  view: Phaser.GameObjects.Sprite;
+  state: JoeState = 'idle';
+  facing: Facing = 'E';
+  hasSword = false;
+  dead = false;
+  /** The ladder or rope he is on right now. */
+  private climbable: Climbable | null = null;
+  /** Every ladder and rope in the room. */
+  climbables: Climbable[] = [];
+  /** The tile his feet left when he last stood on something, for the fatal-fall rule. */
+  private fellFrom = 0;
+  /** The room object, for the ladders. */
+  private world!: World;
+
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    this.view = scene.add.sprite(x, y, 'joe').setDepth(60);
+    this.mover.x = x;
+    this.mover.y = y;
+    this.fellFrom = y;
+    this.playClip(CLIP.idle);
+  }
+
+  private playClip(clip: string) {
+    const key = clipKey(this.view.scene, 'joe', clip, this.facing);
+    if (!key) return;
+    if (this.view.anims.currentAnim?.key !== key) this.view.play(key, true);
+  }
+
+  /** The climbable under Joe's feet, if any. */
+  private climbableAt(): Climbable | null {
+    const col = Math.floor(this.mover.x / TILE);
+    const row = Math.floor((this.mover.y - 4) / TILE);
+    return this.climbables.find((c) => col === c.col && row >= c.top && row <= c.bottom) ?? null;
+  }
+
+  update(input: { left: boolean; right: boolean; up: boolean; down: boolean; jump: boolean }, dt: number, world: World, gravity: number) {
+    this.world = world;
+    const m = this.mover;
+    if (this.dead) {
+      // He falls where he was struck.
+      m.vx = 0;
+      m.step(dt, world, gravity);
+      this.syncView();
+      return;
+    }
+    if (this.state === 'win') {
+      m.vx = 0;
+      m.vy = 0;
+      this.playClip(CLIP.idle);
+      this.syncView();
+      return;
+    }
+
+    // ---- ladders and ropes -------------------------------------------------------------------------
+    const near = this.climbableAt();
+    if (this.climbable) {
+      const c = this.climbable;
+      m.vx = 0;
+      m.vy = 0;
+      m.x = c.col * TILE + TILE / 2;
+      // A rope only goes down; a ladder goes both ways. Neither carries Joe past its ends.
+      const dir = input.down ? 1 : input.up ? -1 : 0;
+      if (!c.rope || dir === 1) {
+        const floor = (c.bottom + 1) * TILE;
+        m.y = Math.min(floor, Math.max(c.top * TILE, m.y + dir * CLIMB_SPEED * dt));
+      }
+      // Step off sideways. Joe is put in the next column first: a ladder comes up through a hole in the floor, so
+      // stepping off over the hole would just drop him back down it. One column along is the floor beside it.
+      if (input.left !== input.right) {
+        const dir = input.left ? -1 : 1;
+        const col = Math.round((c.col * TILE + TILE / 2) / TILE - 0.5) + (dir > 0 ? 1 : 0);
+        m.x = col * TILE + TILE / 2;
+        this.dropClimb();
+        m.vx = dir * CLIMB_SPEED * 0.6;
+      }
+      // A rope can be let go of with a jump; a ladder has to be climbed to its end.
+      if (input.jump && c.rope) this.dropClimb();
+      this.state = 'climb';
+      this.playClip(CLIP.walk);
+      this.syncView();
+      return;
+    }
+    // A ladder is caught with up or down; a rope only with down, as Joe never climbs back up one.
+    if (near && (near.rope ? input.down : input.up || input.down)) {
+      this.climbable = near;
+      m.vx = 0;
+      m.vy = 0;
+      return;
+    }
+
+    // ---- walking -----------------------------------------------------------------------------------
+    if (input.left !== input.right) {
+      this.facing = input.left ? 'W' : 'E';
+      m.vx = (input.left ? -1 : 1) * WALK_SPEED;
+    } else if (m.onGround) {
+      m.vx = 0;
+    }
+
+    if (input.jump && m.onGround) {
+      // A fixed-length jump, as in the original: once he is in the air it cannot be steered.
+      m.vy = -JUMP_SPEED;
+      this.fellFrom = m.y;
+      this.state = 'jump';
+      this.playClip(CLIP.jump);
+    }
+
+    m.step(dt, world, gravity);
+
+    // The original kills Joe on a fall further than his own height. The drop is measured over the whole fall, not
+    // fr
+<output_tail>
+    '#.........H........#',
+      '####################',
+    ],
+    doors: [
+      { x: COLS - 1, y: 13, dir: 'right', colour: 'red', to: 'crumble', spawn: [2, 9], face: 'E' },
+      { x: 0, y: 13, dir: 'left', colour: 'red', to: 'fire', spawn: [17, 9], face: 'W' },
+    ],
+    extraEnemies: [
+      { from: 3, x: 6, y: 13, kind: 'skeleton' },
+      { from: 5, x: 13, y: 13, kind: 'skull' },
+    ],
+  },
+  {
+    id: 'fire',
+    title: 'THE FIRE PIT',
+    rows: [
+      '####################',
+      '#................H.#',
+      '#................H.#',
+      '#................H.#',
+      '#................H.#',
+      '#######....######H##',
+      '#.H..............H.#',
+      '#.H.........j....H.#',
+      '#.H..............H.#',
+      '#.H..............H.#',
+      '##H###^^^^###^^^^###',
+      '#.H................#',
+      '#.H................#',
+      '#.H................#',
+      '#.H................#',
+      '####################',
+    ],
+    doors: [
+      { x: COLS - 1, y: 13, dir: 'right', colour: 'red', to: 'dark', spawn: [2, 9], face: 'E' },
+      { x: 0, y: 13, dir: 'left', colour: 'silver', to: 'jewels', spawn: [17, 9], face: 'W' },
+    ],
+    extraEnemies: [
+      { from: 2, x: 8, y: 13, kind: 'skull' },
+      { from: 6, x: 12, y: 13, kind: 'skeleton' },
+    ],
+  },
+  {
+    id: 'jewels',
+    title: 'THE TREASURE',
+    rows: [
+      '####################',
+      '#...............H..#',
+      '#...............H..#',
+      '#...............H..#',
+      '#...............H..#',
+      '################H###',
+      '#..H............H..#',
+      '#..H..j.....j...H..#',
+      '#..H............H..#',
+      '#..H............H..#',
+      '###H################',
+      '#..H...............#',
+      '#.oH...o....o....o.#',
+      '#..H...............#',
+      '#..H...............#',
+      '####################',
+    ],
+    doors: [
+      { x: COLS - 1, y: 13, dir: 'right', colour: 'silver', to: 'fire', spawn: [2, 9], face: 'E' },
+      { x: 0, y: 13, dir: 'left', colour: 'gold', to: 'web', spawn: [17, 9], face: 'W' },
+    ],
+    extraEnemies: [
+      { from: 3, x: 5, y: 13, kind: 'skeleton' },
+      { from: 5, x: 15, y: 13, kind: 'skull' },
+    ],
+  },
+  {
+    id: 'web',
+    title: 'THE SPIDER WEB',
+    rows: [
+      '####################',
+      '#.............H....#',
+      '#.....j.......H....#',
+      '#.............H....#',
+      '#.............H....#',
+      '####.....#####H#####',
+      '#.........H...H....#',
+      '#.........H...H....#',
+      '#.........H...H....#',
+      '#.........H...H....#',
+      '##########H#########',
+      '#.........H........#',
+      '#.V.....W.H...W..V.#',
+      '#.........H........#',
+      '#.........H........#',
+      '####################',
+    ],
+    doors: [
+      { x: 0, y: 13, dir: 'left', colour: 'gold', to: 'jewels', spawn: [2, 9], face: 'E' },
+      { x: COLS - 1, y: 13, dir: 'right', colour: 'silver', to: 'treasure', spawn: [2, 9], face: 'E' },
+    ],
+  },
+  {
+    id: 'treasure',
+    title: 'THE SHRINE OF MONTEZUMA',
+    rows: [
+      '####################',
+      '#..H...............#',
+      '#..H...............#',
+      '#..H...............#',
+      '#..H...............#',
+      '###H################',
+      '#..H......H........#',
+      '#..H......H........#',
+      '#..H......H........#',
+      '#..H......H........#',
+      '##########H######.##',
+      '#.....####H.####...#',
+      '#...T.#..#H.#..#.T.#',
+      '#.........H........#',
+      '#.........H........#',
+      '####################',
+    ],
+    idol: [8, 14],
+    doors: [{ x: 0, y: 13, dir: 'left', colour: 'silver', to: 'web', spawn: [17, 9], face: 'W' }],
+  },
+  {
+    id: 'bonus',
+    title: 'THE BONUS ROOM',
+    rows: [
+      '####################',
+      '#...R....R....R....#',
+      '#...R....R....R....#',
+      '#...R....R....R....#',
+      '#...R....R....R....#',
+      '#...R....R....R....#',
+      '#...R....R....R....#',
+      '##..R....R....R...##',
+      '#..................#',
+      '#..................#',
+      '#.....o....j....o..#',
+      '#..................#',
+      '#..................#',
+      '#..................#',
+      '#...j....o....j....#',
+      '####################',
+    ],
+    doors: [],
+  },
+];
+
+const byId = new Map(rooms.map((r) => [r.id, r]));
+
+export function room(id: string): RoomDef {
+  const r = byId.get(id);
+  if (!r) throw new Error(`no room "${id}" (see src/rooms.ts)`);
+  return r;
+}
+
+export const START_ROOM = 'entry';
+
+/** Every room reachable from the entrance by walking through doors. */
+export function reachableFrom(start: string): Set<string> {
+  const seen = new Set<string>([start]);
+  const queue = [start];
+  while (queue.length) {
+    const id = queue.shift() as string;
+    for (const d of room(id).doors) {
+      if (byId.has(d.to) && !seen.has(d.to)) {
+        seen.add(d.to);
+        queue.push(d.to);
+      }
+    }
+  }
+  return seen;
+}
+
+/** Every room, for the level select in tests. */
+export function roomIds(): string[] {
+  return rooms.map((r) => r.id);
+}
+<elided_chars>
+7641
+<warning>
+Output too long.
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 3, $0.00):
+```
+cat README.md && ls docs && cat docs/*.md | head -100
+```
+
+```
+cd /home/andrew/projects/monty && wc -l src/*.ts src/scenes/*.ts scripts/*.mjs && git log --oneline | head -20
+```
+
+Tool:
+<returncode>
+0
+<output>
+# Monty — Montezuma's Revenge, rebuilt through Synty Sprite Generator
+
+A Phaser 3 remake of Parker Brothers' *Montezuma's Revenge* (Robert Jaeger, 1984). Panama Joe climbs down into an
+Aztec tomb room by room: ladders and ropes, three colours of locked door, five pockets, bouncing skulls, fire and
+crumbling floors, and darkness that creeps up the pyramid one level at a time.
+
+Every sprite and every ground tile in the game is generated by
+[Synty Sprite Generator](https://github.com/andrew/synty-sprite-generator) — Joe and the skeleton are rigged
+characters, everything else is a prop, and the tomb's walls, floor and ledges are a ground tileset.
+
+```
+npm install
+npm run assets      # build every sprite and the tileset through the generator (writes public/assets)
+npm run dev         # http://localhost:5197
+```
+
+`npm run dev` before `npm run assets` shows an "ASSETS MISSING" notice; the assets are build output, not source.
+
+## Playing
+
+Arrows or WASD.
+
+| | |
+|---|---|
+| Left / right | walk |
+| Up / W / Space | jump, or grab a ladder |
+| Down / S | crouch, ride a rope down, climb down |
+| Left / right on a ladder | step off sideways onto a platform |
+
+Gold, silver and red keys open the doors of the same colour, so the way down depends on what you picked up on the
+way. A dagger takes one creature; the torch lights the dark rooms; a fall further than Joe is tall kills him, as in
+the original. Take the idol in the shrine, grab what you can in the bonus room, and go deeper.
+
+## Checks
+
+```
+npm run typecheck
+node scripts/check-rooms.mjs                       # the pyramid: ladders, ledges, items and doors
+npm run dev &
+node scripts/load-check.mjs http://localhost:5197 room      # standing, walking, jumping, a key, a door, a ladder
+node scripts/load-check.mjs http://localhost:5197 flow      # the idol, the bonus room, level 2, the dark and the torch
+node scripts/load-check.mjs http://localhost:5197 deaths    # fire, and a fall that kills
+node scripts/load-check.mjs http://localhost:5197 gameover  # the last life, and the game over screen
+node scripts/tour.mjs                              # a screenshot of every room into test-results/rooms/
+```
+
+The checks drive the real game in a browser over CDP and only use `?scene=`, `?room=` and `?level=`, so any room
+can be opened directly: `http://localhost:5197/?scene=room&room=fire&level=6`.
+
+## Layout
+
+| | |
+|---|---|
+| `ssg.assets.json` | every sprite and the tileset the game uses, by name |
+| `scripts/build-assets.mjs` | applies that file with the `ssg` CLI, renders, downloads, and writes `manifest.json` |
+| `scripts/check-rooms.mjs` | the layout rules the pyramid has to keep |
+| `src/rooms.ts` | the rooms, as ASCII art, one character per tile |
+| `scripts/make-rooms.mjs` | prints that art from a compact spec (and `src/rooms.json` for the tour) |
+| `src/world.ts` | the collision: a box moved against the tile grid |
+| `src/joe.ts` | Joe: the fixed-length jump, ladders, ropes and the fall that kills |
+| `docs/DESIGN.md` | what the original does, and where this remake differs |
+| `FEEDBACK.md` | what the generator could not give us (FB-001 … FB-008) |DESIGN.md
+# Montezuma's Revenge — the design behind this remake
+
+The original is *Montezuma's Revenge*, written by Robert Jaeger and published by Parker Brothers in 1984. Panama Joe
+(an Indiana Jones lookalike, "Pedro" in the prototype) climbs down into the tomb of emperor Montezuma II, room by
+room, to steal the treasure at the bottom of the pyramid. It is a single-screen platformer in the Donkey Kong
+tradition: one room fills the screen, you never scroll, and every room is a small puzzle about reachability.
+
+## What the original does
+
+- **Rooms, not a world.** Up to 100 rooms per level, each a screen. From the very first room Joe is offered two
+  locked doors, and the adventure is non-linear from there.
+- **Three colours of door.** Gold, silver and red doors, each opened by the matching key. Keys are found all over
+  the pyramid, so the way down depends on what you picked up on the way.
+- **Five pockets.** Joe can carry five items; jewels are the exception and never use a slot. Once the pockets are
+  full he cannot pick up anything else (the original's own quirk — see Deviations below).
+- **The tomb gets darker every level.** Joe needs the torch to see anything on the lower floors, and the darkness
+  creeps up until the whole pyramid is black. The first levels are gentle; by the fifth you have memorised the
+  rooms.
+- **Creatures.** Rolling and jumping skulls, spiders that follow him up and down ladders, and snakes that sit
+  still. A dagger kills one of them (never a snake). An amulet makes them harmless for a few seconds. In the
+  early levels a creature that has caught Joe once does not return to that room.
+- **Traps.** Fire pits, floors that crumble, platforms that phase in and out, conveyor belts, and a few poles you
+  can only slide down.
+- **The jump cannot be steered.** Joe's arc is fixed once he leaves the ground, and a fall further than his own
+  height kills him — the rule that makes the original unforgiving in a way later platformers are not.
+- **Ropes go one way.** Ropes come down from the ceiling and cannot be climbed back up; ladders go both ways.
+- **A bonus room ends every level**: a timed room of ropes and treasure, then deeper and darker.
+
+## What this remake does
+
+Same shape, built room by room as ASCII art (`src/rooms.ts`, one character per tile) so the layouts can be read
+and checked. A room is 20 × 16 tiles: three storeys of brick with corridors four tiles high, a ladder in a hole
+in each floor, and doors in the side walls. That is the shape of the 1984 rooms — mostly wall, with a corridor
+cut out of it — rather than the open caverns with floating platforms that a platformer reaches for by default.
+
+The corridors are four tiles because the geometry has to fit Joe: he is 46 px (1.4 tiles) tall and jumps 82 px, so
+a shorter corridor would put the brick floor straight through his head and he could not jump at all. He cannot
+jump *through* a floor either — the floors are solid, like the original's — so every storey needs a ladder, and
+the jumps are for dodging skulls and stepping along a corridor.
+
+Eleven rooms make a level, joined by three coloured doors:
+
+```
+        entry ──(gold)── rope ──(gold)── crumble ──(red)── dark ──(red)── fire
+          │                  │                                        │
+       (silver)           (silver)                                 (silver)
+          │                  │                                        │
+       ladder ──(silver)── skulls ──(gold)── web ──(silver)── treasure
+                              │
+                           (gold) ⇄ jewels
+```
+
+- **Joe** is `Character_GentleMan_01` in a fedora, with the `martial_arts` moveset for the run, the jump and the
+  KO.
+- **The cast** is skulls (bouncing), skeleton guards (walking), and the traps: fire pits, crumbling floors, dark
+  rooms and the torch.
+- **The levels** reuse the same rooms, but every level deeper into the pyramid adds the creatures that are written
+  down in the room (`extraEnemies`) and the rooms written `darkFrom` go dark.
+- **The idol** in the shrine ends the level: a bonus room, then the next level, darker.
+
+### The controls and the rules
+
+| | |
+|---|---|
+| Left / right | walk (Joe cannot be turned around in the air) |
+| Up / Space | jump, or grab a ladder |
+| Down | crouch, ride a rope down, climb down |
+| Left / right on a ladder | step off sideways onto a platform |
+
+- Jump: 600 px/s against 2200 px/s² of gravity — 82 px (2.5 tiles) up, fixed once he is in the air.
+- A drop of more than 84 px (Joe is 46 px tall) is fatal, measured over the whole fall, so a slow frame cannot
+  turn a fatal fall into a safe one. A storey is five tiles, so going down one without a rope kills him.
+- Stepping off a ladder puts him in the column beside it: a ladder comes up through a hole in the floor, so
+  stepping off over the hole would only drop him back down it.
+- The crumbling floors give way half a second after Joe stands on them and come back after a little over two.
+
+## Deviations, and why
+
+- **The torch is always pickable.** The original refuses any treasure once the five pockets are full, which can
+  strand a player in a dark room with no way to light it. Here the torch still goes in the pocket.
+- **The bonus room is one room, not a maze of them**, and it counts down 30 seconds.
+- **The pyramid is eleven rooms deep, not a hundred.** It is enough to need the keys in the right order and to
+  feel like a tomb, and it can be finished in one sitting.
+- **The climb uses the walk cycle** (FB-007): the library has no ladder clip.
+- **Spiders and snakes are missing** (FB-003): the library has no model for either, so the skeleton guard takes
+  the place of the snake that sits and waits.
+
+## Where the art comes from
+
+Everything is generated (`ssg.assets.json`): Joe and the skeleton from rigged characters, everything else from
+props, and the tomb floor, walls and ledges from the `tomb` ground tileset. `scripts/check-rooms.mjs` keeps the
+layouts honest: every room is a full screen, every ladder reaches the floor and has a platform to step off, every
+item has something under it, and every door leads to a room that exists.
+
+Tool:
+<returncode>
+0
+<output>
+   113 src/assets.ts
+   106 src/hud.ts
+   192 src/joe.ts
+    35 src/main.ts
+   386 src/rooms.ts
+    69 src/sfx.ts
+    24 src/state.ts
+   124 src/world.ts
+    32 src/scenes/Boot.ts
+    35 src/scenes/GameOver.ts
+   687 src/scenes/Room.ts
+    69 src/scenes/Title.ts
+   233 scripts/build-assets.mjs
+   125 scripts/check-rooms.mjs
+    34 scripts/deploy-pages.mjs
+   360 scripts/load-check.mjs
+   306 scripts/make-rooms.mjs
+    54 scripts/tour.mjs
+  2984 total
+3f928e8 Rebuild the rooms as the 1984 tomb: brick storeys, not open caverns
+a231b3d Montezuma's Revenge: a Phaser 3 remake built through Synty Sprite Generator
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 4, $0.00):
+```
+cd /home/andrew/projects/monty && cat src/scenes/Room.ts
+```
+
+Tool:
+<returncode>
+0
+<output_head>
+import Phaser from 'phaser';
+import { clipKey, manifest, terrainId, tilesTexture } from '../assets';
+import { COLS, ROWS, TILE, WIDTH, HEIGHT, GRAVITY } from '../main';
+import { state } from '../state';
+import { sfx } from '../sfx';
+import { Climbable, Joe } from '../joe';
+import { HUD_HEIGHT, Hud, packFull } from '../hud';
+import { DoorDef, Facing, RoomDef, START_ROOM, room } from '../rooms';
+import { Mover, World } from '../world';
+
+/** What an ASCII cell holds that is not part of the scenery. */
+interface Pickup {
+  sprite: Phaser.GameObjects.Sprite;
+  kind: string;
+  points?: number;
+  /** The texture it puts in Joe's pocket, when it takes one of the five slots. */
+  carry?: string;
+}
+
+interface Creature {
+  mover: Mover;
+  view: Phaser.GameObjects.Sprite;
+  kind: 'skull' | 'skeleton';
+  dir: number;
+  dead: boolean;
+  /** Early levels: the creature does not come back after it has caught Joe once. */
+  spent: boolean;
+}
+
+interface Crumble {
+  col: number;
+  row: number;
+  view: Phaser.GameObjects.Image;
+  timer: number;
+  state: 'solid' | 'falling' | 'gone';
+}
+
+const WALL = '#';
+const PLATFORM = '=';
+const LADDER = 'H';
+const ROPE = 'R';
+const FIRE = '^';
+const CRUMBLE = 'x';
+
+const DOOR_TINT: Record<string, number> = { gold: 0xffd34d, silver: 0xd8d8e0, red: 0xff5a4d };
+/** Jewels by colour: the deeper the colour, the more it is worth, as in the original. */
+const JEWELS = [
+  { tint: 0x7fd4ff, points: 500 },
+  { tint: 0x9dffb0, points: 300 },
+  { tint: 0xfff2a8, points: 200 },
+  { tint: 0xffffff, points: 100 },
+];
+/** Brush sizes (canvas textures) for the two light radii: no torch, and torch. */
+const DARK_R = 112;
+const LIT_R = 156;
+
+export class Room extends Phaser.Scene {
+  private def!: RoomDef;
+  private defId = START_ROOM;
+  private grid: string[][] = [];
+  private joe!: Joe;
+  private hud!: Hud;
+  private pickups: Pickup[] = [];
+  private creatures: Creature[] = [];
+  private crumbles: Crumble[] = [];
+  private climbables: Climbable[] = [];
+  private doors: (DoorDef & { view: Phaser.GameObjects.Image; zone: Phaser.GameObjects.Rectangle })[] = [];
+  private idol: Phaser.GameObjects.Image | null = null;
+  private darkness: Phaser.GameObjects.RenderTexture | null = null;
+  private spawn: [number, number] = [1, ROWS - 2];
+  private face: Facing = 'E';
+  private nextRoom: { roomId: string; spawn?: [number, number]; face?: Facing } | null = null;
+  /** Set while a room change, a death or the end of the bonus is under way. */
+  private busy = false;
+  private bonusMode = false;
+  private bonusLeft = 0;
+  private frozen = false;
+  private keys!: Record<string, Phaser.Input.Keyboard.Key>;
+  /** The crumbling floors that have let go, shared by everyone in the room. */
+  private gone = new Set<string>();
+
+  constructor() {
+    super('room');
+  }
+
+  /** What Joe and the creatures can walk into, and what they can stand on. */
+  private world: World = {
+    solid: (col, row) => {
+      if (col < 0 || col >= COLS || row < 0 || row >= ROWS) return true;
+      return this.grid[row][col] === WALL;
+    },
+    ledge: (col, row, gone) => {
+      if (col < 0 || col >= COLS || row < 0 || row >= ROWS) return false;
+      const c = this.grid[row][col];
+      return c === PLATFORM || (c === CRUMBLE && !gone.has(`${col},${row}`));
+    },
+  };
+
+  init(data: { roomId?: string; spawn?: [number, number]; face?: Facing; level?: number } = {}) {
+    const params = new URLSearchParams(window.location.search);
+    // Room changes inside the game always carry their own data; only a fresh page load reads the query string.
+    const fresh = data.roomId === undefined;
+    this.defId = data.roomId ?? params.get('room') ?? START_ROOM;
+    // ?level= opens the pyramid at a depth, so a room can be looked at as it is deeper down.
+    const level = Number(data.level ?? (fresh ? params.get('level') : null));
+    if (Number.isFinite(level) && level > 0) state.level = Math.max(1, Math.floor(level));
+    const def = room(this.defId);
+    const marker = def.rows.findIndex((r) => r.includes('@'));
+    this.spawn = data.spawn ?? (marker >= 0 ? [def.rows[marker].indexOf('@'), marker] : [1, ROWS - 2]);
+    this.face = data.face ?? 'E';
+    this.bonusMode = this.defId === 'bonus';
+    this.bonusLeft = this.bonusMode ? 30 : 0;
+    this.busy = false;
+    this.nextRoom = null;
+    this.gone = new Set<string>();
+  }
+
+  // ---- building --------------------------------------------------------------------------------------------
+
+  tileAt(col: number, row: number): string {
+    if (col < 0 || col >= COLS || row < 0 || row >= ROWS) return WALL;
+    return this.grid[row][col] ?? ' ';
+  }
+
+  private centre(col: number, row: number) {
+    return { x: col * TILE + TILE / 2, y: row * TILE + TILE / 2 };
+  }
+
+  create() {
+    if (!manifest(this)) {
+      this.scene.start('title');
+      return;
+    }
+    this.def = room(this.defId);
+    this.grid = this.def.rows.map((r) => r.padEnd(COLS, ' ').split(''));
+    this.cameras.main.setBackgroundColor('#0b0709');
+    th
+<output_tail>
+n;
+    const jx = this.joe.mover.x;
+    const jy = this.joe.mover.y - 22;
+    for (const p of this.pickups) {
+      if (!p.sprite.active) continue;
+      if (Phaser.Math.Distance.Between(p.sprite.x, p.sprite.y, jx, jy) > 28) continue;
+      if (p.kind.startsWith('key:')) {
+        const colour = p.kind.split(':')[1] as 'gold' | 'silver' | 'red';
+        state.keys[colour] += 1;
+        sfx.key();
+      } else if (p.kind === 'jewel') {
+        state.jewels += 1;
+        this.addScore(p.points ?? 100);
+        sfx.pickup();
+      } else if (p.kind === 'gold') {
+        this.addScore(p.points ?? 50);
+        sfx.pickup();
+      } else if (p.carry) {
+        // The original refuses treasure once the five pockets are full; the torch still goes in, so a full pocket
+        // can never lock a player out of the dark rooms.
+        if (p.carry !== 'torch' && packFull(this.hud)) continue;
+        if (state.pack.filter((x) => x === p.carry).length < 2) state.pack.push(p.carry);
+        if (p.carry === 'sword') state.hasSword = true;
+        sfx.pickup();
+        this.addScore(p.points ?? 50);
+      }
+      p.sprite.destroy();
+      p.sprite.active = false;
+      this.syncHud();
+    }
+
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        if (this.grid[row][col] !== FIRE) continue;
+        const { x, y } = this.centre(col, row);
+        if (Math.abs(jx - x) < TILE / 2 + 4 && Math.abs(this.joe.mover.y - y) < TILE / 2 + 16) this.joe.kill();
+      }
+    }
+
+    if (this.idol?.active && !this.joe.dead && Phaser.Math.Distance.Between(this.idol.x, this.idol.y, jx, jy) < 30) {
+      this.idol.setActive(false).setVisible(false);
+      this.joe.win();
+      this.busy = true;
+      sfx.idol();
+      this.addScore(1000);
+      this.cameras.main.flash(400, 255, 220, 150);
+      this.time.delayedCall(800, () => {
+        this.nextRoom = { roomId: 'bonus', spawn: [1, ROWS - 2] };
+        this.cameras.main.fadeOut(400, 0, 0, 0);
+      });
+    }
+  }
+
+  private updateDoors() {
+    if (this.joe.dead || this.busy) return;
+    const jx = this.joe.mover.x;
+    const jTop = this.joe.mover.y - this.joe.mover.h;
+    const jBottom = this.joe.mover.y;
+    for (const d of this.doors) {
+      // Joe has to touch the doorway itself, not stand on its row.
+      const dTop = d.zone.y - TILE / 2 - 3;
+      const dBottom = d.zone.y + TILE / 2 + 3;
+      if (Math.abs(jx - d.zone.x) > 14 || jBottom < dTop || jTop > dBottom) continue;
+      if (state.keys[d.colour] > 0) {
+        state.keys[d.colour] -= 1;
+        this.busy = true;
+        sfx.door();
+        this.syncHud();
+        this.nextRoom = { roomId: d.to, spawn: d.spawn, face: d.face };
+        this.cameras.main.fadeOut(400, 0, 0, 0);
+        return;
+      }
+      sfx.locked();
+      this.tweens.add({ targets: this.joe.view, x: this.joe.view.x + (d.dir === 'left' ? 12 : -12), duration: 130, yoyo: true });
+      return;
+    }
+  }
+
+  private updateDarkness() {
+    if (!this.darkness) return;
+    const rt = this.darkness;
+    const lit = state.pack.includes('torch');
+    rt.clear();
+    rt.fill(0x04030a, 0.96);
+    rt.erase(lit ? 'brushLit' : 'brushDark', this.joe.mover.x, this.joe.mover.y - 22);
+    if (!lit) {
+      // A torch burning on the wall is a small light of its own.
+      for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col < COLS; col++) {
+          if (this.grid[row][col] !== 'T') continue;
+          const { x, y } = this.centre(col, row);
+          rt.erase('brushDark', x, y);
+        }
+      }
+    }
+  }
+
+  private updateBonus(dt: number) {
+    if (!this.bonusMode || this.busy) return;
+    this.bonusLeft -= dt;
+    if (this.bonusLeft <= 0) this.endBonus();
+  }
+
+  // ---- outcomes ---------------------------------------------------------------------------------------------
+
+  private addScore(n: number) {
+    state.score += n;
+    if (state.score >= state.nextExtraLife) {
+      state.nextExtraLife += 10000;
+      state.lives += 1;
+      sfx.extra();
+    }
+    this.syncHud();
+  }
+
+  private syncHud() {
+    this.hud.score = state.score;
+    this.hud.lives = state.lives;
+    this.hud.level = state.level;
+    this.hud.keys = state.keys;
+    this.hud.pack = state.pack;
+    this.hud.jewels = state.jewels;
+    this.hud.redraw();
+  }
+
+  private afterDeath() {
+    state.lives -= 1;
+    if (state.lives <= 0) {
+      this.busy = true;
+      this.cameras.main.fadeOut(400, 0, 0, 0);
+      this.nextRoom = null;
+      return;
+    }
+    this.scene.restart({ roomId: this.defId, spawn: this.spawn, face: this.face });
+  }
+
+  /** The bonus room is over: deeper into the pyramid, and darker. */
+  private endBonus() {
+    if (this.busy) return;
+    this.busy = true;
+    sfx.bonus();
+    this.addScore(Math.round(this.bonusLeft * 10));
+    state.level += 1;
+    this.nextRoom = { roomId: START_ROOM };
+    this.cameras.main.fadeOut(400, 0, 0, 0);
+  }
+
+  /** Used by scripts/load-check.mjs to hold a frame still. */
+  freeze() {
+    this.frozen = true;
+  }
+}
+<elided_chars>
+16005
+<warning>
+Output too long.
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 5, $0.00):
+```
+cd /home/andrew/projects/monty && nl -ba src/scenes/Room.ts | sed -n '140,420p'
+```
+
+Tool:
+<returncode>
+0
+<output_head>
+   140      const K = Phaser.Input.Keyboard.KeyCodes;
+   141      this.keys = {
+   142        left: kb!.addKey(K.LEFT),
+   143        a: kb!.addKey(K.A),
+   144        right: kb!.addKey(K.RIGHT),
+   145        d: kb!.addKey(K.D),
+   146        up: kb!.addKey(K.UP),
+   147        w: kb!.addKey(K.W),
+   148        down: kb!.addKey(K.S),
+   149        space: kb!.addKey(K.SPACE),
+   150      };
+   151  
+   152      this.drawScenery();
+   153      this.buildClimbables();
+   154      this.buildCrumbles();
+   155      this.buildFires();
+   156      this.buildPickups();
+   157      this.buildIdol();
+   158      this.buildDoors();
+   159      this.buildCreatures();
+   160      this.buildJoe();
+   161      this.buildDarkness();
+   162      this.buildHud();
+   163  
+   164      this.cameras.main.once('camerafadeoutcomplete', () => {
+   165        // nextRoom names a room in the pyramid, not a scene: the game is one scene that rebuilds itself.
+   166        if (this.nextRoom) this.scene.start('room', this.nextRoom);
+   167        else this.scene.start('gameover');
+   168      });
+   169    }
+   170  
+   171    /** A scenery sprite from the manifest, sitting on the floor of its cell. */
+   172    private addProp(name: string, col: number, row: number, depth: number, scale = 0.8) {
+   173      const e = manifest(this)?.sprites[name];
+   174      if (!e || !this.textures.exists(e.textureKey)) return null;
+   175      return this.add
+   176        .image(col * TILE + TILE / 2, (row + 1) * TILE, e.textureKey)
+   177        .setOrigin(0.5, 0.95)
+   178        .setDepth(depth)
+   179        .setScale(scale);
+   180    }
+   181  
+   182    /** The background, the walls and the platforms, painted with the generated ground tiles. */
+   183    private drawScenery() {
+   184      const tex = tilesTexture(this);
+   185      if (!tex) return;
+   186      const at = (terrain: string, col: number, row: number) =>
+   187        this.add.image(col * TILE, row * TILE, tex, terrainId(this, terrain)).setOrigin(0).setDepth(0);
+   188      for (let row = 0; row < ROWS; row++) {
+   189        for (let col = 0; col < COLS; col++) {
+   190          const c = this.grid[row][col];
+   191          if (c === WALL) at('brick', col, row);
+   192          else if (c === PLATFORM) at('stone', col, row);
+   193          else if (c === CRUMBLE) at('floor', col, row);
+   194          else if (c === FIRE) at('ember', col, row);
+   195          else at('void', col, row);
+   196        }
+   197      }
+   198      // A lit top edge on every ledge, so the platforms read as platforms.
+   199      const g = this.add.graphics().setDepth(1);
+   200      g.fillStyle(0xc8a86c, 0.85);
+   201      for (let row = 0; row < ROWS; row++) {
+   202        for (let col = 0; col < COLS; col++) {
+   203          const c = this.grid[row][col];
+   204          if ((c === PLATFORM || c === CRUMBLE) && this.tileAt(col, row - 1) === '.') g.fillRect(col * TILE, row * TILE, TILE, 3);
+   205        }
+   206      }
+   207      for (let row = 0; row < ROWS; row++) {
+   208        for (let col = 0; col < COLS; col++) {
+   209          const c = this.grid[row][col];
+   210          if (c !== 'W' && c !== 'B' && c !== 'V' && c !== 'T') continue;
+   211          const name = c === 'W' ? 'web' : c === 'B' ? 'skull_pile' : c === 'V' ? 'vase' : 'torch';
+   212          const img = this.addProp(name, col, row, 5, c === 'V' ? 0.7 : c === 'T' ? 1.3 : 0.9);
+   213          if (!img) continue;
+   214          if (c === 'V') img.setTint(0xd8b48a);
+   215          if (c === 'T') {
+   216            img.setBlendMode(Phaser.BlendModes.ADD).setTint(0xffc27a);
+   217            this.tweens.add({ targets: img, alpha: 0.75, duration: 420, yoyo: true, repeat: -1 });
+   218          }
+   219        }
+   220      }
+   221    }
+   222  
+   223    private buildClimbables() {
+   224      for (let col = 0; col < COLS; col++) {
+   225        let start = -1;
+   226        for (let row = 0; row <= ROWS; row++) {
+   227          const c = row < ROWS ? this.grid[row][col] : ' ';
+   228          const rope = c === ROPE;
+   229          if ((c === LADDER || rope) && start < 0) start = row;
+   230          if (c !== LADDER && !rope && start >= 0) {
+   231            const climb: Climbable = { col, top: start, bottom: row - 1, rope };
+   232            this.climbables.push(climb);
+   233            this.drawClimbable(climb);
+   234            start = -1;
+   235          }
+   236        }
+   237      }
+   238    }
+   239  
+   240  // FB-002: ladders and ropes are drawn because the generated ladder prop renders as a 12-pixel-wide 3D ladder
+   241  // seen at an angle, which cannot be read in a flat side view. Delete this when the library has a 2D ladder.
+   242  private drawClimbable(c: Climbable) {
+   243      const top = c.top * TILE;
+   244      const bottom = (c.bottom + 1) * TILE;
+   245      const x = c.col * TILE + TILE / 2;
+   246      const g = this.add.graphics().setDepth(8);
+   247      const wood = c.rope ? 0x9a7440 : 0xc9a25e;
+   248      const shade = c.rope ? 0x6a4c26 : 0x8a6a3c;
+   249      if (c.rope) {
+   250      
+<output_tail>
+est(this)?.sprites.jewel;
+   328      if (!e) return;
+   329      const [col, row] = this.def.idol;
+   330      const { x, y } = this.centre(col, row);
+   331      this.idol = this.add.image(x, y, e.textureKey).setDepth(46).setScale(2.6).setTint(0xffe9a0).setBlendMode(Phaser.BlendModes.ADD);
+   332      this.tweens.add({ targets: this.idol, y: y - 5, duration: 900, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+   333    }
+   334  
+   335    /** A door is an opening in the brick with the door standing in it, tinted with the key it wants. */
+   336    private buildDoors() {
+   337      for (const d of this.def.doors) {
+   338        const e = manifest(this)?.sprites.door;
+   339        if (!e || !this.textures.exists(e.textureKey)) continue;
+   340        const { x, y } = this.centre(d.x, d.y);
+   341        // The hole in the wall, lit by the key that opens it, with the door standing in it. In the original the
+   342        // colour of the doorway is how you know which key it wants, so that is what this shows.
+   343        this.add.rectangle(x, y, TILE, TILE, 0x0d0809).setDepth(28);
+   344        this.add.rectangle(x, y, TILE, TILE, DOOR_TINT[d.colour], 0.16).setDepth(28);
+   345        const frame = this.add.graphics().setDepth(29);
+   346        frame.lineStyle(2, DOOR_TINT[d.colour], 0.85);
+   347        frame.strokeRect(x - TILE / 2 + 1, y - TILE / 2 + 1, TILE - 2, TILE - 2);
+   348        const view = this.add.image(x, y + 3, e.textureKey).setDepth(30).setScale(1.45).setTint(DOOR_TINT[d.colour]);
+   349        const zone = this.add
+   350          .rectangle(d.dir === 'left' ? x + TILE / 2 + 4 : x - TILE / 2 - 4, y, 16, TILE + 8, 0xffffff, 0)
+   351          .setDepth(31);
+   352        this.doors.push({ ...d, view, zone });
+   353      }
+   354    }
+   355  
+   356    private buildCreatures() {
+   357      const place = (kind: 'skull' | 'skeleton', col: number, row: number) => {
+   358        const name = kind === 'skull' ? 'skull' : 'skeleton';
+   359        const e = manifest(this)?.sprites[name];
+   360        if (!e || !this.textures.exists(e.textureKey)) return;
+   361        const { x, y } = this.centre(col, row);
+   362        const view = this.add.sprite(x, y, e.textureKey).setDepth(55);
+   363        const mover = new Mover();
+   364        mover.x = x;
+   365        mover.y = (row + 1) * TILE;
+   366        mover.w = kind === 'skull' ? 20 : 22;
+   367        mover.h = kind === 'skull' ? 22 : 46;
+   368        mover.gone = this.gone;
+   369        view.setPosition(mover.x, mover.y - mover.h);
+   370        this.creatures.push({ mover, view, kind, dir: col % 2 ? 1 : -1, dead: false, spent: false });
+   371        this.playCreature(view, kind, 'E');
+   372      };
+   373      for (let row = 0; row < ROWS; row++) {
+   374        for (let col = 0; col < COLS; col++) {
+   375          const c = this.grid[row][col];
+   376          if (c === 's') place('skull', col, row);
+   377          else if (c === 'k') place('skeleton', col, row);
+   378        }
+   379      }
+   380      for (const extra of this.def.extraEnemies ?? []) {
+   381        if (state.level >= extra.from) place(extra.kind, extra.x, extra.y);
+   382      }
+   383    }
+   384  
+   385    private playCreature(view: Phaser.GameObjects.Sprite, kind: 'skull' | 'skeleton', face: Facing, clip?: string) {
+   386      // A view destroyed with the scene has no anims any more; the last update before a shutdown can still reach here.
+   387      if (!view?.scene || !view.anims) return;
+   388      const key = clipKey(this, kind === 'skull' ? 'skull' : 'skeleton', clip ?? (kind === 'skull' ? 'bounce' : 'Walk_F'), face);
+   389      if (key) view.play(key, true);
+   390    }
+   391  
+   392    private buildJoe() {
+   393      this.joe = new Joe(this, this.spawn[0] * TILE + TILE / 2, this.spawn[1] * TILE + TILE);
+   394      this.joe.mover.gone = this.gone;
+   395      this.joe.climbables = this.climbables;
+   396      this.joe.facing = this.face;
+   397    }
+   398  
+   399    /** Dark rooms are a black screen with a hole around Joe, wider when he carries the torch. */
+   400    private buildDarkness() {
+   401      const dark = this.def.darkFrom !== undefined && state.level >= this.def.darkFrom;
+   402      if (!dark) return;
+   403      for (const [name, r] of [
+   404        ['brushDark', DARK_R],
+   405        ['brushLit', LIT_R],
+   406      ] as [string, number][]) {
+   407        if (this.textures.exists(name)) continue;
+   408        const tex = this.textures.createCanvas(name, r * 2, r * 2);
+   409        if (!tex) continue;
+   410        const ctx = tex.getContext();
+   411        if (!ctx) continue;
+   412        const g = ctx.createRadialGradient(r, r, r * 0.05, r, r, r);
+   413        g.addColorStop(0, 'rgba(255,255,255,1)');
+   414        g.addColorStop(0.45, 'rgba(255,255,255,0.95)');
+   415        g.addColorStop(0.78, 'rgba(255,255,255,0.55)');
+   416        g.addColorStop(1, 'rgba(255,255,255,0)');
+   417        ctx.fillStyle = g;
+   418        ctx.fillRect(0, 0, r * 2, r * 2);
+   419        tex.refresh();
+   420      }
+
+<elided_chars>
+3556
+<warning>
+Output too long.
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 6, $0.00):
+```
+cd /home/andrew/projects/monty && cat src/assets.ts
+```
+
+```
+cd /home/andrew/projects/monty && nl -ba src/scenes/Room.ts | sed -n '420,560p'
+```
+
+Tool:
+<returncode>
+0
+<output>
+import Phaser from 'phaser';
+
+/** One entry of public/assets/manifest.json (written by scripts/build-assets.mjs). */
+export interface SpriteEntry {
+  name: string;
+  asset: string;
+  textureKey: string;
+  atlas: string;
+  path: string;
+  anims: string;
+  /** Prefix of the exported animation keys (`<base>/`). */
+  animPrefix: string;
+  meta: string | null;
+  pixelsPerMetre: number | null;
+  /** Untrimmed frame size in pixels. */
+  frameSize: [number, number] | null;
+  dirs: string[];
+  clips: string[];
+  clipInfo: Record<string, { frames: number | null; speedMps: number | null; events: { frame: number; name: string }[] }>;
+  validation: unknown[];
+}
+
+export interface TilesetEntry {
+  name: string;
+  image: string;
+  tsj: string;
+  tile: string;
+  width: number;
+  height: number;
+  columns: number;
+  /** Terrain name -> tile id in the atlas (the plain tile of that terrain). */
+  terrains: Record<string, number>;
+}
+
+export interface AssetManifest {
+  project: string;
+  view: string;
+  format: string;
+  fps: number;
+  ppm: number;
+  sprites: Record<string, SpriteEntry>;
+  tilesets: Record<string, TilesetEntry>;
+}
+
+interface AnimJson {
+  anims: { key: string; frameRate: number; repeat: number; frames: { key: string; frame: string }[] }[];
+}
+
+/** Queue the manifest; once it arrives, queue every sprite's atlas, animations and meta, and the tilesets. Call from preload(). */
+export function preloadAssets(scene: Phaser.Scene) {
+  scene.load.json('manifest', 'assets/manifest.json');
+  scene.load.once('filecomplete-json-manifest', (_key: string, _type: string, m: AssetManifest) => {
+    for (const s of Object.values(m.sprites)) {
+      // The sprite's own name is the texture key.
+      scene.load.multiatlas(s.name, s.atlas, s.path);
+      scene.load.json(`anims:${s.name}`, s.anims);
+      if (s.meta) scene.load.json(`meta:${s.name}`, s.meta);
+    }
+    for (const t of Object.values(m.tilesets ?? {})) {
+      // The atlas is a plain grid of tiles, so it loads as a spritesheet and the terrain ids index it.
+      scene.load.spritesheet(`tiles:${t.name}`, t.image, { frameWidth: t.width, frameHeight: t.height });
+    }
+  });
+}
+
+/** After loading: register every sprite's animations under the exported keys, on the sprite's own texture. */
+export function setupAssets(scene: Phaser.Scene): AssetManifest | null {
+  const m = scene.cache.json.get('manifest') as AssetManifest | undefined;
+  if (!m) return null;
+  for (const s of Object.values(m.sprites)) {
+    if (!scene.textures.exists(s.name)) continue;
+    const aj = scene.cache.json.get(`anims:${s.name}`) as AnimJson | undefined;
+    for (const a of aj?.anims ?? []) {
+      if (scene.anims.exists(a.key)) continue;
+      scene.anims.create({
+        key: a.key,
+        frameRate: a.frameRate,
+        repeat: a.repeat,
+        frames: a.frames.map((f) => ({ key: s.name, frame: f.frame })),
+      });
+    }
+  }
+  return m;
+}
+
+export function manifest(scene: Phaser.Scene): AssetManifest | null {
+  return (scene.cache.json.get('manifest') as AssetManifest | undefined) ?? null;
+}
+
+/**
+ * The exported clips are named `<base>/<clip>_<dir>`, and the side view renders both facings (`_E`, `_W`), so the game
+ * plays the direction it wants instead of flipping. Returns undefined when a clip is missing.
+ */
+export function clipKey(scene: Phaser.Scene, sprite: string, clip: string, facing: 'E' | 'W' = 'E'): string | undefined {
+  const m = manifest(scene);
+  const entry = m?.sprites[sprite];
+  if (!entry) return undefined;
+  const key = `${entry.animPrefix}${clip}_${facing}`;
+  return scene.anims.exists(key) ? key : undefined;
+}
+
+/** The tile id of a ground terrain in the atlas, for stamping the room. */
+export function terrainId(scene: Phaser.Scene, terrain: string): number {
+  const m = manifest(scene);
+  const t = Object.values(m?.tilesets ?? {})[0];
+  return t?.terrains[terrain] ?? 0;
+}
+
+/** Texture key of the ground atlas. */
+export function tilesTexture(scene: Phaser.Scene): string | null {
+  const m = manifest(scene);
+  const t = Object.values(m?.tilesets ?? {})[0];
+  return t ? `tiles:${t.name}` : null;
+}
+
+Tool:
+<returncode>
+0
+<output>
+   420      }
+   421      this.darkness = this.add.renderTexture(0, 0, WIDTH, HEIGHT).setOrigin(0).setDepth(45);
+   422    }
+   423  
+   424    private buildHud() {
+   425      this.hud = new Hud(this);
+   426      this.syncHud();
+   427      this.levelCard();
+   428    }
+   429  
+   430    private levelCard() {
+   431      const text = this.add
+   432        .text(WIDTH / 2, HEIGHT / 2 - 24, this.bonusMode ? 'BONUS ROOM' : this.def.title, {
+   433          fontFamily: '"Press Start 2P", monospace',
+   434          fontSize: '10px',
+   435          color: '#f4e4c4',
+   436          stroke: '#000000',
+   437          strokeThickness: 5,
+   438        })
+   439        .setOrigin(0.5)
+   440        .setDepth(950)
+   441        .setResolution(2);
+   442      this.tweens.add({ targets: text, alpha: 0, duration: 700, delay: 1100, onComplete: () => text.destroy() });
+   443    }
+   444  
+   445    // ---- the loop ---------------------------------------------------------------------------------------------
+   446  
+   447    override update(_time: number, delta: number) {
+   448      if (this.frozen) return;
+   449      const dt = Math.min(delta / 1000, 1 / 20);
+   450      const k = this.keys;
+   451      const input = {
+   452        left: k.left.isDown || k.a.isDown,
+   453        right: k.right.isDown || k.d.isDown,
+   454        up: k.up.isDown || k.w.isDown,
+   455        down: k.down.isDown,
+   456        jump: Phaser.Input.Keyboard.JustDown(k.space) || Phaser.Input.Keyboard.JustDown(k.up) || Phaser.Input.Keyboard.JustDown(k.w),
+   457      };
+   458      if (!this.busy && !this.joe.dead) this.joe.update(input, dt, this.world, GRAVITY);
+   459      else this.joe.update(input, dt, this.world, GRAVITY);
+   460      this.updateCreatures(dt);
+   461      this.updateCrumbles(dt);
+   462      this.updatePickups();
+   463      this.updateDoors();
+   464      this.updateDarkness();
+   465      this.updateBonus(dt);
+   466  
+   467      if (this.joe.mover.y > HEIGHT + 48 && !this.joe.dead) this.joe.kill();
+   468      if (this.joe.dead && !this.busy) {
+   469        this.busy = true;
+   470        this.cameras.main.shake(240, 0.012);
+   471        sfx.death();
+   472        this.time.delayedCall(1600, () => this.afterDeath());
+   473      }
+   474    }
+   475  
+   476    private updateCreatures(dt: number) {
+   477      for (const c of this.creatures) {
+   478        if (c.dead || c.spent) continue;
+   479        const m = c.mover;
+   480        m.vx = c.dir * (c.kind === 'skull' ? 46 : 42);
+   481        if (c.kind === 'skull') {
+   482          // The skull hops at Joe when he comes into reach.
+   483          const sameRow = Math.abs((this.joe.mover.y - 22 - m.y) / TILE) < 1.6;
+   484          if (sameRow && Math.abs(this.joe.mover.x - m.x) < TILE * 3 && m.onGround) m.vy = -430;
+   485        }
+   486        m.step(dt, this.world, GRAVITY);
+   487        if (m.hitWall || !m.hasFloorAhead(this.world, c.dir)) c.dir *= -1;
+   488        this.playCreature(c.view, c.kind, c.dir > 0 ? 'E' : 'W');
+   489        c.view.setPosition(Math.round(m.x), Math.round(m.y - m.h));
+   490        if (c.kind === 'skull') c.view.rotation = Math.sin(this.time.now / 90) * 0.22;
+   491  
+   492        // Contact: the sword takes one of them, otherwise Joe is caught.
+   493        const near = Math.abs(m.x - this.joe.mover.x) < (m.w + 20) / 2 && Math.abs(m.y - this.joe.mover.y) < 34;
+   494        if (near && !this.joe.dead) {
+   495          if (state.hasSword) {
+   496            c.dead = true;
+   497            state.hasSword = false;
+   498            state.pack = state.pack.filter((p) => p !== 'sword');
+   499            this.syncHud();
+   500            sfx.break();
+   501            this.tweens.add({ targets: c.view, alpha: 0, y: c.view.y + 16, duration: 400, onComplete: () => c.view.destroy() });
+   502          } else {
+   503            // In the early levels a creature does not come back to the same room after it catches Joe.
+   504            if (state.level <= 2) c.spent = true;
+   505            this.joe.kill();
+   506          }
+   507        }
+   508      }
+   509    }
+   510  
+   511    private updateCrumbles(dt: number) {
+   512      for (const c of this.crumbles) {
+   513        const key = `${c.col},${c.row}`;
+   514        if (c.state === 'solid') {
+   515          const onIt = this.joe.mover.onGround && Math.abs(this.joe.mover.x - (c.col * TILE + TILE / 2)) < TILE / 2 && Math.abs(this.joe.mover.y - c.row * TILE) < 4;
+   516          if (onIt) {
+   517            c.state = 'falling';
+   518            c.timer = 0.5;
+   519          }
+   520          continue;
+   521        }
+   522        c.timer -= dt;
+   523        if (c.state === 'falling' && c.timer <= 0) {
+   524          c.state = 'gone';
+   525          c.timer = 2.4;
+   526          this.gone.add(key);
+   527          this.tweens.add({ targets: c.view, alpha: 0, y: c.view.y + 12, duration: 240, onComplete: () => c.view.setAlpha(0) });
+   528        } else if (c.state === 'gone' && c.timer <= 0) {
+   529          c.state = 'solid';
+   530          this.gone.delete(key);
+   531          c.view.setAlpha(1).setY(c.view.y - 12);
+   532        }
+   533      }
+   534    }
+   535  
+   536    private updatePickups() {
+   537      if (this.joe.dead) return;
+   538      const jx = this.joe.mover.x;
+   539      const jy = this.joe.mover.y - 22;
+   540      for (const p of this.pickups) {
+   541        if (!p.sprite.active) continue;
+   542        if (Phaser.Math.Distance.Between(p.sprite.x, p.sprite.y, jx, jy) > 28) continue;
+   543        if (p.kind.startsWith('key:')) {
+   544          const colour = p.kind.split(':')[1] as 'gold' | 'silver' | 'red';
+   545          state.keys[colour] += 1;
+   546          sfx.key();
+   547        } else if (p.kind === 'jewel') {
+   548          state.jewels += 1;
+   549          this.addScore(p.points ?? 100);
+   550          sfx.pickup();
+   551        } else if (p.kind === 'gold') {
+   552          this.addScore(p.points ?? 50);
+   553          sfx.pickup();
+   554        } else if (p.carry) {
+   555          // The original refuses treasure once the five pockets are full; the torch still goes in, so a full pocket
+   556          // can never lock a player out of the dark rooms.
+   557          if (p.carry !== 'torch' && packFull(this.hud)) continue;
+   558          if (state.pack.filter((x) => x === p.carry).length < 2) state.pack.push(p.carry);
+   559          if (p.carry === 'sword') state.hasSword = true;
+   560          sfx.pickup();
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 7, $0.00):
+```
+cd /home/andrew/projects/monty && nl -ba src/rooms.ts | sed -n '1,120p'
+```
+
+```
+cd /home/andrew/projects/monty && cat src/main.ts && cat src/scenes/Boot.ts
+```
+
+Tool:
+<returncode>
+0
+<output>
+     1  /**
+     2   * The pyramid: one screen per room, the way the 1984 original is built (rooms reached through locked doors, each
+     3   * level darker than the last).
+     4   *
+     5   * Rooms are written as ASCII art, one character per tile (20 wide, 11 high):
+     6   *
+     7   *   #  wall                    =  platform (jump up through it)      H  ladder (up and down)
+     8   *   ^  fire pit (kills)        x  crumbling floor                     R  rope (down only)
+     9   *   @  where Joe starts        .  nothing
+    10   *
+    11   *   y/w/e  gold / silver / red key      j  jewel      o  gold      t  torch      d  dagger
+    12   *   s  patrolling skull       k  patrolling skeleton
+    13   *   V  vase (breakable, 50)   W  spider web    B  skull pile    T  wall torch
+    14   *
+    15   * Ladders run from the floor to near the ceiling with a platform beside their top, so Joe climbs and steps off
+    16   * sideways; ropes hang from the top and can only be ridden down.
+    17   */
+    18  export const COLS = 20;
+    19  export const ROWS = 16;
+    20  
+    21  export type KeyColour = 'gold' | 'silver' | 'red';
+    22  export type EnemyKind = 'skull' | 'skeleton';
+    23  export type Facing = 'E' | 'W';
+    24  
+    25  export interface DoorDef {
+    26    /** Tile column: 0 for a door in the left wall, COLS - 1 for the right one. */
+    27    x: number;
+    28    /** Tile row the doorway sits on. */
+    29    y: number;
+    30    dir: 'left' | 'right';
+    31    colour: KeyColour;
+    32    /** Room this door leads to. */
+    33    to: string;
+    34    /** Where Joe stands in that room, in tiles, and which way he faces. */
+    35    spawn: [number, number];
+    36    face: Facing;
+    37  }
+    38  
+    39  export interface ExtraEnemy {
+    40    /** The level from which this enemy is in the room. */
+    41    from: number;
+    42    x: number;
+    43    y: number;
+    44    kind: EnemyKind;
+    45  }
+    46  
+    47  export interface RoomDef {
+    48    id: string;
+    49    /** Shown on the title card when Joe walks in. */
+    50    title: string;
+    51    rows: string[];
+    52    doors: DoorDef[];
+    53    /** From this level on the room is dark: Joe needs the torch to see it. */
+    54    darkFrom?: number;
+    55    /** The idol that ends the level. */
+    56    idol?: [number, number];
+    57    extraEnemies?: ExtraEnemy[];
+    58  }
+    59  
+    60  const rooms: RoomDef[] = [
+    61    {
+    62      id: 'entry',
+    63      title: 'THE ENTRANCE',
+    64      rows: [
+    65        '####################',
+    66        '#...............H..#',
+    67        '#...............H..#',
+    68        '#...............H..#',
+    69        '#...............H..#',
+    70        '################H###',
+    71        '#......H........H..#',
+    72        '#......H....y...H..#',
+    73        '#......H........H..#',
+    74        '#......H........H..#',
+    75        '#######H############',
+    76        '#..V...H...........#',
+    77        '#......H.......s...#',
+    78        '#......H...........#',
+    79        '#......H.@.........#',
+    80        '####################',
+    81      ],
+    82      doors: [
+    83        { x: 0, y: 13, dir: 'left', colour: 'gold', to: 'rope', spawn: [17, 9], face: 'W' },
+    84        { x: COLS - 1, y: 13, dir: 'right', colour: 'silver', to: 'ladder', spawn: [17, 9], face: 'W' },
+    85      ],
+    86    },
+    87    {
+    88      id: 'rope',
+    89      title: 'THE ROPE HALL',
+    90      rows: [
+    91        '####################',
+    92        '#.....R......H.....#',
+    93        '#.....R......H.....#',
+    94        '#.....R......H.....#',
+    95        '#.....R......H.....#',
+    96        '#####.R...###H######',
+    97        '#.....RH.....H.....#',
+    98        '#.....RH.....H...j.#',
+    99        '#......H.....H.....#',
+   100        '#......H.....H.....#',
+   101        '#######H############',
+   102        '#......H...........#',
+   103        '#......H...B.......#',
+   104        '#......H...........#',
+   105        '#......H........o..#',
+   106        '####################',
+   107      ],
+   108      doors: [
+   109        { x: COLS - 1, y: 13, dir: 'right', colour: 'gold', to: 'entry', spawn: [2, 9], face: 'E' },
+   110        { x: 0, y: 13, dir: 'left', colour: 'gold', to: 'crumble', spawn: [17, 9], face: 'W' },
+   111      ],
+   112    },
+   113    {
+   114      id: 'ladder',
+   115      title: 'THE LADDER WELL',
+   116      rows: [
+   117        '####################',
+   118        '#..............H...#',
+   119        '#......w.......H...#',
+   120        '#..............H...#',
+
+
+Tool:
+<returncode>
+0
+<output>
+import Phaser from 'phaser';
+import { state } from './state';
+import { Boot } from './scenes/Boot';
+import { Title } from './scenes/Title';
+import { Room } from './scenes/Room';
+import { GameOver } from './scenes/GameOver';
+
+/** The room grid (the rooms themselves are in rooms.ts). One tile is one metre, so every sprite is drawn at the
+ * scale the generator exported it. */
+import { COLS, ROWS } from './rooms';
+export { COLS, ROWS };
+export const TILE = 32;
+export const WIDTH = COLS * TILE;
+export const HEIGHT = ROWS * TILE;
+
+/** Joe's feel: a fixed-length Donkey Kong jump, which cannot be steered once he is in the air. */
+export const GRAVITY = 2200;
+export const JUMP_SPEED = 600;
+export const WALK_SPEED = 150;
+/** A drop further than this is fatal, as in the original. */
+export const FALL_LIMIT = 84;
+
+const game = new Phaser.Game({
+  type: Phaser.AUTO,
+  parent: document.body,
+  backgroundColor: '#0b0709',
+  width: WIDTH,
+  height: HEIGHT,
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, autoRound: true },
+  render: { roundPixels: true, antialias: false },
+  scene: [Boot, Title, Room, GameOver],
+});
+
+// Exposed for scripts/load-check.mjs.
+(window as unknown as { game: Phaser.Game; state: typeof state }).game = game;
+(window as unknown as { game: Phaser.Game; state: typeof state }).state = state;import Phaser from 'phaser';
+import { preloadAssets, setupAssets } from '../assets';
+import { Title } from './Title';
+import { Room } from './Room';
+
+export class Boot extends Phaser.Scene {
+  constructor() {
+    super('boot');
+  }
+
+  preload() {
+    preloadAssets(this);
+  }
+
+  create() {
+    if (!setupAssets(this)) {
+      // The manifest never arrived: the assets have not been built (`npm run assets`).
+      this.add
+        .text(160, 140, 'ASSETS MISSING\n\nrun: npm run assets', {
+          fontFamily: '"Press Start 2P", monospace',
+          fontSize: '10px',
+          color: '#ffb4a2',
+          align: 'center',
+        })
+        .setOrigin(0.5);
+      return;
+    }
+    const wanted = new URLSearchParams(window.location.search).get('scene');
+    if (wanted === 'room') this.scene.start('room', {});
+    else if (wanted === 'gameover') this.scene.start('gameover', {});
+    else this.scene.start('title');
+  }
+}
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 8, $0.00):
+```
+cd /home/andrew/projects/monty && ls public/assets && python3 -c "
+import json
+m=json.load(open('public/assets/manifest.json'))
+print(json.dumps(m['sprites']['skeleton'], indent=2))
+print(json.dumps(m['sprites']['skull'], indent=2))
+print({k:(v['frameSize'],v['pixelsPerMetre'],v['animPrefix']) for k,v in m['sprites'].items()})
+print(m['ppm'], m.get('view'), m.get('format'), m.get('fps'))
+"
+```
+
+Tool:
+<returncode>
+0
+<output>
+door
+flame
+gold
+jewel
+joe
+key_gold
+key_red
+key_silver
+ladder
+manifest.json
+skeleton
+skull
+skull_pile
+sword
+tileset
+tilesets
+torch
+vase
+web
+{
+  "name": "skeleton",
+  "asset": "POLYGON_Dungeon_Pack/Character_Skeleton_Slave_01",
+  "textureKey": "skeleton",
+  "atlas": "assets/skeleton/Character_Skeleton_Slave_01.json",
+  "path": "assets/skeleton/",
+  "anims": "assets/skeleton/Character_Skeleton_Slave_01_anims.json",
+  "animPrefix": "skeleton/",
+  "meta": "assets/skeleton/Character_Skeleton_Slave_01.meta.json",
+  "pixelsPerMetre": 32,
+  "frameSize": [
+    126,
+    78
+  ],
+  "dirs": [
+    "E",
+    "W"
+  ],
+  "clips": [
+    "Idle_Standing",
+    "Walk_F",
+    "Run_F",
+    "hit_react",
+    "death_fall"
+  ],
+  "clipInfo": {
+    "Idle_Standing": {
+      "frames": 21,
+      "speedMps": null,
+      "events": []
+    },
+    "Walk_F": {
+      "frames": 12,
+      "speedMps": 1.34,
+      "events": [
+        {
+          "frame": 3,
+          "name": "footstep_r"
+        },
+        {
+          "frame": 9,
+          "name": "footstep_l"
+        }
+      ]
+    },
+    "Run_F": {
+      "frames": 8,
+      "speedMps": 2.4,
+      "events": [
+        {
+          "frame": 3,
+          "name": "footstep_r"
+        }
+      ]
+    },
+    "hit_react": {
+      "frames": 7,
+      "speedMps": null,
+      "events": [
+        {
+          "frame": 1,
+          "name": "hurt"
+        }
+      ]
+    },
+    "death_fall": {
+      "frames": 17,
+      "speedMps": null,
+      "events": [
+        {
+          "frame": 1,
+          "name": "hurt"
+        },
+        {
+          "frame": 11,
+          "name": "dead"
+        }
+      ]
+    }
+  },
+  "validation": []
+}
+{
+  "name": "skull",
+  "asset": "POLYGON_Dark_Fantasy/SM_Prop_Skull_01",
+  "textureKey": "skull",
+  "atlas": "assets/skull/Prop_Skull_01.json",
+  "path": "assets/skull/",
+  "anims": "assets/skull/Prop_Skull_01_anims.json",
+  "animPrefix": "skull/",
+  "meta": "assets/skull/Prop_Skull_01.meta.json",
+  "pixelsPerMetre": null,
+  "frameSize": [
+    64,
+    64
+  ],
+  "dirs": [
+    "E",
+    "W"
+  ],
+  "clips": [
+    "bounce"
+  ],
+  "clipInfo": {
+    "bounce": {
+      "frames": 10,
+      "speedMps": null,
+      "events": []
+    }
+  },
+  "validation": []
+}
+{'joe': ([76, 82], 32, 'joe/'), 'skeleton': ([126, 78], 32, 'skeleton/'), 'skull': ([64, 64], None, 'skull/'), 'key_gold': ([64, 64], None, 'key_gold/'), 'key_silver': ([64, 64], None, 'key_silver/'),
+'key_red': ([64, 64], None, 'key_red/'), 'jewel': ([64, 64], None, 'jewel/'), 'gold': ([64, 64], None, 'gold/'), 'torch': ([64, 64], None, 'torch/'), 'sword': ([64, 64], None, 'sword/'), 'flame': 
+([64, 64], None, 'flame/'), 'ladder': ([64, 102], 32, 'ladder/'), 'door': ([64, 64], None, 'door/'), 'web': ([64, 64], None, 'web/'), 'vase': ([64, 64], None, 'vase/'), 'skull_pile': ([64, 64], None, 
+'skull_pile/')}
+32 side2 phaser3 12
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 9, $0.00):
+```
+cd /home/andrew/projects/monty && sed -n '1,120p' scripts/build-assets.mjs
+```
+
+```
+ls /home/andrew/projects/synty-sprite-generator && node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --help 2>&1 | head -60
+```
+
+Tool:
+<returncode>
+0
+<output>
+// Builds every asset declared in ssg.assets.json through the Synty Sprite Generator CLI (never its code).
+//   npm run assets                         build everything
+//   node scripts/build-assets.mjs joe       apply/render/download a subset by name (the manifest keeps the rest)
+// `ssg sprite apply - --render --download public/assets` keeps every sprite in the generator project named in the
+// file (visible and editable in the app), renders only what is outdated and writes public/assets/<name>/.
+// `ssg tileset render tomb` draws the ground atlas; the Tiled .tsj tells the game which tile id is which terrain,
+// and both go into public/assets/tileset/. Then public/assets/manifest.json is written from the output.
+import { spawn } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const SSG = process.env.SSG_BIN ?? '/home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs';
+const out = path.join(root, 'public/assets');
+const spec = JSON.parse(fs.readFileSync(path.join(root, 'ssg.assets.json'), 'utf8'));
+
+// The export folders must be inside an allowed root; ours is this repo (see .mcp.json).
+process.env.SSG_ALLOWED_DIRS = [process.env.SSG_ALLOWED_DIRS, root].filter(Boolean).join(':');
+
+// A render that shows no new progress line for this long counts as hung and is stopped (its batch keeps running in
+// the generator).
+const STALL_MS = 3 * 60 * 1000;
+
+/** Run the CLI with --json, echoing its progress lines; stop it if they stall. Resolves {code, json, stdout}. */
+function ssg(args, { input } = {}) {
+  return new Promise((resolve, reject) => {
+    const p = spawn(process.execPath, [SSG, '--json', ...args], {
+      cwd: root,
+      stdio: [input ? 'pipe' : 'ignore', 'pipe', 'pipe'],
+      env: { ...process.env },
+    });
+    if (input) p.stdin.end(input);
+    let stdout = '';
+    let last = '';
+    let lastChange = Date.now();
+    p.stdout.on('data', (d) => (stdout += d));
+    p.stderr.on('data', (d) => {
+      for (const l of String(d).split(/[\r\n]+/).filter(Boolean)) {
+        if (l === last) continue;
+        last = l;
+        lastChange = Date.now();
+        process.stderr.write(`  | ${l}\n`);
+      }
+    });
+    const watchdog = setInterval(() => {
+      if (Date.now() - lastChange > STALL_MS) {
+        clearInterval(watchdog);
+        p.kill('SIGTERM');
+        reject(new Error(`ssg ${args[0]} stalled for ${STALL_MS / 60000} min (last progress: ${last || 'none'}) and was stopped`));
+      }
+    }, 5000);
+    p.on('close', (code) => {
+      clearInterval(watchdog);
+      let json = null;
+      try {
+        json = JSON.parse(stdout);
+      } catch {
+        /* not JSON */
+      }
+      resolve({ code, json, stdout });
+    });
+  });
+}
+
+const readJson = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
+
+/** Manifest entry for one downloaded sprite folder public/assets/<name>/. */
+function describe(s) {
+  const dest = path.join(out, s.name);
+  const files = fs.readdirSync(dest);
+  const animsFile = files.filter((f) => f.endsWith('_anims.json')).sort((x, y) => x.length - y.length)[0];
+  const base = animsFile?.slice(0, -'_anims.json'.length);
+  const metaFile = files.find((f) => f === `${base}.meta.json`);
+  const atlasFile = files.find((f) => f === `${base}.json`);
+  if (!animsFile || !atlasFile) throw new Error(`no phaser3 atlas/anims in ${dest} (${files.join(', ')})`);
+  const anims = readJson(path.join(dest, animsFile)).anims;
+  const atlas = readJson(path.join(dest, atlasFile));
+  const meta = metaFile ? readJson(path.join(dest, metaFile)) : null;
+  // The game loads every multiatlas under the sprite's own name, so that is the texture key (the anims file names the
+  // atlas's own base, which is not what textures.get() knows).
+  const textureKey = s.name;
+  // Anim keys are "<base>/<clip>_<dir>": the game plays them as they are.
+  const bare = (k) => k.slice(k.lastIndexOf('/') + 1);
+  const dirs = [...new Set(anims.map((a) => bare(a.key).split('_').pop()))];
+  const clips = [...new Set(anims.map((a) => bare(a.key).slice(0, bare(a.key).lastIndexOf('_'))))];
+  const frame0 = (atlas.textures?.[0]?.frames ?? Object.values(atlas.frames ?? {}))[0];
+  const validation = meta?.validation ?? [];
+  if (validation.length) console.error(`  ${s.name}: validation ${validation.map((v) => `${v.level}:${v.code}`).join(', ')}`);
+  return {
+    name: s.name,
+    asset: s.asset,
+    textureKey,
+    atlas: `assets/${s.name}/${atlasFile}`,
+    path: `assets/${s.name}/`,
+    anims: `assets/${s.name}/${animsFile}`,
+    animPrefix: anims[0] ? anims[0].key.slice(0, anims[0].key.lastIndexOf('/') + 1) : '',
+    meta: metaFile ? `assets/${s.name}/${metaFile}` : null,
+    pixelsPerMetre: meta?.scale?.pixelsPerMetre ?? meta?.pixelsPerMetre ?? null,
+    frameSize: frame0 ? [frame0.sourceSize.w, frame0.sourceSize.h] : null,
+    dirs,
+    clips,
+    // Per clip: frame count, ground speed (locomotion only) and named events by frame.
+    clipInfo: Object.fromEntries(
+      (meta?.clips ?? []).map((c) => [c.name, { frames: c.frameCount ?? c.frames ?? null, speedMps: c.speedMps ?? null, events: c.events ?? [] }])
+    ),
+    validation,
+  };
+}
+
+/**
+ * The ground tileset: public/assets/tileset/<name>.png (atlas) + .tsj (Tiled). The game needs, per terrain, the id of
+ * a plain tile it can stamp; the .tsj lists them as wangset corners, so take the lowest id of each terrain.
+ */
+function describeTileset(t) {
+  const dir = path.join(out, 'tileset');
+  const tsj = fs.readdirSync(dir).find((f) => f.endsWith('.tsj') && f.startsWith(t.name));
+  const png = fs.readdirSync(dir).find((f) => f.endsWith('.png') && f.startsWith(t.name));
+  if (!tsj || !png) throw new Error(`no tileset .tsj/.png in ${dir} (${fs.readdirSync(dir).join(', ')})`);
+  const doc = readJson(path.join(dir, tsj));
+
+
+Tool:
+<returncode>
+0
+<output>
+README.md
+TODO.md
+apps
+data
+docs
+node_modules
+original-assets
+package-lock.json
+package.json
+packages
+scripts
+test-results
+tsconfig.base.json
+worker
+Usage: ssg [options] [command]
+
+Synty Sprite Generator — turn Synty 3D models into sprite sheets.
+
+Options:
+  -V, --version                          output the version number
+  --server <url>                         server URL (started automatically if local and not running) (default: "http://127.0.0.1:5181")
+  --json                                 print machine-readable JSON (errors too: { error, code?, details? } on stdout, exit code 1)
+  -h, --help                             display help for command
+
+Commands:
+  server                                 manage the background server
+  stats [options]                        counts at a glance: library (packs, models by kind, clips, textures), what was made (sprites, renders, exports, maps) and render activity
+  runner [options]                       show or set what background batches render with (GPU or CPU)
+  packs                                  installed Synty packs
+  assets [options] [search]              search models (search may be Pack/Name, e.g. POLYGON_War/SM_Env_Tree_01; everyday words work too: "first aid", "explosive", "bazooka", "handgun")
+  scale [options] <asset> [factor]       show or set a model's size fix: multiply the model by <factor> to get metres (a saved override), or --auto for the automatic fix (FB-071)
+  templates [options] [search]           procedural animations (-t): character stand-ins like aim_shoot, prone_idle, crawl, throw; still; vehicle, prop and FX moves
+  animations [options] [search]          search animation clips (--templates: the procedural animations instead)
+  views                                  view presets
+  formats                                export formats (built-in and your profiles)
+  sets                                   animation sets
+  presets                                saved job presets
+  profiles                               share custom engine formats
+  export [options] [assets...]           render sprite sheets (models by name or id, or --prompt "a soldier with a rifle, pixel art, for Godot")
+  preview [options] <asset>              quick sheet of one model with one animation (PNG)
+  label [options] <asset>                show or set a model's labels; what you set is locked against AI changes (AI ideas become suggestions)
+  fix [options] <asset>                  show or set the placement fix of a worn item for a moveset (every character): move in cm, turn in degrees
+  parts [options] <asset> [part] [role]  list a vehicle/prop's animatable parts (roles, boxes in metres), or set a part's role (wheel, door, turret…; 'none' for no role)
+  grip [options] <asset>                 show or set the default grip of a weapon/prop (bone, offset, custom sockets)
+  clip [options] <name>                  show or edit a clip: events (release, hit, cast…), trim, speed and direction — shared by every character (one sprite only: --anim "Clip@0.8:2.6", 
+"Clip@reverse", "Clip@lockyaw" or an apply file anim { clip, trim, reverse, lockYaw })
+  frame-cache [options]                  rendered frames kept per clip × direction, so a render renders only what changed (bounded by SSG_FRAME_CACHE_MB, default 4096)
+  batch                                  batch exports
+  props                                  objects and props: scenery at the characters' scale
+  projects                               projects (games): the settings their sprites share
+  sprites [options]                      list sprites
+  sprite                                 one sprite: show, create, add moves, outfits, render, download
+  resolve [options] <prompt>             show what a sentence resolves to (model, equipment, settings) without creating anything
+  tileset                                tilesets: ground terrains, corner transitions, atlas PNG and Tiled export (preview)
+  textures [options] [search]            find ground textures in the installed packs (paths for `ssg tileset terrain add --texture`); kinds are guessed from the names
+  texture                                library textures: export one as PNG/webp + JSON (size, background, frame grid), or keep a folder in step with ssg.textures.json
+  model                                  export Synty models as game-ready 3D files (GLB + .model.json manifest) for three.js, Babylon, Godot… (docs/MODELS.md)
+  map                                    maps: paint ground, place objects, zones; export for Tiled (preview)
+  ai                                     the AI prompt resolver and model tagger
+  mcp [options]                          run the MCP server (stdio for Claude Code / Claude Desktop, or --http for remote clients)
+  help [command]                         display help for command
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 10, $0.00):
+```
+cd /home/andrew/projects/monty && timeout 120 node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --json assets Skeleton_Knight 2>&1 | head -60
+```
+
+```
+cd /home/andrew/projects/monty && timeout 120 node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs sprite apply --help 2>&1 | head -60
+```
+
+Tool:
+<returncode>
+0
+<output>
+{
+  "total": 3,
+  "items": [
+    {
+      "id": 4035,
+      "packId": 18,
+      "pack": "POLYGON_Dungeon_Pack",
+      "name": "Character_Skeleton_Knight",
+      "kind": "character",
+      "status": "ready",
+      "error": null,
+      "variant": null,
+      "glb": "/files/glb/p18/a4035.glb",
+      "thumb": "/files/thumbs/p18/a4035.png",
+      "rig": {
+        "profile": "synty_ue",
+        "score": 1,
+        "map": {
+          "hips": "Pelvis",
+          "spine1": "spine_01",
+          "spine2": "spine_02",
+          "spine3": "spine_03",
+          "neck": "neck_01",
+          "head": "head",
+          "clavicle_l": "clavicle_l",
+          "upperarm_l": "UpperArm_L",
+          "lowerarm_l": "lowerarm_l",
+          "hand_l": "Hand_L",
+          "clavicle_r": "clavicle_r",
+          "upperarm_r": "UpperArm_R",
+          "lowerarm_r": "lowerarm_r",
+          "hand_r": "Hand_R",
+          "thigh_l": "Thigh_L",
+          "calf_l": "calf_l",
+          "foot_l": "Foot_L",
+          "toe_l": "ball_l",
+          "thigh_r": "Thigh_R",
+          "calf_r": "calf_r",
+          "foot_r": "Foot_R",
+          "toe_r": "ball_r"
+        }
+      },
+      "bones": [
+        "ik_foot_root",
+        "ik_foot_l",
+        "ik_foot_r",
+        "ik_hand_root",
+        "ik_hand_gun",
+        "ik_hand_l",
+        "ik_hand_r",
+        "Pelvis",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "neck_01",
+        "head",
+        "eyes",
+        "eyebrows",
+        "clavicle_l",
+        "UpperArm_L",
+
+
+Tool:
+<returncode>
+0
+<output>
+Usage: ssg sprite apply [options] <file>
+
+create or update sprites by name from a JSON file (- = stdin): a game's
+declared assets; re-runs change nothing that did not change
+
+Options:
+  --project <ref>      project name or id (wins over the file's "project"; a
+                       new name makes the project from the file's settings)
+  --no-create-project  fail when the project does not exist
+  --render             render the outdated sprites and wait for them
+  --force [names...]   re-render even when nothing changed: every sprite, or
+                       the named ones (implies --render)
+  --download <dir>     write each sprite's latest render to <dir>/<name>/ (data
+                       json + pngs)
+  --previews           with --download: keep the preview GIFs (previews/)
+  --dry-run            show what would be created or updated, change nothing
+  --minutes <n>        with --render: stop waiting after N minutes (the renders
+                       keep running) (default: 60)
+  -h, --help           display help for command
+
+Global Options:
+  -V, --version        output the version number
+  --server <url>       server URL (started automatically if local and not
+                       running) (default: "http://127.0.0.1:5181")
+  --json               print machine-readable JSON (errors too: { error, code?,
+                       details? } on stdout, exit code 1)
+
+File format (JSON):
+  {
+    "project": "My Game",            project name or id (--project wins); a new name is created from the settings below
+    "defaults": { …sprite keys },     settings for every sprite (also allowed directly at the top level); a sprite's own keys win
+    "sprites": [ { "name": "hero", "asset": "POLYGON_BattleRoyale/Character_MercenaryMale_01", …sprite keys } ],
+    "tilesets": [ … ]                 optional, see ssg tileset apply --help
+  }
+  Ignored at the top level: $schema, comment, description, generatedBy, maps.
+
+Defaults: keys left out follow the project (view, look, size, format, gender: editable in the app); a sprite with
+no moves gets its kind's set (declared anim/template moves, even only clips with their own "with", are all it gets);
+equipment ("with") is baked into the body's sheet unless "layered".
+
+Sprite keys (also usable in defaults, except name and asset):
+  name             the sprite's name in the project (required, unique): what the next run matches
+  asset            the model: id, name or Pack/Name (required; also "model")
+  kind             character | vehicle | object | prop | weapon (default: from the model)
+  class            movesets: "rifle", ["rifle","pistol"] or "rifle,pistol" (unarmed, sword, knife, bow, staff, launcher, rifle, pistol, martial_arts; also "moveset")
+  anim             clip names, or with class the moves to keep ("idle", "crouch_*"); per clip: "Clip@0.8:2.6", "Clip@max=2", "Clip@reverse", "Clip@lockyaw", "Clip@hit=1.2", "Clip@0:3=kicks_a" or { 
+"clip", "trim": "0.8:2.6", "maxSeconds": 2, "reverse": true, "lockYaw": true, "events": [{ "t": 1.2, "name": "hit" }], "autoEvents": false, "label": "kicks_a" }; with class, installed clip names are 
+extra clips under their own names; a clip with its own held items: { "clip", "with": "Pack/Model", "as": "knife" } (FB-074)
+  template         procedural moves: "still", ["crawl", "drive_turn:steer=25"]; with its own held items: { "template": "shoulder_fire", "with": "Pack/Model", "as": "law" }
+  set              an animation set by id or name (not with class); "none" = only the declared anim/template moves (the default whenever any are declared)
+  with             held items as in --with: "Pack/Model", "@bone", "=layer", ":front", "~class"
+  states           objects: "auto", "auto,destroyed@destroy", "auto,intact:drive,destroyed@destroy" or { "intact": { "template": "drive" }, "destroyed": { "asset", "transition" } } (no anim/set/class;
+a template next to states is the intact state's loop)
+  view             view preset: side2, lowthreequarter, jrpg4, topdown8, high8, straightdown, iso8, iso4d, trueiso8, hexflat6, hexpointy6, vehicle16, rts32, rpgmaker, lpc (default: the project's)
+  dirs             directions: 1, 2, 4, 4d, 8, 16… (also "directions"; on an object in an iso view, 1 = one facing of that view), or the directions by name: "E", "N,S", ["N","S"] (E, NE, N… ENE…; 
+right, up_left…)
+  facings          objects: 1, 2 or 4 grid-aligned facings (0 = use dirs)
+  slice            objects on a diamond tile: "columns" (per-tile-column strips)
+  collision        objects: "full" (whole hull), "base" (ground slice: a trunk), "concave" (the outline of the slice: curved walls, fences) or "auto" (default: vehicles, aircraft, buildings full; 
+trees, poles base)
+  collisionHeight  objects: the ground slice's height in metres above the bottom (default min(0.5, 15% of the height); also "collision-height")
+  pitch            camera pitch in degrees (0 = side, 30 = 2:1 iso)
+  projection       ortho | persp
+  frame            square frame size in px (the minimum with ppm/tile; also "frameSize")
+  ppm              fixed pixels per metre (a sprite's own ppm wins over the file's tile; next to its own tile, the tile wins with a warning)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 11, $0.00):
+```
+cd /home/andrew/projects/monty && sed -n '1,140p' scripts/load-check.mjs
+```
+
+```
+cd /home/andrew/projects/monty && cat scripts/check-rooms.mjs && ss -ltnp 2>/dev/null | head -20
+```
+
+Tool:
+<returncode>
+0
+<output>
+// Smoke check: the game boots, a scripted few seconds play without page errors, and it saves screenshots.
+//   node scripts/load-check.mjs [url] [scene]
+// Scenes: title | room | flow | deaths | gameover | all   ("flow" drives several rooms: idol, bonus, level, death).
+// The scene is entered directly with ?scene=<name>. Software GL (SwiftShader): the shared GPU stays free.
+import { chromium } from '@playwright/test';
+import fs from 'node:fs';
+
+const url = process.argv[2] ?? process.env.GAME_URL ?? 'http://localhost:5197';
+const scene = process.argv[3] ?? 'room';
+const base = url.replace(/\/$/, '');
+const env = { ...process.env };
+delete env.DISPLAY;
+delete env.WAYLAND_DISPLAY;
+fs.mkdirSync('test-results', { recursive: true });
+
+const browser = await chromium.launch({ env, args: ['--headless=new', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--disable-dev-shm-usage'] });
+const errors = [];
+/** Software GL leaks over a long session, so each phase of the flow check gets a fresh page. */
+let page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+const wire = (p) => {
+  p.on('pageerror', (e) => errors.push(e.message));
+  p.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
+  
+};
+wire(page);
+async function freshPage() {
+  await page.close().catch(() => undefined);
+  page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+  wire(page);
+  return page;
+}
+
+let ok = true;
+const fail = (msg) => {
+  ok = false;
+  console.log(`FAIL: ${msg}`);
+};
+const inPage = (fn, arg) => page.evaluate(fn, arg);
+/** A screenshot is evidence, not a gate: software GL on a busy box sometimes fails to capture. */
+async function shot(name) {
+  try {
+    await page.screenshot({ path: `test-results/${name}.png` });
+  } catch (e) {
+    console.log(`(screenshot ${name} failed: ${e.message.split('\n')[0]})`);
+  }
+}
+/**
+ * Wait until the expression is truthy. The expression is re-created in the page, so it may only use `s` (the room
+ * scene) and the `arg` passed here: nothing from this file's scope.
+ */
+const until = (fn, arg, ms = 12000) =>
+  page
+    .waitForFunction(
+      ([src, a]) => new Function('s', 'a', `return (${src})(s, a)`)(window.game.scene.getScene('room'), a),
+      [fn.toString(), arg ?? null],
+      { timeout: ms, polling: 40 }
+    )
+    .then(() => true)
+    .catch(() => false);
+const room = (fn, arg) => inPage(fn, arg);
+const here = () => inPage(() => window.game.scene.getScene('room'));
+const joe = () =>
+  room(() => {
+    const s = window.game.scene.getScene('room');
+    const j = s.joe;
+    return {
+      x: Math.round(j.mover.x),
+      y: Math.round(j.mover.y),
+      state: j.state,
+      clip: j.view.anims.currentAnim?.key ?? null,
+      textured: j.view.texture.key === 'joe' && j.view.width > 0,
+      dead: j.dead,
+      onGround: j.mover.onGround,
+    };
+  });
+/** Put Joe somewhere, without waiting for him to walk there. */
+const put = (x, y) =>
+  room(
+    ([px, py]) => {
+      const j = window.game.scene.getScene('room').joe;
+      j.mover.x = px;
+      j.mover.y = py;
+      j.mover.vx = 0;
+      j.mover.vy = 0;
+    },
+    [x, y]
+  );
+/** The entrance hall's middle floor, where the fatal-fall check puts Joe: row 8, so he drops to the ground. */
+const LEDGE_Y = 10 * 32;
+
+const goto = async (roomId, level = 1) => {
+  await page.goto(`${base}/?scene=room&room=${roomId}&level=${level}`);
+  await page.waitForFunction(() => window.game?.scene?.isActive('room'), null, { timeout: 90000 });
+  await page.waitForTimeout(900);
+};
+
+async function checkTitle() {
+  await page.goto(`${base}/?scene=title`);
+  await page.waitForFunction(() => window.game?.scene?.isActive('title'), null, { timeout: 90000 });
+  await page.waitForTimeout(900);
+  const title = await room(() => ({ prompt: window.game.scene.getScene('title').prompt?.text }));
+  console.log('title:', JSON.stringify(title));
+  if (!title.prompt) fail('the title screen has no prompt');
+  await shot('title');
+  await page.keyboard.press('Enter');
+  const started = await page
+    .waitForFunction(() => window.game.scene.isActive('room'), null, { timeout: 20000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!started) fail('Enter did not start the game');
+  await page.waitForTimeout(800);
+  await shot('title-play');
+}
+
+async function checkRoom() {
+  await page.goto(`${base}/?scene=room`);
+  await page.waitForFunction(() => window.game?.scene?.isActive('room'), null, { timeout: 90000 });
+  await page.waitForTimeout(1200);
+  const start = await joe();
+  // The floor is the room's bottom border row, so the check follows the room size rather than a fixed number.
+  const floorY = ((await here()).grid.length - 1) * 32;
+  console.log('start:', JSON.stringify({ ...start, floorY }));
+  if (!start.textured) fail('Joe is a placeholder box (assets missing? run npm run assets)');
+  if (start.dead) fail('Joe died on arrival');
+  if (start.y !== floorY) fail(`Joe is not standing on the floor (y ${start.y}, expected ${floorY})`);
+  await shot('room');
+
+  // Walking, from the far end of the hall: the skull patrols the right half of this room and catches anything
+  // that lingers there.
+  await put(3 * 32 + 16, floorY);
+  await until((s) => s.joe.mover.onGround && !s.joe.dead, null, 6000);
+  const beforeWalk = await joe();
+  await page.keyboard.down('ArrowRight');
+  await until((s) => s.joe.state === 'walk', null, 8000);
+  await page.waitForTimeout(500);
+  const walked = await joe();
+  await page.keyboard.up('ArrowRight');
+  console.log('walk:', JSON.stringify(walked));
+  if (walked.x <= beforeWalk.x + 10) fail(`Joe did not walk (x ${beforeWalk.x} → ${walked.x})`);
+  if (!String(walked.clip).includes('walk_forward')) fail(`Joe plays ${walked.clip}, not the walk clip`);
+
+
+Tool:
+<returncode>
+0
+<output>
+// Checks the pyramid: every room is a full screen, the ladders reach the floor and have a platform to step off,
+// every item has something under it, and every door leads to a room that exists.
+//   node scripts/check-rooms.mjs
+// rooms.ts is bundled on the fly with esbuild (a dev dependency of vite), so the check sees the real data.
+import { build } from 'esbuild';
+import { pathToFileURL } from 'node:url';
+import path from 'node:path';
+import fs from 'node:fs';
+import os from 'node:os';
+
+const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const tmp = path.join(os.tmpdir(), `monty-rooms-${process.pid}.mjs`);
+await build({ entryPoints: [path.join(root, 'src/rooms.ts')], bundle: true, format: 'esm', outfile: tmp, logLevel: 'silent' });
+const { room, roomIds, COLS, ROWS } = await import(pathToFileURL(tmp).href);
+fs.rmSync(tmp, { force: true });
+
+const WALL = '#';
+const PLATFORM = '=';
+const LADDER = 'H';
+const ROPE = 'R';
+const ITEMS = 'ywjeotdV';
+const STANDABLE = new Set([WALL, PLATFORM, 'x']);
+const problems = [];
+const say = (room_, msg) => problems.push(`${room_}: ${msg}`);
+
+/** Runs of a character in a column, as [top, bottom] rows. */
+function columnRuns(rows, ch) {
+  const out = [];
+  let start = -1;
+  for (let row = 0; row <= ROWS; row++) {
+    const c = row < ROWS ? rows[row].split('')[0] : ' ';
+    void c;
+    const at = row < ROWS ? rows[row] : '';
+    const isCh = at.length > 0 && at.split('')[0] === ch;
+    if (isCh && start < 0) start = row;
+    if (!isCh && start >= 0) {
+      out.push([start, row - 1]);
+      start = -1;
+    }
+  }
+  return out;
+}
+
+for (const id of roomIds()) {
+  const def = room(id);
+  const at = (col, row) => (row < 0 || row >= ROWS || col < 0 || col >= COLS ? WALL : def.rows[row][col]);
+
+  if (def.rows.length !== ROWS) say(id, `has ${def.rows.length} rows, not ${ROWS}`);
+  def.rows.forEach((r, i) => {
+    if (r.length !== COLS) say(id, `row ${i} is ${r.length} wide, not ${COLS}`);
+  });
+
+  // Ladders: must reach the floor, and have a platform to step off at the top.
+  for (let col = 0; col < COLS; col++) {
+    let start = -1;
+    for (let row = 0; row <= ROWS; row++) {
+      const isLadder = row < ROWS && def.rows[row][col] === LADDER;
+      if (isLadder && start < 0) start = row;
+      if (!isLadder && start >= 0) {
+        const top = start;
+        const bottom = row - 1;
+        // Joe stands on the floor below the ladder to grab it.
+        if (!STANDABLE.has(at(col, bottom + 1))) {
+          say(id, `ladder at ${col},${top}-${bottom} has no floor to stand on below it`);
+        }
+        // And there has to be a floor to step onto along the way, in this column or the one beside: that is what
+        // stepping off a ladder means. A ladder with only the floor at its foot leads nowhere.
+        let landing = false;
+        for (let r = top; r <= bottom && !landing; r++) {
+          for (const c of [col - 1, col, col + 1]) {
+            if (STANDABLE.has(at(c, r))) landing = true;
+          }
+        }
+        if (!landing) say(id, `ladder at ${col},${top}-${bottom} has no floor to step off onto`);
+        start = -1;
+      }
+    }
+  }
+
+  // Ropes must hang from the ceiling.
+  for (let col = 0; col < COLS; col++) {
+    for (let row = 0; row < ROWS; row++) {
+      if (def.rows[row][col] !== ROPE) continue;
+      if (row === 0) say(id, `rope at ${col},${row} starts at the ceiling tile`);
+      if (row > 0 && def.rows[row - 1][col] !== ROPE && def.rows[row - 1][col] !== WALL) say(id, `rope at ${col},${row} hangs from nothing`);
+    }
+  }
+
+  // Every item has something under it, so it can be reached.
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const c = def.rows[row][col];
+      if (!ITEMS.includes(c) || c === 'V') continue;
+      // Items may float (they are grabbed out of the air), but there has to be something to jump from.
+      let supported = false;
+      for (let below = row + 1; below < ROWS; below++) {
+        if (STANDABLE.has(at(col, below))) supported = true;
+        if (at(col, below) === WALL || at(col, below) === '^') break;
+      }
+      if (!supported) say(id, `item "${c}" at ${col},${row} has nothing to stand on below it`);
+    }
+  }
+
+  // Doors.
+  for (const d of def.doors) {
+    if (!roomIds().includes(d.to)) say(id, `door leads to unknown room "${d.to}"`);
+    if (d.x !== 0 && d.x !== COLS - 1) say(id, `door at ${d.x} is not in a wall`);
+    const [sx, sy] = d.spawn;
+    const target = room(d.to);
+    if (sy >= ROWS || sx < 0 || sx >= COLS) say(id, `door spawn ${sx},${sy} is outside "${d.to}"`);
+    else if (STANDABLE.has(target.rows[sy][sx])) say(id, `door spawn ${sx},${sy} is inside a wall in "${d.to}"`);
+  }
+
+  // The idol must not be buried.
+  if (def.idol) {
+    const [col, row] = def.idol;
+    if (STANDABLE.has(at(col, row))) say(id, `the idol at ${col},${row} is inside the scenery`);
+  }
+}
+
+if (problems.length) {
+  console.log(`FAIL: ${problems.length} problem(s)`);
+  for (const p of problems) console.log(`  ${p}`);
+  process.exit(1);
+}
+console.log(`all ${roomIds().length} rooms check out`);State  Recv-Q Send-Q                          Local Address:Port  Peer Address:PortProcess                              
+LISTEN 0      4096                               127.0.0.54:53         0.0.0.0:*                                        
+LISTEN 0      5                                   127.0.0.1:5284       0.0.0.0:*    users:(("python3",pid=2437979,fd=3))
+LISTEN 0      511                                 127.0.0.1:5263       0.0.0.0:*    users:(("node",pid=2795984,fd=36))  
+LISTEN 0      5                                   127.0.0.1:8099       0.0.0.0:*    users:(("python3",pid=1550517,fd=3))
+LISTEN 0      4096                                127.0.0.1:631        0.0.0.0:*                                        
+LISTEN 0      4096                                127.0.0.1:47300      0.0.0.0:*                                        
+LISTEN 0      4096                                127.0.0.1:47290      0.0.0.0:*                                        
+LISTEN 0      4096                                127.0.0.1:47280      0.0.0.0:*                                        
+LISTEN 0      4096                                127.0.0.1:47270      0.0.0.0:*                                        
+LISTEN 0      4096                                127.0.0.1:8470       0.0.0.0:*                                        
+LISTEN 0      2048                                 10.0.0.1:8001       0.0.0.0:*    users:(("uvicorn",pid=7205,fd=41))  
+LISTEN 0      32                                10.77.135.1:53         0.0.0.0:*                                        
+LISTEN 0      4096                            127.0.0.53%lo:53         0.0.0.0:*                                        
+LISTEN 0      4096                 100.90.145.73%tailscale0:45083      0.0.0.0:*                                        
+LISTEN 0      4096                                  0.0.0.0:3100       0.0.0.0:*                                        
+LISTEN 0      4096                                  0.0.0.0:111        0.0.0.0:*                                        
+LISTEN 0      4096                                  0.0.0.0:22         0.0.0.0:*                                        
+LISTEN 0      4096                                  0.0.0.0:5001       0.0.0.0:*                                        
+LISTEN 0      512                                   0.0.0.0:4096       0.0.0.0:*    users:(("opencode",pid=2395,fd=17)) 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 12, $0.00):
+```
+ps aux | grep -iE "ssg|vite|node" | grep -v grep | head -20
+```
+
+```
+cd /home/andrew/projects/monty && timeout 60 node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --json server status 2>&1 | head -30; timeout 60 node 
+/home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs server --help 2>&1 | head -30
+```
+
+Tool:
+<returncode>
+0
+<output>
+root        3440  0.0  0.0 1041828 24608 ?       Ssl  Oct16   0:00 node /usr/local/bin/tsx ./backend/index.ts
+root        3951  0.0  0.1 43903248 108976 ?     Sl   Oct16   0:52 /usr/local/bin/node --require /usr/local/lib/node_modules/tsx/dist/preflight.cjs --import file:///usr/local/lib/node_modules/tsx/dist
+root        4897  1.5 17.7 18557136 11628744 ?   Sl   Oct16 123:08 qemu-system-x86_64 -nodefaults -machine type=q35,smm=off,graphics=off,vmport=off,dump-guest-core=off,hpet=off,accel=kvm -enable-kvm -
+andrew    199921  0.0  0.1 53415884 110588 pts/12 Sl+ 09:48   0:03 /usr/bin/node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs mcp
+andrew    200000  0.0  0.0 1238972 13468 pts/12  Sl+  09:48   0:02 /home/andrew/projects/synty-sprite-generator/node_modules/tsx/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.23.1 --ping
+root      304761  0.0  0.0   2716  2156 ?        Ss   10:32   0:00 fusermount3 -o rw,nosuid,nodev,fsname=portal,auto_unmount,subtype=portal -- /run/user/1000/doc
+andrew    389237  0.0  0.1 53396304 105348 pts/0 Sl+  Oct21   0:19 /usr/bin/node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs mcp
+andrew    389290  0.0  0.0 1237948 13384 pts/0   Sl+  Oct21   0:30 /home/andrew/projects/synty-sprite-generator/node_modules/tsx/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.23.1 --ping
+root      447917  0.0  0.0   2572  1476 ?        Ss   11:29   0:00 /usr/bin/tini -- docker-entrypoint.sh node --import ./server/node_modules/tsx/dist/loader.mjs server/dist/index.js
+andrew    447995 79.7  1.3 36027964 904992 ?     Sl   11:29   0:09 node --import ./server/node_modules/tsx/dist/loader.mjs server/dist/index.js
+andrew    817154  0.0  0.0 53396616 55952 pts/5  Sl+  Oct20   0:35 /usr/bin/node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs mcp
+andrew    817226  0.0  0.0 1237692 12144 pts/5   Sl+  Oct20   0:58 /home/andrew/projects/synty-sprite-generator/node_modules/tsx/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.23.1 --ping
+andrew   1287836  0.0  0.1 53351268 96904 ?      Sl   Oct18   0:03 /usr/bin/node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs mcp
+andrew   1287839  0.0  0.0 73896756 64680 ?      Sl   Oct18   2:44 node /tmp/bunx-1000-@brave/brave-search-mcp-server@latest/node_modules/.bin/brave-search-mcp-server --transport stdio
+andrew   1291355  0.0  0.1 53350304 96240 ?      Sl   Oct18   0:03 /usr/bin/node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs mcp
+andrew   1291357  0.0  0.0 73896824 65236 ?      Sl   Oct18   2:43 node /tmp/bunx-1000-@brave/brave-search-mcp-server@latest/node_modules/.bin/brave-search-mcp-server --transport stdio
+andrew   1508295  0.0  0.1 53429940 76176 pts/8  Sl+  Oct18   1:18 /usr/bin/node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs mcp
+andrew   1508302  0.0  0.0 73905012 32360 pts/8  Sl+  Oct18   2:41 node /tmp/bunx-1000-@brave/brave-search-mcp-server@latest/node_modules/.bin/brave-search-mcp-server --transport stdio
+andrew   1508364  0.0  0.0 1238716 12200 pts/8   Sl+  Oct18   1:59 /home/andrew/projects/synty-sprite-generator/node_modules/tsx/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.23.1 --ping
+andrew   1530586  0.0  0.0 53392432 55600 pts/9  Sl+  Oct18   0:03 /usr/bin/node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs mcp
+
+
+Tool:
+<returncode>
+0
+<output>
+{
+  "url": "http://127.0.0.1:5181",
+  "running": true,
+  "startedBySsg": false,
+  "health": {
+    "ok": true,
+    "name": "synty-sprite-generator",
+    "version": "0.5.0",
+    "pid": 3603923,
+    "startedAt": "2026-10-21T20:44:00.646Z",
+    "dataDir": "/home/andrew/projects/synty-sprite-generator/data",
+    "webUrl": "http://localhost:5180",
+    "servesWeb": true
+  }
+}
+Usage: ssg server [options] [command]
+
+manage the background server
+
+Options:
+  -h, --help      display help for command
+
+Global Options:
+  -V, --version   output the version number
+  --server <url>  server URL (started automatically if local and not running)
+                  (default: "http://127.0.0.1:5181")
+  --json          print machine-readable JSON (errors too: { error, code?,
+                  details? } on stdout, exit code 1)
+
+Commands:
+  start           start it (if not already running)
+  status
+  stop [options]
+  help [command]  display help for command
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 13, $0.00):
+```
+cd /home/andrew/projects/monty && ls public/assets/skeleton && python3 -c "
+import json
+a=json.load(open('public/assets/skeleton/Character_Skeleton_Slave_01.json'))
+print(json.dumps(a,indent=1)[:2000])
+"
+```
+
+Tool:
+<returncode>
+0
+<output>
+Character_Skeleton_Slave_01.json
+Character_Skeleton_Slave_01.meta.json
+Character_Skeleton_Slave_01_0.png
+Character_Skeleton_Slave_01_anims.json
+{
+ "textures": [
+  {
+   "image": "Character_Skeleton_Slave_01_0.png",
+   "format": "RGBA8888",
+   "size": {
+    "w": 211,
+    "h": 4089
+   },
+   "scale": 1,
+   "frames": [
+    {
+     "filename": "Idle_Standing_E_0",
+     "frame": {
+      "x": 34,
+      "y": 29,
+      "w": 16,
+      "h": 60
+     },
+     "rotated": false,
+     "trimmed": true,
+     "spriteSourceSize": {
+      "x": 55,
+      "y": 7,
+      "w": 16,
+      "h": 60
+     },
+     "sourceSize": {
+      "w": 126,
+      "h": 78
+     },
+     "pivot": {
+      "x": 0.5,
+      "y": 0.83333
+     }
+    },
+    {
+     "filename": "Idle_Standing_E_1",
+     "frame": {
+      "x": 54,
+      "y": 29,
+      "w": 16,
+      "h": 60
+     },
+     "rotated": false,
+     "trimmed": true,
+     "spriteSourceSize": {
+      "x": 55,
+      "y": 7,
+      "w": 16,
+      "h": 60
+     },
+     "sourceSize": {
+      "w": 126,
+      "h": 78
+     },
+     "pivot": {
+      "x": 0.5,
+      "y": 0.83333
+     }
+    },
+    {
+     "filename": "Idle_Standing_E_2",
+     "frame": {
+      "x": 1,
+      "y": 157,
+      "w": 16,
+      "h": 60
+     },
+     "rotated": false,
+     "trimmed": true,
+     "spriteSourceSize": {
+      "x": 55,
+      "y": 7,
+      "w": 16,
+      "h": 60
+     },
+     "sourceSize": {
+      "w": 126,
+      "h": 78
+     },
+     "pivot": {
+      "x": 0.5,
+      "y": 0.83333
+     }
+    },
+    {
+     "filename": "Idle_Standing_E_3",
+     "frame": {
+      "x": 1,
+      "y": 221,
+      "w": 16,
+      "h": 60
+     },
+     "rotated": false,
+     "trimmed": true,
+     "spriteSourceSize": {
+      "x": 55,
+      "y": 7,
+      "w": 16,
+      "h": 60
+     },
+     "sourceSize": {
+      "w": 126,
+      "h": 78
+     },
+     "pivot": {
+      "x": 0.5,
+      "y": 0.83333
+     }
+    },
+    {
+     "filename": "Idle_Standing_E_4",
+     "frame": {
+      "x": 1,
+      "y": 285,
+      "w": 16,
+      "h": 60
+     },
+     "rotated": false,
+     "trimmed": true,
+     "spriteSourceSize": {
+      "x": 55,
+      "y": 7,
+      "w": 16,
+      "h": 60
+     },
+     "s
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 14, $0.00):
+```
+cd /home/andrew/projects/monty && grep -rn "pivot" node_modules/phaser/src/textures/Frame.js | head -20; echo ---; grep -rn "pivot" node_modules/phaser/src/textures/parsers/ParseAtlasJSON.js | head 
+-20; echo ---; grep -rn "pivot" node_modules/phaser/src/gameobjects/sprite/Sprite.js | head
+```
+
+Tool:
+<returncode>
+0
+<output>
+184:         * The horizontal pivot point of this Frame.
+186:         * @name Phaser.Textures.Frame#pivotX
+191:        this.pivotX = 0;
+194:         * The vertical pivot point of this Frame.
+196:         * @name Phaser.Textures.Frame#pivotY
+201:        this.pivotY = 0;
+204:         * Does this Frame have a custom pivot point?
+---
+grep: node_modules/phaser/src/textures/parsers/ParseAtlasJSON.js: No such file or directory
+---
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 15, $0.00):
+```
+cd /home/andrew/projects/monty && ls node_modules/phaser/src/textures/parsers/ && grep -rn "pivot\|trimmed\|spriteSourceSize" node_modules/phaser/src/textures/parsers/ParseAtlasJSON.js | head -30
+```
+
+Tool:
+<returncode>
+0
+<output>
+AtlasXML.js
+Canvas.js
+Image.js
+JSONArray.js
+JSONHash.js
+KTXParser.js
+PVRParser.js
+SpriteSheet.js
+SpriteSheetFromAtlas.js
+UnityYAML.js
+VerifyCompressedTexture.js
+index.js
+grep: node_modules/phaser/src/textures/parsers/ParseAtlasJSON.js: No such file or directory
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 16, $0.00):
+```
+cd /home/andrew/projects/monty && grep -rn "pivot" node_modules/phaser/src/textures/parsers/JSONArray.js node_modules/phaser/src/textures/parsers/JSONHash.js | head -20; echo "=== frame 
+setTrim/pivot:"; grep -n "setTrim\|pivot\|updateTrim\|setSize" node_modules/phaser/src/textures/Frame.js | head -40
+```
+
+Tool:
+<returncode>
+0
+<output>
+node_modules/phaser/src/textures/parsers/JSONArray.js:76:        var pivot = src.anchor || src.pivot;
+node_modules/phaser/src/textures/parsers/JSONArray.js:78:        if (pivot)
+node_modules/phaser/src/textures/parsers/JSONArray.js:81:            newFrame.pivotX = pivot.x;
+node_modules/phaser/src/textures/parsers/JSONArray.js:82:            newFrame.pivotY = pivot.y;
+node_modules/phaser/src/textures/parsers/JSONHash.js:80:        var pivot = src.anchor || src.pivot;
+node_modules/phaser/src/textures/parsers/JSONHash.js:82:        if (pivot)
+node_modules/phaser/src/textures/parsers/JSONHash.js:85:            newFrame.pivotX = pivot.x;
+node_modules/phaser/src/textures/parsers/JSONHash.js:86:            newFrame.pivotY = pivot.y;
+=== frame setTrim/pivot:
+184:         * The horizontal pivot point of this Frame.
+186:         * @name Phaser.Textures.Frame#pivotX
+191:        this.pivotX = 0;
+194:         * The vertical pivot point of this Frame.
+196:         * @name Phaser.Textures.Frame#pivotY
+201:        this.pivotY = 0;
+204:         * Does this Frame have a custom pivot point?
+336:        this.setSize(width, height, x, y);
+345:     * @method Phaser.Textures.Frame#setSize
+355:    setSize: function (width, height, x, y)
+405:     * @method Phaser.Textures.Frame#setTrim
+417:    setTrim: function (actualWidth, actualHeight, destX, destY, destWidth, destHeight)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 17, $0.00):
+```
+cd /home/andrew/projects/monty && sed -n '30,120p' node_modules/phaser/src/textures/parsers/JSONArray.js
+```
+
+Tool:
+<returncode>
+0
+<output>
+        return;
+    }
+
+    //  Add in a __BASE entry (for the entire atlas)
+    var source = texture.source[sourceIndex];
+
+    texture.add('__BASE', sourceIndex, 0, 0, source.width, source.height);
+
+    //  By this stage frames is a fully parsed array
+    var frames = (Array.isArray(json.textures)) ? json.textures[sourceIndex].frames : json.frames;
+
+    var newFrame;
+
+    for (var i = 0; i < frames.length; i++)
+    {
+        var src = frames[i];
+
+        //  The frame values are the exact coordinates to cut the frame out of the atlas from
+        newFrame = texture.add(src.filename, sourceIndex, src.frame.x, src.frame.y, src.frame.w, src.frame.h);
+
+        if (!newFrame)
+        {
+            console.warn('Invalid atlas json, frame already exists: ' + src.filename);
+
+            continue;
+        }
+
+        //  These are the original (non-trimmed) sprite values
+        if (src.trimmed)
+        {
+            newFrame.setTrim(
+                src.sourceSize.w,
+                src.sourceSize.h,
+                src.spriteSourceSize.x,
+                src.spriteSourceSize.y,
+                src.spriteSourceSize.w,
+                src.spriteSourceSize.h
+            );
+        }
+
+        if (src.rotated)
+        {
+            newFrame.rotated = true;
+            newFrame.updateUVsInverted();
+        }
+
+        var pivot = src.anchor || src.pivot;
+
+        if (pivot)
+        {
+            newFrame.customPivot = true;
+            newFrame.pivotX = pivot.x;
+            newFrame.pivotY = pivot.y;
+        }
+
+        if (src.scale9Borders)
+        {
+            newFrame.setScale9(
+                src.scale9Borders.x,
+                src.scale9Borders.y,
+                src.scale9Borders.w,
+                src.scale9Borders.h
+            );
+        }
+
+        //  Copy over any extra data
+        newFrame.customData = Clone(src);
+    }
+
+    //  Copy over any additional data that was in the JSON to Texture.customData
+    for (var dataKey in json)
+    {
+        if (dataKey === 'frames')
+        {
+            continue;
+        }
+
+        if (Array.isArray(json[dataKey]))
+        {
+            texture.customData[dataKey] = json[dataKey].slice(0);
+        }
+        else
+        {
+            texture.customData[dataKey] = json[dataKey];
+        }
+    }
+
+    return texture;
+};
+
+module.exports = JSONArray;
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 18, $0.00):
+```
+cd /home/andrew/projects/monty && python3 -c "
+import json
+m=json.load(open('public/assets/skeleton/Character_Skeleton_Slave_01.meta.json'))
+print(json.dumps(m,indent=1)[:3000])
+"
+```
+
+Tool:
+<returncode>
+0
+<output>
+{
+ "schema": "ssg-meta/1",
+ "generator": {
+  "name": "Synty Sprite Generator",
+  "version": "0.3",
+  "generatedAt": "2026-10-18T10:21:57.594Z"
+ },
+ "asset": {
+  "name": "Character_Skeleton_Slave_01",
+  "pack": "POLYGON_Dungeon_Pack",
+  "kind": "character",
+  "category": null
+ },
+ "blend": "normal",
+ "frameWidth": 126,
+ "frameHeight": 78,
+ "fps": 12,
+ "pivot": {
+  "x": 63,
+  "y": 65
+ },
+ "pixelsPerMetre": 32,
+ "scale": {
+  "mode": "ppm",
+  "pixelsPerMetre": 32
+ },
+ "note": "Socket positions and boxes are pixels from the untrimmed frame top-left; for flipX animations use x = frameWidth - x (boxes: x = frameWidth - x - w).",
+ "clips": [
+  {
+   "name": "Idle_Standing",
+   "loop": true,
+   "frameCount": 21,
+   "events": []
+  },
+  {
+   "name": "Walk_F",
+   "loop": true,
+   "frameCount": 12,
+   "events": [
+    {
+     "frame": 3,
+     "name": "footstep_r"
+    },
+    {
+     "frame": 9,
+     "name": "footstep_l"
+    }
+   ],
+   "speedMps": 1.34
+  },
+  {
+   "name": "Run_F",
+   "loop": true,
+   "frameCount": 8,
+   "events": [
+    {
+     "frame": 3,
+     "name": "footstep_r"
+    }
+   ],
+   "speedMps": 2.4
+  },
+  {
+   "name": "hit_react",
+   "loop": false,
+   "frameCount": 7,
+   "events": [
+    {
+     "frame": 1,
+     "name": "hurt"
+    }
+   ]
+  },
+  {
+   "name": "death_fall",
+   "loop": false,
+   "frameCount": 17,
+   "events": [
+    {
+     "frame": 1,
+     "name": "hurt"
+    },
+    {
+     "frame": 11,
+     "name": "dead"
+    }
+   ]
+  }
+ ],
+ "animations": [
+  {
+   "name": "skeleton/Idle_Standing_E",
+   "clip": "Idle_Standing",
+   "direction": "E",
+   "flipX": false,
+   "sockets": [
+    {
+     "hand_r": {
+      "x": 63.9,
+      "y": 38.5
+     },
+     "hand_l": {
+      "x": 65.9,
+      "y": 38.8
+     },
+     "head": {
+      "x": 65.5,
+      "y": 15
+     },
+     "foot_l": {
+      "x": 63,
+      "y": 62.8
+     },
+     "foot_r": {
+      "x": 58.4,
+      "y": 62.7
+     }
+    },
+    {
+     "hand_r": {
+      "x": 64,
+      "y": 38.5
+     },
+     "hand_l": {
+      "x": 65.9,
+      "y": 38.7
+     },
+     "head": {
+      "x": 65.5,
+      "y": 15
+     },
+     "foot_l": {
+      "x": 63,
+      "y": 62.8
+     },
+     "foot_r": {
+      "x": 58.4,
+      "y": 62.7
+     }
+    },
+    {
+     "hand_r": {
+      "x": 64.1,
+      "y": 38.5
+     },
+     "hand_l": {
+      "x": 65.9,
+      "y": 38.7
+     },
+     "head": {
+      "x": 65.5,
+      "y": 15
+     },
+     "foot_l": {
+      "x": 63,
+      "y": 62.8
+     },
+     "foot_r": {
+      "x": 58.5,
+      "y": 62.6
+     }
+    },
+    {
+     "hand_r": {
+      "x": 64.1,
+      "y": 38.5
+     },
+     "hand_l": {
+      "x": 65.9,
+      "y": 38.7
+     },
+     "head": {
+      "x": 65.5,
+      "y": 15
+     },
+     "foot_l": {
+      "x": 63,
+      "y": 62.8
+     },
+     "foot_r": {
+      "x": 58.5,
+      "y": 62.6
+     }
+    },
+    {
+     "hand_r": {
+      "x": 64.2,
+      "y": 38.5
+     },
+     "hand_l": {
+      "x": 65.9,
+      "y": 38.7
+     },
+     "head": {
+      "x": 65.5,
+      "y": 15
+     },
+     "foot_l": {
+      "x": 63,
+      "y": 62.8
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 19, $0.00):
+```
+cd /home/andrew/projects/monty && grep -rn "customPivot" node_modules/phaser/src/ | head -20
+```
+
+Tool:
+<returncode>
+0
+<output>
+node_modules/phaser/src/renderer/canvas/CanvasRenderer.js:702:        var customPivot = frame.customPivot;
+node_modules/phaser/src/renderer/canvas/CanvasRenderer.js:760:            if (!customPivot)
+node_modules/phaser/src/renderer/canvas/CanvasRenderer.js:771:            if (!customPivot)
+node_modules/phaser/src/renderer/webgl/pipelines/MultiPipeline.js:319:        var customPivot = frame.customPivot;
+node_modules/phaser/src/renderer/webgl/pipelines/MultiPipeline.js:356:            if (!customPivot)
+node_modules/phaser/src/renderer/webgl/pipelines/MultiPipeline.js:366:            if (!customPivot)
+node_modules/phaser/src/animations/AnimationState.js:1600:            if (animationFrame.frame.customPivot)
+node_modules/phaser/src/textures/parsers/JSONArray.js:80:            newFrame.customPivot = true;
+node_modules/phaser/src/textures/parsers/JSONHash.js:84:            newFrame.customPivot = true;
+node_modules/phaser/src/textures/Frame.js:206:         * @name Phaser.Textures.Frame#customPivot
+node_modules/phaser/src/textures/Frame.js:211:        this.customPivot = false;
+node_modules/phaser/src/gameobjects/components/Texture.js:128:            if (this.frame.customPivot)
+node_modules/phaser/src/gameobjects/components/Origin.js:146:        if (!this.frame || !this.frame.customPivot)
+node_modules/phaser/src/gameobjects/components/TextureCrop.js:183:            if (this.frame.customPivot)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 20, $0.00):
+```
+cd /home/andrew/projects/monty && sed -n '100,200p' node_modules/phaser/src/gameobjects/components/Origin.js
+```
+
+Tool:
+<returncode>
+0
+<output>
+        {
+            return this._displayOriginY;
+        },
+
+        set: function (value)
+        {
+            this._displayOriginY = value;
+            this.originY = value / this.height;
+        }
+
+    },
+
+    /**
+     * Sets the origin of this Game Object.
+     *
+     * The values are given in the range 0 to 1.
+     *
+     * @method Phaser.GameObjects.Components.Origin#setOrigin
+     * @since 3.0.0
+     *
+     * @param {number} [x=0.5] - The horizontal origin value.
+     * @param {number} [y=x] - The vertical origin value. If not defined it will be set to the value of `x`.
+     *
+     * @return {this} This Game Object instance.
+     */
+    setOrigin: function (x, y)
+    {
+        if (x === undefined) { x = 0.5; }
+        if (y === undefined) { y = x; }
+
+        this.originX = x;
+        this.originY = y;
+
+        return this.updateDisplayOrigin();
+    },
+
+    /**
+     * Sets the origin of this Game Object based on the Pivot values in its Frame.
+     *
+     * @method Phaser.GameObjects.Components.Origin#setOriginFromFrame
+     * @since 3.0.0
+     *
+     * @return {this} This Game Object instance.
+     */
+    setOriginFromFrame: function ()
+    {
+        if (!this.frame || !this.frame.customPivot)
+        {
+            return this.setOrigin();
+        }
+        else
+        {
+            this.originX = this.frame.pivotX;
+            this.originY = this.frame.pivotY;
+        }
+
+        return this.updateDisplayOrigin();
+    },
+
+    /**
+     * Sets the display origin of this Game Object.
+     * The difference between this and setting the origin is that you can use pixel values for setting the display origin.
+     *
+     * @method Phaser.GameObjects.Components.Origin#setDisplayOrigin
+     * @since 3.0.0
+     *
+     * @param {number} [x=0] - The horizontal display origin value.
+     * @param {number} [y=x] - The vertical display origin value. If not defined it will be set to the value of `x`.
+     *
+     * @return {this} This Game Object instance.
+     */
+    setDisplayOrigin: function (x, y)
+    {
+        if (x === undefined) { x = 0; }
+        if (y === undefined) { y = x; }
+
+        this.displayOriginX = x;
+        this.displayOriginY = y;
+
+        return this;
+    },
+
+    /**
+     * Updates the Display Origin cached values internally stored on this Game Object.
+     * You don't usually call this directly, but it is exposed for edge-cases where you may.
+     *
+     * @method Phaser.GameObjects.Components.Origin#updateDisplayOrigin
+     * @since 3.0.0
+     *
+     * @return {this} This Game Object instance.
+     */
+    updateDisplayOrigin: function ()
+    {
+        this._displayOriginX = this.originX * this.width;
+        this._displayOriginY = this.originY * this.height;
+
+        return this;
+    }
+
+};
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 21, $0.00):
+```
+cd /home/andrew/projects/monty && sed -n '100,150p' node_modules/phaser/src/gameobjects/components/Texture.js; echo "=== AnimationState 1590-1615"; sed -n '1590,1615p' 
+node_modules/phaser/src/animations/AnimationState.js
+```
+
+Tool:
+<returncode>
+0
+<output>
+
+        if (frame instanceof Frame)
+        {
+            this.texture = this.scene.sys.textures.get(frame.texture.key);
+
+            this.frame = frame;
+        }
+        else
+        {
+            this.frame = this.texture.get(frame);
+        }
+
+        if (!this.frame.cutWidth || !this.frame.cutHeight)
+        {
+            this.renderFlags &= ~_FLAG;
+        }
+        else
+        {
+            this.renderFlags |= _FLAG;
+        }
+
+        if (this._sizeComponent && updateSize)
+        {
+            this.setSizeToFrame();
+        }
+
+        if (this._originComponent && updateOrigin)
+        {
+            if (this.frame.customPivot)
+            {
+                this.setOrigin(this.frame.pivotX, this.frame.pivotY);
+            }
+            else
+            {
+                this.updateDisplayOrigin();
+            }
+        }
+
+        return this;
+    }
+
+};
+
+module.exports = Texture;
+=== AnimationState 1590-1615
+
+        if (animationFrame.setAlpha)
+        {
+            gameObject.alpha = animationFrame.alpha;
+        }
+
+        gameObject.setSizeToFrame();
+
+        if (gameObject._originComponent)
+        {
+            if (animationFrame.frame.customPivot)
+            {
+                gameObject.setOrigin(animationFrame.frame.pivotX, animationFrame.frame.pivotY);
+            }
+            else
+            {
+                gameObject.updateDisplayOrigin();
+            }
+        }
+
+        if (this.isPlaying && this.hasStarted)
+        {
+            this.emitEvents(Events.ANIMATION_UPDATE);
+
+            if (this._pendingStop === 3 && this._pendingStopValue === animationFrame)
+            {
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 22, $0.00):
+```
+cd /home/andrew/projects/monty && timeout 120 node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --json projects list 2>&1 | head -60
+```
+
+```
+cd /home/andrew/projects/monty && timeout 120 node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --json sprites --project "Spike2 msa-minimax-T2" 2>&1 | head -60
+```
+
+Tool:
+<returncode>
+0
+<output>
+[
+  {
+    "id": 1,
+    "name": "My game",
+    "description": null,
+    "defaults": {
+      "viewCardId": "topdown8",
+      "view": {
+        "projection": "ortho",
+        "pitch": 45,
+        "fov": 30,
+        "directions": "8",
+        "basis": "world",
+        "mirror": false,
+        "order": "ccw-e",
+        "naming": "compass",
+        "scale": {
+          "mode": "ppm",
+          "ppm": 64
+        },
+        "frameWidth": 128,
+        "frameHeight": 128,
+        "fps": 12,
+        "padding": 0.06,
+        "quality": {
+          "supersample": 2,
+          "textureFilter": "nearest",
+          "shadow": "high",
+          "style": "clean",
+          "palette": "model",
+          "shadeSteps": 4,
+          "colorLevels": 6,
+          "outline": true,
+          "outlineColor": "#1a1418"
+        }
+      },
+      "lookId": "clean",
+      "sizeId": "medium",
+      "profileId": "generic",
+      "layers": [],
+      "uniformFrame": true,
+      "layered": true,
+      "gender": "auto"
+    },
+    "tags": [],
+    "kind": "sprites",
+    "modelSettings": {
+      "engine": "three",
+      "texSize": null,
+      "texFormat": null,
+      "compress": null,
+      "units": "m"
+    },
+    "createdAt": "2026-10-16 15:12:39",
+    "updatedAt": "2026-10-16 15:12:39",
+    "spriteCount": 9,
+    "modelCount": 0
+  },
+  {
+    "id": 2,
+
+
+Tool:
+<returncode>
+0
+<output>
+{
+  "error": "No project named \"Spike2 msa-minimax-T2\". Did you mean: My game, Off Road, Grim Hollow, Sidefighter, Airborne Ranger, pw-walk-mvc32gl8, w16-maps-scratch, Montezuma's Revenge?"
+}
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 23, $0.00):
+```
+cd /home/andrew/projects/monty && timeout 120 node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --json projects list 2>&1 | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+for p in d:
+    print(p['id'], repr(p['name']), 'sprites:', p.get('spriteCount'), 'view:', p['defaults'].get('viewCardId'), 'look:', p['defaults'].get('lookId'), 'size:', p['defaults'].get('sizeId'), 'profile:', 
+p['defaults'].get('profileId'), 'ppm:', (p['defaults'].get('view') or {}).get('scale'), 'fps:', (p['defaults'].get('view') or {}).get('fps'))
+"
+```
+
+Tool:
+<returncode>
+0
+<output>
+1 'My game' sprites: 9 view: topdown8 look: clean size: medium profile: generic ppm: {'mode': 'ppm', 'ppm': 64} fps: 12
+2 'pw-walk-mvc32gl8' sprites: 1 view: topdown8 look: clean size: medium profile: generic ppm: {'mode': 'ppm', 'ppm': 64} fps: 12
+4 'Airborne Ranger' sprites: 76 view: iso8 look: clean size: custom profile: phaser3 ppm: {'mode': 'tile', 'tilePx': 64, 'shape': 'diamond', 'metresPerTile': 1} fps: 10
+5 'Sidefighter' sprites: 38 view: side2 look: clean size: medium profile: phaser3 ppm: {'mode': 'ppm', 'ppm': 64} fps: 12
+9 'Grim Hollow' sprites: 16 view: jrpg4 look: pixel size: small profile: generic ppm: {'mode': 'ppm', 'ppm': 32} fps: 12
+10 "Montezuma's Revenge" sprites: 17 view: side2 look: pixel size: small profile: phaser3 ppm: {'mode': 'ppm', 'ppm': 32} fps: 12
+11 'w16-maps-scratch' sprites: 0 view: topdown8 look: clean size: medium profile: generic ppm: {'mode': 'ppm', 'ppm': 64} fps: 12
+13 'Off Road' sprites: 0 view: topdown8 look: clean size: medium profile: generic ppm: {'mode': 'ppm', 'ppm': 64} fps: 12
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 24, $0.00):
+```
+cd /home/andrew/projects/monty && python3 -c "
+import json
+m=json.load(open('public/assets/manifest.json'))
+print({k:v for k,v in m.items() if k not in ('sprites','tilesets')})
+print(list(m['sprites'].keys()))
+print(json.dumps(m['tilesets'],indent=1))
+"
+```
+
+```
+cd /home/andrew/projects/monty && git log --stat -3 | head -60; git show --stat HEAD | head -40
+```
+
+Tool:
+<returncode>
+0
+<output>
+{'project': "Montezuma's Revenge", 'generatedBy': 'Synty Sprite Generator (ssg CLI)', 'ppm': 32, 'builtAt': '2026-10-19T09:04:21.448Z', 'view': 'side2', 'look': 'pixel', 'size': 'small', 'format': 
+'phaser3', 'fps': 12}
+['joe', 'skeleton', 'skull', 'key_gold', 'key_silver', 'key_red', 'jewel', 'gold', 'torch', 'sword', 'flame', 'ladder', 'door', 'web', 'vase', 'skull_pile']
+{
+ "tomb": {
+  "name": "tomb",
+  "image": "assets/tileset/tomb.png",
+  "tsj": "assets/tileset/tomb.tsj",
+  "tile": "32x32",
+  "width": 32,
+  "height": 32,
+  "columns": 5,
+  "terrains": {
+   "void": 0,
+   "brick": 1,
+   "stone": 2,
+   "floor": 3,
+   "ember": 4
+  }
+ }
+}
+
+
+Tool:
+<returncode>
+0
+<output>
+commit 3f928e8d22c15a0089c9e5948b72cde247ab91fe
+Author: Andrew Liebenberg <andrew.liebenberg@gmail.com>
+Date:   Mon Oct 19 18:18:54 2026 +0700
+
+    Rebuild the rooms as the 1984 tomb: brick storeys, not open caverns
+    
+    The layouts were the wrong shape. Comparing against the original's screenshots, a
+    room is mostly brick with a corridor cut out of it, not open space with floating
+    platforms, and each one is simple: three storeys, a ladder in a hole in each floor,
+    one or two things worth picking up.
+    
+    - rooms are 20x16 now: three storeys with corridors four tiles high, which is what
+      Joe's 46 px height and 82 px jump need. With 12-row rooms his head hit the brick
+      floor above and he could not jump at all (found by probing the physics in the browser)
+    - a ladder is cut through every floor it crosses and step off puts Joe in the column
+      beside it, since stepping off over the hole only drops him back down
+    - JUMP_SPEED 680 -> 600 to fit a four-tile corridor
+    - bricks brightened to the tomb's tan; doorways are drawn as coloured openings in the
+      wall, so the key a door wants is readable from across the room
+    - check-rooms now holds the rooms to the layout rules (a ladder has a floor to stand
+      on below it and a floor to step onto along it, items have something under them,
+      every door leads somewhere), and the checks follow the room size instead of
+      hard-coded heights
+
+ README.md               |   2 +-
+ docs/DESIGN.md          |  20 +++++++---
+ scripts/check-rooms.mjs |  20 ++++++----
+ scripts/load-check.mjs  |  66 +++++++++++++++++++++-----------
+ scripts/make-rooms.mjs  | 348 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------------------------
+ src/hud.ts              |   2 +-
+ src/joe.ts              |  12 +++---
+ src/main.ts             |   9 +++--
+ src/rooms.json          | 248 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------------------
+ src/rooms.ts            | 293 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------
+ src/scenes/Room.ts      |  25 +++++++-----
+ ssg.assets.json         |   4 +-
+ 12 files changed, 670 insertions(+), 379 deletions(-)
+
+commit a231b3d6f6ad34df54cc2c00de8917414b18bcb0
+Author: Andrew Liebenberg <andrew.liebenberg@gmail.com>
+Date:   Mon Oct 19 13:55:48 2026 +0700
+
+    Montezuma's Revenge: a Phaser 3 remake built through Synty Sprite Generator
+    
+    Eleven rooms of the Aztec tomb, joined by three colours of locked door: ladders and
+    one-way ropes, one-way ledges, fire pits, crumbling floors, dark rooms and the torch,
+    five pockets, bouncing skulls and skeleton guards, the idol, the bonus room, and every
+    level deeper and darker than the last.
+    
+    Every sprite and the ground tileset come from the generator, declared in
+    ssg.assets.json and rebuilt by npm run assets. docs/DESIGN.md has the design and the
+    deviations; FEEDBACK.md has the eight findings (FB-001 ... FB-008).
+
+ .gitignore                            |    5 +
+ .mcp.json                             |   10 ++
+ CLAUDE.md                             |   64 ++++++++++
+ FEEDBACK.md                           |   99 +++++++++++++++
+ README.md                             |   62 ++++++++++
+ TODO.md                               |   30 +++++
+ docs/DESIGN.md                        |   83 +++++++++++++
+commit 3f928e8d22c15a0089c9e5948b72cde247ab91fe
+Author: Andrew Liebenberg <andrew.liebenberg@gmail.com>
+Date:   Mon Oct 19 18:18:54 2026 +0700
+
+    Rebuild the rooms as the 1984 tomb: brick storeys, not open caverns
+    
+    The layouts were the wrong shape. Comparing against the original's screenshots, a
+    room is mostly brick with a corridor cut out of it, not open space with floating
+    platforms, and each one is simple: three storeys, a ladder in a hole in each floor,
+    one or two things worth picking up.
+    
+    - rooms are 20x16 now: three storeys with corridors four tiles high, which is what
+      Joe's 46 px height and 82 px jump need. With 12-row rooms his head hit the brick
+      floor above and he could not jump at all (found by probing the physics in the browser)
+    - a ladder is cut through every floor it crosses and step off puts Joe in the column
+      beside it, since stepping off over the hole only drops him back down
+    - JUMP_SPEED 680 -> 600 to fit a four-tile corridor
+    - bricks brightened to the tomb's tan; doorways are drawn as coloured openings in the
+      wall, so the key a door wants is readable from across the room
+    - check-rooms now holds the rooms to the layout rules (a ladder has a floor to stand
+      on below it and a floor to step onto along it, items have something under them,
+      every door leads somewhere), and the checks follow the room size instead of
+      hard-coded heights
+
+ README.md               |   2 +-
+ docs/DESIGN.md          |  20 +++++++---
+ scripts/check-rooms.mjs |  20 ++++++----
+ scripts/load-check.mjs  |  66 +++++++++++++++++++++-----------
+ scripts/make-rooms.mjs  | 348 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------------------------
+ src/hud.ts              |   2 +-
+ src/joe.ts              |  12 +++---
+ src/main.ts             |   9 +++--
+ src/rooms.json          | 248 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------------------
+ src/rooms.ts            | 293 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------
+ src/scenes/Room.ts      |  25 +++++++-----
+ ssg.assets.json         |   4 +-
+ 12 files changed, 670 insertions(+), 379 deletions(-)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 25, $0.00):
+```
+cd /home/andrew/projects/monty && git show HEAD -- ssg.assets.json | head -40; echo "=== git status:"; git status --short
+```
+
+Tool:
+<returncode>
+0
+<output>
+commit 3f928e8d22c15a0089c9e5948b72cde247ab91fe
+Author: Andrew Liebenberg <andrew.liebenberg@gmail.com>
+Date:   Mon Oct 19 18:18:54 2026 +0700
+
+    Rebuild the rooms as the 1984 tomb: brick storeys, not open caverns
+    
+    The layouts were the wrong shape. Comparing against the original's screenshots, a
+    room is mostly brick with a corridor cut out of it, not open space with floating
+    platforms, and each one is simple: three storeys, a ladder in a hole in each floor,
+    one or two things worth picking up.
+    
+    - rooms are 20x16 now: three storeys with corridors four tiles high, which is what
+      Joe's 46 px height and 82 px jump need. With 12-row rooms his head hit the brick
+      floor above and he could not jump at all (found by probing the physics in the browser)
+    - a ladder is cut through every floor it crosses and step off puts Joe in the column
+      beside it, since stepping off over the hole only drops him back down
+    - JUMP_SPEED 680 -> 600 to fit a four-tile corridor
+    - bricks brightened to the tomb's tan; doorways are drawn as coloured openings in the
+      wall, so the key a door wants is readable from across the room
+    - check-rooms now holds the rooms to the layout rules (a ladder has a floor to stand
+      on below it and a floor to step onto along it, items have something under them,
+      every door leads somewhere), and the checks follow the room size instead of
+      hard-coded heights
+
+diff --git a/ssg.assets.json b/ssg.assets.json
+index 443943c..e97d47e 100644
+--- a/ssg.assets.json
++++ b/ssg.assets.json
+@@ -14,13 +14,13 @@
+         {
+           "name": "brick",
+           "kind": "custom",
+-          "color": "#3a2b2b",
++          "color": "#7a5a3c",
+           "noise": 0.3
+         },
+         {
+           "name": "stone",
+           "kind": "rock",
+-          "color": "#8a7250",
+=== git status:
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 26, $0.00):
+```
+cd /home/andrew/projects/monty && git show HEAD:ssg.assets.json | head -3; echo "=== first commit:"; git show a231b3d:ssg.assets.json | head -3; echo "=== gitignore:"; cat .gitignore; echo "=== docs 
+mention:"; grep -rn "Spike2\|Montezuma's Revenge" --include="*.json" --include="*.md" --include="*.ts" . --exclude-dir=node_modules --exclude-dir=.git | head -20
+```
+
+Tool:
+<returncode>
+0
+<output>
+{
+  "project": "Montezuma's Revenge",
+  "tilesets": [
+=== first commit:
+{
+  "project": "Montezuma's Revenge",
+  "tilesets": [
+=== gitignore:
+node_modules/
+dist/
+test-results/
+# Generated by `npm run assets` (scripts/build-assets.mjs from ssg.assets.json).
+public/assets/=== docs mention:
+./FEEDBACK.md:3:Findings from building Montezuma's Revenge (Parker Brothers, 1984) through the generator. Each one is marked in
+./test-results/sprite-apply.json:4:    "name": "Montezuma's Revenge",
+./TODO.md:3:A remake of Montezuma's Revenge (Parker Brothers, 1984) in Phaser 3, with every sprite, tile and ground surface
+./ssg.assets.json:2:  "project": "Montezuma's Revenge",
+./CLAUDE.md:1:# Monty: Montezuma's Revenge (1984) rebuilt through Synty Sprite Generator
+./CLAUDE.md:3:A Phaser 3 remake of Parker Brothers' *Montezuma's Revenge* (Robert Jaeger, 1984): side-view rooms in an Aztec
+./public/assets/manifest.json:595:  "project": "Montezuma's Revenge",
+./docs/DESIGN.md:1:# Montezuma's Revenge — the design behind this remake
+./docs/DESIGN.md:3:The original is *Montezuma's Revenge*, written by Robert Jaeger and published by Parker Brothers in 1984. Panama Joe
+./README.md:1:# Monty — Montezuma's Revenge, rebuilt through Synty Sprite Generator
+./README.md:3:A Phaser 3 remake of Parker Brothers' *Montezuma's Revenge* (Robert Jaeger, 1984). Panama Joe climbs down into an
+./dist/assets/manifest.json:595:  "project": "Montezuma's Revenge",
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 27, $0.00):
+```
+pwd; echo "---"; ls -la; echo "--- real repo:"; ls -la /home/andrew/projects/monty | head -20; echo "---"; head -3 /home/andrew/projects/monty/ssg.assets.json; head -3 ssg.assets.json
+```
+
+Tool:
+<returncode>
+0
+<output>
+/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/msa/minimax-T2
+---
+total 96
+drwxrwxr-x 7 andrew andrew  4096 Oct 22 11:27 .
+drwxrwxr-x 5 andrew andrew  4096 Oct 22 11:27 ..
+drwxrwxr-x 8 andrew andrew  4096 Oct 22 11:27 .git
+-rw-rw-r-- 1 andrew andrew    52 Oct 22 11:27 .gitignore
+-rw-rw-r-- 1 andrew andrew  1145 Oct 22 11:27 AGENTS.md
+-rw-rw-r-- 1 andrew andrew  3144 Oct 22 11:27 README.md
+drwxrwxr-x 2 andrew andrew  4096 Oct 22 11:27 docs
+-rw-rw-r-- 1 andrew andrew   647 Oct 22 11:27 index.html
+lrwxrwxrwx 1 andrew andrew    40 Oct 22 11:27 node_modules -> /home/andrew/projects/monty/node_modules
+-rw-rw-r-- 1 andrew andrew 32881 Oct 22 11:27 package-lock.json
+-rw-rw-r-- 1 andrew andrew   476 Oct 22 11:27 package.json
+drwxrwxr-x 4 andrew andrew  4096 Oct 22 11:27 public
+drwxrwxr-x 2 andrew andrew  4096 Oct 22 11:27 scripts
+drwxrwxr-x 3 andrew andrew  4096 Oct 22 11:27 src
+-rw-rw-r-- 1 andrew andrew  3471 Oct 22 11:27 ssg.assets.json
+-rw-rw-r-- 1 andrew andrew   277 Oct 22 11:27 tsconfig.json
+-rw-rw-r-- 1 andrew andrew   231 Oct 22 11:27 vite.config.ts
+--- real repo:
+total 128
+drwxrwxr-x 10 andrew andrew  4096 Oct 19 18:19 .
+drwxrwxr-x 31 andrew andrew  4096 Oct 22 11:18 ..
+drwxrwxr-x  8 andrew andrew  4096 Oct 22 11:33 .git
+-rw-rw-r--  1 andrew andrew   129 Oct 18 17:20 .gitignore
+-rw-rw-r--  1 andrew andrew   270 Oct 18 17:20 .mcp.json
+-rw-rw-r--  1 andrew andrew  4604 Oct 18 21:07 CLAUDE.md
+-rw-rw-r--  1 andrew andrew  6405 Oct 18 19:58 FEEDBACK.md
+-rw-rw-r--  1 andrew andrew  3144 Oct 19 18:18 README.md
+-rw-rw-r--  1 andrew andrew  2245 Oct 18 19:58 TODO.md
+drwxrwxr-x  4 andrew andrew  4096 Oct 19 18:19 dist
+drwxrwxr-x  2 andrew andrew  4096 Oct 18 19:58 docs
+-rw-rw-r--  1 andrew andrew   647 Oct 18 17:20 index.html
+drwxrwxr-x 21 andrew andrew  4096 Oct 18 17:27 node_modules
+-rw-rw-r--  1 andrew andrew 32881 Oct 18 17:20 package-lock.json
+-rw-rw-r--  1 andrew andrew   476 Oct 18 17:20 package.json
+drwxrwxr-x  4 andrew andrew  4096 Oct 18 17:21 public
+drwxrwxr-x  2 andrew andrew  4096 Oct 19 13:54 scripts
+drwxrwxr-x  3 andrew andrew  4096 Oct 18 17:41 src
+-rw-rw-r--  1 andrew andrew  3468 Oct 19 16:04 ssg.assets.json
+---
+{
+  "project": "Montezuma's Revenge",
+  "tilesets": [
+{
+  "project": "Spike2 msa-minimax-T2",
+  "tilesets": [
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 28, $0.00):
+```
+cd /tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/msa/minimax-T2 && diff <(sed 's/"project":.*/"project": "X",/' ssg.assets.json) 
+<(sed 's/"project":.*/"project": "X",/' /home/andrew/projects/monty/ssg.assets.json); echo "diff rc=$?"; echo "=== head of scratch file:"; head -8 ssg.assets.json
+```
+
+Tool:
+<returncode>
+2
+<output>
+/bin/sh: 1: Syntax error: "(" unexpected
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 29, $0.00):
+```
+cd /tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/msa/minimax-T2 && bash -c 'diff <(sed "s/\"project\":.*/\"project\": \"X\",/" 
+ssg.assets.json) <(sed "s/\"project\":.*/\"project\": \"X\",/" /home/andrew/projects/monty/ssg.assets.json); echo "diff rc=$?"'
+```
+
+Tool:
+<returncode>
+0
+<output>
+162c162
+< }
+---
+> }
+\ No newline at end of file
+diff rc=1
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 30, $0.00):
+```
+cd /home/andrew/projects/synty-sprite-generator && ls apps/cli/src 2>/dev/null | head -30; find . -path ./node_modules -prune -o -name "*.ts" -print 2>/dev/null | xargs grep -ln "sprite 
+apply\|applySprite\|applyFile" 2>/dev/null | head -20
+```
+
+Tool:
+<returncode>
+0
+<output>
+commands
+main.ts
+mcp
+modelCommands.ts
+output.ts
+routeArg.ts
+tilesetCommands.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/packages/client/src/apply.test.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/packages/client/src/apply.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/packages/client/src/tilesetApply.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/packages/shared/src/map/tiled.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/packages/shared/src/sprite/state.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/packages/shared/src/sprite/spec.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/packages/shared/src/tileset/declare.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/apps/server/test/sprites.test.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/apps/server/src/sprites.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/apps/cli/src/tilesetCommands.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/apps/cli/src/main.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/apps/cli/src/mcp/tools.ts
+./.claude/worktrees/agent-ab2c016be4e50cfdc/apps/cli/src/mcp/tilesetTools.ts
+./.claude/worktrees/agent-a78de89c434eaa8dc/packages/client/src/apply.test.ts
+./.claude/worktrees/agent-a78de89c434eaa8dc/packages/client/src/apply.ts
+./.claude/worktrees/agent-a78de89c434eaa8dc/packages/client/src/tilesetApply.ts
+./.claude/worktrees/agent-a78de89c434eaa8dc/packages/shared/src/map/tiled.ts
+./.claude/worktrees/agent-a78de89c434eaa8dc/packages/shared/src/sprite/state.ts
+./.claude/worktrees/agent-a78de89c434eaa8dc/packages/shared/src/sprite/spec.ts
+./.claude/worktrees/agent-a78de89c434eaa8dc/packages/shared/src/tileset/declare.ts
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 31, $0.00):
+```
+cd /home/andrew/projects/synty-sprite-generator && grep -rn "no-create-project\|noCreateProject\|createProject" packages/client/src/apply.ts | head -30
+```
+
+Tool:
+<returncode>
+0
+<output>
+979:  return { project: await api.createProject({ name: String(ref), defaults: create }), created: true };
+988:  noCreateProject?: boolean;
+1052:  const newDefaults = opts.noCreateProject ? false : projectDefaultsFrom(opts.defaults ?? {});
+1053:  if (!existingProject && opts.noCreateProject) await projectFor(api, ref, false); // throws the listing
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 32, $0.00):
+```
+cd /home/andrew/projects/synty-sprite-generator && sed -n '940,1080p' packages/client/src/apply.ts
+```
+
+Tool:
+<returncode>
+0
+<output>
+    if (it.window) windows[clips[i]] = it.window;
+  });
+  return {
+    view: viewLabel(eff.viewCardId ?? viewCardFor(v), v), dirs: dirsText(v), facings: v.facings ? v.facings : null,
+    ...(v.collision || v.collisionHeight !== undefined ? { collision: `${v.collision ?? 'auto'}${v.collisionHeight !== undefined ? ` @${v.collisionHeight} m` : ''}` } : {}), mirror: !!v.mirror, pitch:
+v.pitch, projection: v.projection, fps: v.fps,
+    scale: sc.mode, ppm: sc.mode === 'ppm' ? sc.ppm : null, tile: sc.mode === 'tile' ? `${sc.tilePx}x${sc.shape === 'diamond' ? sc.tilePx / 2 : sc.tilePx} (${sc.metresPerTile} m/tile)` : null,
+    frame: `${v.frameWidth}x${v.frameHeight}${sc.mode === 'fit' ? '' : ' (min)'}`,
+    look: eff.lookId, supersample: q.supersample ?? 1, pixelArt: q.style === 'pixel', outline: !!q.outline, shadow: q.shadow ?? 'off',
+    format: eff.profileId, atlas: !!eff.atlas, animPrefix: eff.animPrefix ?? null, layers: [...eff.layers], uniform: !!eff.uniformFrame, layered: layeringOf(eff),
+    maxSeconds: eff.maxSeconds ?? null, gender: eff.gender, pivot: eff.pivot ?? 'anchor', ...(eff.turret ? { turret: turretLabel(eff.turret)! } : {}), ...(eff.portrait ? { portrait: 
+portraitLabel(eff.portrait)! } : {}), ...(eff.split ? { split: splitLabel(eff.split)! } : {}), ...(eff.modelScale && eff.modelScale !== 1 ? { modelScale: eff.modelScale } : {}), light: 
+lightLabel(eff.light),
+    ...(eff.loadout?.length ? { with: eff.loadout.map((it) => withText(it, itemName)) } : {}), clips,
+    ...(Object.keys(windows).length ? { clipWindows: windows } : {}),
+  };
+}
+
+// ---- the project ----
+
+/** A new project's settings from the file's defaults: its view, tile lock and format, so the app shows the game's setup. */
+export function projectDefaultsFrom(d: Omit<SpriteDecl, 'name' | 'asset'>): ProjectDefaults {
+  let s = initialState();
+  try {
+    if (d.view) s = applyViewCard(s, viewIdFor(String(d.view)));
+    if (d.look) s = applyLook(s, lookIdFor(d.look));
+    if (d.size) s = applySize(s, sizeIdFor(d.size));
+  } catch (e) {
+    throw new SpecError((e as Error).message);
+  }
+  let defaults = projectDefaultsOf({ ...s, ...(d.format ? { profileId: String(d.format) } : {}) });
+  if (d.tile) defaults = withTileScale(defaults, String(d.tile), d.metresPerTile !== undefined ? Number(d.metresPerTile) : undefined);
+  if (d.fps) defaults = { ...defaults, view: { ...defaults.view, fps: Number(d.fps) } };
+  return defaults;
+}
+
+async function projectFor(api: Api, ref: string | number, create: false | ProjectDefaults): Promise<{ project: Project; created: boolean }> {
+  const all = await api.projects();
+  const isId = typeof ref === 'number' || /^\d+$/.test(ref);
+  const hit = isId ? all.find((p) => p.id === Number(ref)) : all.find((p) => p.name.toLowerCase() === String(ref).toLowerCase());
+  if (hit) return { project: hit, created: false };
+  if (isId || create === false) throw new SpriteError(`No project ${isId ? `with id ${ref}` : `named "${ref}"`}. Projects: ${all.map((p) => p.name).join(', ') || 'none yet'}.`);
+  return { project: await api.createProject({ name: String(ref), defaults: create }), created: true };
+}
+
+// ---- apply ----
+
+export interface ApplyOptions {
+  /** Project name or id (wins over the file's "project"). A name that does not exist yet is created. */
+  project?: string | number;
+  /** Don't create a missing project. */
+  noCreateProject?: boolean;
+  /** Show what would change, change nothing. */
+  dryRun?: boolean;
+  /** Render the outdated sprites and wait for them. */
+  render?: boolean;
+  /**
+   * Re-render even when nothing changed (FB-042): true = every entry, names = those sprites. Implies `render`.
+   * Sprites made by an older renderer are only re-rendered this way (they show `stale`).
+   */
+  force?: boolean | string[];
+  /** Write each sprite's latest render to <download>/<name>/ (data json + pngs; previews/ only with `previews`). */
+  download?: string;
+  previews?: boolean;
+  /** 'export': every setting is the sprite's own (ssg export --project). */
+  mode?: 'project' | 'export';
+  timeoutMs?: number;
+  onProgress?: (b: Batch) => void;
+  onLine?: (line: string) => void;
+}
+
+export interface ApplyItem {
+  name: string;
+  id: number | null;
+  asset: string;
+  kind: string;
+  action: 'created' | 'updated' | 'unchanged' | 'would create' | 'would update';
+  /** What a render would do now (vs. the last render). */
+  plan: string;
+  reasons: string[];
+  outdated: boolean;
+  /** Rendered by an older renderer (RENDERER_VERSION): re-render with `force` to pick up generator fixes. */
+  stale?: boolean;
+  /** Settings the sprite holds itself (the rest come from the project). */
+  own: InheritGroup[];
+  /** Every setting the render uses (own and the project's), e.g. view, dirs, mirror, fps, ppm, atlas, maxSeconds. */
+  settings: ResolvedSettings;
+  /**
+   * The render this run started. `frameCache` (FB-121): frames its batch took from the frame cache of the frames the
+   * render holds, e.g. { reused: 1440, total: 1520 } (absent when nothing was looked up).
+   */
+  render?: { version: number; batch: number; status: string; finished: boolean; error?: string | null; frameCache?: FrameCacheStats };
+  /** Things the game should know, e.g. a render that would come out as layers the entry did not ask for. */
+  warnings?: string[];
+  download?: { dir: string; files: string[]; version: number; stale?: boolean };
+  error?: string;
+}
+
+export interface ApplyResult {
+  /** id null with wouldCreate: a dry run for a project that does not exist yet (a real run creates it). */
+  project: { id: number | null; name: string; created: boolean; wouldCreate?: boolean };
+  sprites: ApplyItem[];
+  /** True when every asked-for render finished well and every download was written. */
+  ok: boolean;
+}
+
+/**
+ * Create or update sprites by name in a project, then (optionally) render the outdated ones and download them all.
+ * Every entry is checked before anything is written; a re-run with the same file changes nothing.
+ */
+export async function applySprites(api: Api, entries: SpriteEntry[], opts: ApplyOptions & { defaults?: Omit<SpriteDecl, 'name' | 'asset'> } = {}): Promise<ApplyResult> {
+  const ref = opts.project;
+  if (ref === undefined || ref === '') throw new SpriteError('Name the project ("project" in the file, or --project).');
+  const say = opts.onLine ?? (() => {});
+  const existingProject = (await api.projects()).find((p) => (typeof ref === 'number' || /^\d+$/.test(String(ref)) ? p.id === Number(ref) : p.name.toLowerCase() === String(ref).toLowerCase()));
+  const newDefaults = opts.noCreateProject ? false : projectDefaultsFrom(opts.defaults ?? {});
+  if (!existingProject && opts.noCreateProject) await projectFor(api, ref, false); // throws the listing
+  // Plan everything first against the project's settings (a new project's, when it will be created).
+  const planProject: Pick<Project, 'defaults'> = existingProject ?? { defaults: newDefaults || defaultProjectDefaults() };
+  const current = existingProject ? await api.projectSprites(existingProject.id) : [];
+  const sets = [...BUILTIN_SETS, ...(await api.sets())];
+  const planned: { entry: SpriteEntry; name: string; spec: SpriteSpec; asset: { id: number; name: string; kind: string; pack: string }; kind: Kind; own: InheritGroup[]; existing: Sprite | null; notes:
+string[] }[] = [];
+  const errors: string[] = [];
+  for (const entry of entries) {
+    try {
+      // What the lookups had to guess (a renamed clip's old name, a model in several packs): on the entry's item
+      // too, besides the client's warnings (stderr, the --json result's `warnings`).
+      const notes: string[] = [];
+      const warn = (m: string) => {
+        if (notes.includes(m)) return;
+        notes.push(m);
+        api.warn(m);
+      };
+      const probe = await spriteSpecFor(api, planProject, entry, { mode: opts.mode, warn });
+      const name = entry.name ?? spriteNameFor(probe.asset.name);
+      const existing = current.find((s) => s.name.toLowerCase() === name.toLowerCase()) ?? null;
+      const r = existing?.spec.outfits?.length ? await spriteSpecFor(api, planProject, entry, { mode: opts.mode, keep: existing.spec, warn }) : probe;
+      planned.push({ entry, name, ...r, existing, notes });
+    } catch (e) {
+      errors.push(`${entry.name ?? String(entry.asset)}: ${(e as Error).message}`);
+    }
+  }
+  if (errors.length) throw new SpriteError(`Nothing was changed:\n${errors.map((x) => `  ${x}`).join('\n')}`);
+  const dup = planned.map((p) => p.name.toLowerCase()).find((n, i, all) => all.indexOf(n) !== i);
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 33, $0.00):
+```
+cd /home/andrew/projects/synty-sprite-generator && grep -rn "export function initialState" packages/shared/src/sprite/state.ts | head; sed -n "$(grep -n 'export function initialState' 
+packages/shared/src/sprite/state.ts | head -1 | cut -d: -f1),+60p" packages/shared/src/sprite/state.ts
+```
+
+Tool:
+<returncode>
+0
+<output>
+196:export function initialState(): WizardState {
+export function initialState(): WizardState {
+  const base: WizardState = {
+    step: 0, presetId: null, kind: 'character', assetIds: [], setId: DEFAULT_SET.character, classes: [], extraItems: [], gender: 'auto',
+    viewCardId: 'topdown8', view: structuredClone(preset('topdown8').config), lookId: 'clean', sizeId: 'medium',
+    profileId: 'generic', layers: [], uniformFrame: true, loadout: [], fx: null, layered: true, previewItem: 0,
+  };
+  return withLookAndSize(base);
+}
+
+// ---- view / look / size: apply and detect ----
+
+/** Apply the current look and size cards to the view (after a view card change, the size may not apply). */
+function withLookAndSize(s: WizardState): WizardState {
+  let view = s.view;
+  const look = LOOKS.find((l) => l.id === s.lookId);
+  if (look) view = { ...view, quality: { ...look.quality } };
+  const size = SIZES.find((z) => z.id === s.sizeId);
+  if (size && !FIXED_SIZE_VIEWS.has(s.viewCardId)) view = { ...view, scale: scaleFor(s.kind, size), frameWidth: size.frame, frameHeight: size.frame };
+  return { ...s, view, uniformFrame: view.scale.mode !== 'fit' && s.uniformFrame };
+}
+
+export function applyViewCard(s: WizardState, id: string): WizardState {
+  const p = VIEW_PRESETS.find((x) => x.id === id);
+  if (!p) return s;
+  const next = { ...s, viewCardId: id, view: { ...structuredClone(p.config), fps: s.view.fps } };
+  // RPG Maker / LPC fix their own frame size.
+  return withLookAndSize(FIXED_SIZE_VIEWS.has(id) ? { ...next, sizeId: 'custom' } : { ...next, sizeId: s.sizeId === 'custom' ? 'medium' : s.sizeId });
+}
+
+export const applyLook = (s: WizardState, id: LookId): WizardState => withLookAndSize({ ...s, lookId: id });
+export const applySize = (s: WizardState, id: SizeId): WizardState => withLookAndSize({ ...s, sizeId: id });
+
+/** Advanced edits: take the view as given and work out which cards it still matches. */
+export function setView(s: WizardState, view: ViewConfig): WizardState {
+  return { ...s, view, viewCardId: viewCardFor(view), lookId: lookFor(view), sizeId: sizeFor(view, s.kind) };
+}
+
+export const DIR_KEYS = ['pitch', 'directions', 'basis', 'mirror', 'order', 'naming', 'projection'] as const;
+export function viewCardFor(view: ViewConfig): string {
+  // Chosen directions (FB-098: "dirs": "E") are no card's.
+  if (view.angles?.length) return 'custom';
+  const hit = VIEW_PRESETS.find((p) => DIR_KEYS.every((k) => p.config[k] === view[k]) && (!FIXED_SIZE_VIEWS.has(p.id) || (p.config.frameWidth === view.frameWidth && p.config.frameHeight === 
+view.frameHeight)));
+  return hit?.id ?? 'custom';
+}
+
+export function lookFor(view: ViewConfig): LookId | 'custom' {
+  const q = view.quality;
+  const hit = LOOKS.find((l) => q && JSON.stringify(sortKeys(l.quality)) === JSON.stringify(sortKeys(q)));
+  return hit?.id ?? 'custom';
+}
+
+export function sizeFor(view: ViewConfig, kind: WizKind): SizeId | 'custom' {
+  const hit = SIZES.find((z) => {
+    if (view.frameWidth !== z.frame || view.frameHeight !== z.frame) return false;
+    const sc = scaleFor(kind, z);
+    return sc.mode === view.scale.mode && (sc.mode !== 'ppm' || (view.scale.mode === 'ppm' && view.scale.ppm === sc.ppm));
+  });
+  return hit?.id ?? 'custom';
+}
+
+export function sortKeys<T extends object>(o: T): T {
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 34, $0.00):
+```
+cd /tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/msa/minimax-T2 && python3 -c "
+import json
+spec=json.load(open('ssg.assets.json'))
+json.dump(spec, open('/tmp/payload.json','w'))
+print('ok')
+" && timeout 300 node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --json sprite apply /tmp/payload.json --dry-run 2>&1 | head -80
+```
+
+Tool:
+<returncode>
+0
+<output>
+ok
+joe: would create · render: First render
+skeleton: would create · render: First render
+skull: would create · render: First render
+key_gold: would create · render: First render
+key_silver: would create · render: First render
+key_red: would create · render: First render
+jewel: would create · render: First render
+gold: would create · render: First render
+torch: would create · render: First render
+sword: would create · render: First render
+flame: would create · render: First render
+ladder: would create · render: First render
+door: would create · render: First render
+web: would create · render: First render
+vase: would create · render: First render
+skull_pile: would create · render: First render
+tileset tomb: would create · void, brick, stone, floor, ember · 5 tiles (would create 5)
+  new tileset: 5 terrains, 0 pairs; 5 pure tiles, 0 pair tiles, 0 mix tiles
+{
+  "project": {
+    "id": null,
+    "name": "Spike2 msa-minimax-T2",
+    "created": false,
+    "wouldCreate": true
+  },
+  "sprites": [
+    {
+      "name": "joe",
+      "id": null,
+      "asset": "POLYGON_War/Character_GentleMan_01",
+      "kind": "character",
+      "action": "would create",
+      "plan": "First render",
+      "reasons": [
+        "not rendered yet"
+      ],
+      "outdated": true,
+      "own": [],
+      "settings": {
+        "view": "topdown8",
+        "dirs": "8",
+        "facings": null,
+        "mirror": false,
+        "pitch": 45,
+        "projection": "ortho",
+        "fps": 12,
+        "scale": "ppm",
+        "ppm": 64,
+        "tile": null,
+        "frame": "128x128 (min)",
+        "look": "clean",
+        "supersample": 2,
+        "pixelArt": false,
+        "outline": true,
+        "shadow": "high",
+        "format": "generic",
+        "atlas": false,
+        "animPrefix": null,
+        "layers": [],
+        "uniform": true,
+        "layered": "baked",
+        "maxSeconds": null,
+        "gender": "auto",
+        "pivot": "anchor",
+        "light": "day",
+        "with": [
+          "POLYGON_Palm_City/SM_Chr_Attach_Hat_03"
+        ],
+        "clips": [
+          "martial_arts_idle",
+          "martial_arts_walk_forward",
+          "martial_arts_walk_back",
+          "martial_arts_jump",
+          "martial_arts_crouch_idle",
+          "martial_arts_hit_head",
+          "martial_arts_get_up",
+          "martial_arts_ko"
+        ]
+      }
+    },
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 35, $0.00):
+```
+ls /home/andrew/projects/synty-sprite-generator/data 2>/dev/null | head -20; echo "---"; ls /home/andrew/projects/synty-sprite-generator/data/projects 2>/dev/null | head -20
+```
+
+Tool:
+<returncode>
+0
+<output>
+backups
+bakes
+fixtures
+frame-cache
+glb
+godot-test
+library.db
+library.db-shm
+library.db-wal
+library.sqlite
+logs
+mcp-token
+meta
+mixamo-incoming
+models
+outputs
+packs
+portraits
+rigs
+thumbs
+---
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 36, $0.00):
+```
+cd /home/andrew/projects/synty-sprite-generator/data && (which sqlite3 && sqlite3 library.sqlite ".tables" 2>/dev/null | head) || echo "no sqlite3"
+```
+
+```
+cd /home/andrew/projects/synty-sprite-generator/data && ls -la library.db library.sqlite; python3 -c "
+import sqlite3
+for db in ['library.db','library.sqlite']:
+    try:
+        c=sqlite3.connect('file:'+db+'?mode=ro',uri=True)
+        rows=c.execute(\"select name from sqlite_master where type='table'\").fetchall()
+        print(db, [r[0] for r in rows][:40])
+    except Exception as e:
+        print(db,'ERR',e)
+"
+```
+
+Tool:
+<returncode>
+0
+<output>
+no sqlite3
+
+
+Tool:
+<returncode>
+0
+<output>
+-rw-r--r-- 1 andrew andrew 101531648 Oct 22 02:59 library.db
+-rw-r--r-- 1 andrew andrew         0 Oct 19 13:33 library.sqlite
+library.db ['packs', 'assets', 'animations', 'animation_overrides', 'profiles', 'part_overrides', 'docs', 'batch_items', 'scale_overrides', 'clip_edits', 'grips', 'ai_jobs', 'assets_fts', 
+'assets_fts_data', 'assets_fts_idx', 'assets_fts_content', 'assets_fts_docsize', 'assets_fts_config', 'app_settings', 'asset_labels', 'label_suggestions', 'placements', 'map_revisions', 'map_redos', 
+'projects', 'sqlite_sequence', 'sprites', 'sprite_exports', 'batches', 'tilesets', 'maps', 'map_stamps', 'asset_size_packs', 'project_models']
+library.sqlite []
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 37, $0.00):
+```
+cd /home/andrew/projects/synty-sprite-generator/data && python3 -c "
+import sqlite3, json
+c=sqlite3.connect('file:library.db?mode=ro',uri=True)
+cols=[r[1] for r in c.execute('pragma table_info(projects)')]
+print(cols)
+for row in c.execute('select * from projects'):
+    d=dict(zip(cols,row))
+    print(d.get('id'), repr(d.get('name')), d.get('spriteCount'), (d.get('defaults') or '')[:200])
+"
+```
+
+Tool:
+<returncode>
+0
+<output>
+['id', 'name', 'description', 'defaults', 'tags', 'created_at', 'updated_at', 'ai', 'kind', 'model_settings']
+1 'My game' None 
+{"viewCardId":"topdown8","view":{"projection":"ortho","pitch":45,"fov":30,"directions":"8","basis":"world","mirror":false,"order":"ccw-e","naming":"compass","scale":{"mode":"ppm","ppm":64},"frameWidth
+2 'pw-walk-mvc32gl8' None 
+{"viewCardId":"topdown8","view":{"projection":"ortho","pitch":45,"fov":30,"directions":"8","basis":"world","mirror":false,"order":"ccw-e","naming":"compass","scale":{"mode":"ppm","ppm":64},"frameWidth
+4 'Airborne Ranger' None 
+{"viewCardId":"iso8","view":{"projection":"ortho","pitch":30,"fov":30,"directions":"8","basis":"world","mirror":false,"order":"ccw-e","naming":"compass","scale":{"mode":"tile","tilePx":64,"shape":"dia
+5 'Sidefighter' None 
+{"viewCardId":"side2","view":{"projection":"ortho","pitch":0,"fov":30,"directions":"2","basis":"world","mirror":false,"order":"ccw-e","naming":"compass","scale":{"mode":"ppm","ppm":64},"frameWidth":12
+9 'Grim Hollow' None 
+{"viewCardId":"jrpg4","view":{"projection":"ortho","pitch":45,"fov":30,"directions":"4","basis":"world","mirror":false,"order":"cw-s","naming":"compass","scale":{"mode":"ppm","ppm":32},"frameWidth":64
+10 "Montezuma's Revenge" None 
+{"viewCardId":"side2","view":{"projection":"ortho","pitch":0,"fov":30,"directions":"2","basis":"world","mirror":false,"order":"ccw-e","naming":"compass","scale":{"mode":"ppm","ppm":32},"frameWidth":64
+11 'w16-maps-scratch' None 
+{"viewCardId":"topdown8","view":{"projection":"ortho","pitch":45,"fov":30,"directions":"8","basis":"world","mirror":false,"order":"ccw-e","naming":"compass","scale":{"mode":"ppm","ppm":64},"frameWidth
+13 'Off Road' None 
+{"viewCardId":"topdown8","view":{"projection":"ortho","pitch":45,"fov":30,"directions":"8","basis":"world","mirror":false,"order":"ccw-e","naming":"compass","scale":{"mode":"ppm","ppm":64},"frameWidth
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 38, $0.00):
+```
+cd /home/andrew/projects/synty-sprite-generator && grep -n "defaults" apps/cli/src/main.ts | head -30
+```
+
+Tool:
+<returncode>
+0
+<output>
+397:    .option('--anim-prefix <prefix>', 'prefix for animation names/keys, tokens {base} {asset}; phaser3 defaults to "{base}/" (Character_X/idle_E), \'\' for bare clip_dir keys')
+469:    defaults: { view: input.view ?? 'iso8', format: input.format, tile: ov.tile, metresPerTile: ov.metresPerTile },
+761:  .description('an object sprite (ssg sprite create --asset with object defaults: real scale, one grid-aligned facing in iso)')
+830:    const defaults = base && o.tile ? withTileScale(base, o.tile, o.metresPerTile) : base;
+832:    const p = await (await api()).createProject({ name, description: o.description, ...(defaults ? { defaults } : {}), ...(kind === '3d' ? { kind, modelSettings } : {}) });
+850:      return { id: s.id, name: s.name, kind: spriteKindOf(s), project: proj?.name ?? String(s.projectId), version: s.current?.n ?? null, latest: s.latest ? `${s.latest.status} v${s.latest.n}` : 
+'', summary: describeSprite(s, proj ?? { defaults: s.spec }, sets) };
+1014:      project: o.project ?? f.project, defaults: f.defaults, noCreateProject: !o.createProject, dryRun: o.dryRun, render: o.render, download: o.download, previews: o.previews,
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 39, $0.00):
+```
+cd /home/andrew/projects/synty-sprite-generator && sed -n '960,1030p' apps/cli/src/main.ts
+```
+
+Tool:
+<returncode>
+0
+<output>
+      !r.export
+        ? upToDate(s.name, r.plan)
+        : [
+            `${s.name} v${r.export.n}: ${r.plan.label}${r.plan.reasons.length ? ` (${r.plan.reasons.join('; ')})` : ''} — batch ${r.batch!.id} ${r.batch!.status}`,
+            ...r.batch!.items.map((i) => `  ${itemLine(i)}`),
+            r.finished ? `download: ssg sprite download ${s.id} -o <dir>` : `still running — later: ssg sprite download ${s.id} -o <dir>`,
+          ].join('\n'));
+    if (r.batch?.status === 'error') process.exitCode = 1;
+  });
+sprite.command('duplicate <ref>').description('copy a sprite (spec, model, tags; no renders) into the same or another project').option('--name <name>').option('--project <ref>', 'project to put the 
+copy in').action(async (ref: string, o: { name?: string; project?: string }) => {
+  const a = await api();
+  const s = await findSprite(a, ref);
+  const p = o.project ? await findProject(a, o.project) : null;
+  const copy = await a.duplicateSprite(s.id, { name: o.name, projectId: p?.id });
+  print(copy, out(), () => `sprite ${copy.id} “${copy.name}” in project ${copy.projectId}`);
+});
+sprite.command('download <ref>').description('unzip the current render into <dir>/<sprite name>/').requiredOption('-o, --out <dir>').action(async (ref: string, o: { out: string }) => {
+  const a = await api();
+  const s = await findSprite(a, ref);
+  if (!s.current) throw new Error(`${s.name} has no finished render yet${s.latest ? ` (v${s.latest.n} is ${s.latest.status})` : ''} — run: ssg sprite render ${s.id} --wait`);
+  const r = await downloadSprite(a, s, o.out);
+  print({ sprite: s.id, version: s.current.n, ...r }, out(), () => `wrote ${r.files.length} files to ${r.dir}`);
+});
+sprite
+  .command('apply <file>')
+  .description('create or update sprites by name from a JSON file (- = stdin): a game\'s declared assets; re-runs change nothing that did not change')
+  .option('--project <ref>', 'project name or id (wins over the file\'s "project"; a new name makes the project from the file\'s settings)')
+  .option('--no-create-project', 'fail when the project does not exist')
+  .option('--render', 'render the outdated sprites and wait for them')
+  .option('--force [names...]', 're-render even when nothing changed: every sprite, or the named ones (implies --render)')
+  .option('--download <dir>', 'write each sprite\'s latest render to <dir>/<name>/ (data json + pngs)')
+  .option('--previews', 'with --download: keep the preview GIFs (previews/)')
+  .option('--dry-run', 'show what would be created or updated, change nothing')
+  .option('--minutes <n>', 'with --render: stop waiting after N minutes (the renders keep running)', int, 60)
+  .addHelpText('after', `\n${applyFileHelp()}`)
+  .action(async (file: string, o: { project?: string; createProject: boolean; render?: boolean; force?: boolean | string[]; download?: string; previews?: boolean; dryRun?: boolean; minutes: number }) 
+=> {
+    let raw: string;
+    try {
+      raw = file === '-' ? fs.readFileSync(0, 'utf8') : fs.readFileSync(file, 'utf8');
+    } catch (e) {
+      throw new Error(`cannot read ${file}: ${(e as Error).message}`);
+    }
+    let data: unknown;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      throw new Error(`${file === '-' ? 'stdin' : file} is not JSON: ${(e as Error).message}`);
+    }
+    // FB-024: a file may declare tilesets (with or without sprites); they are applied after the sprites.
+    const tilesets = applyFileTilesets(data, { project: o.project, createProject: o.createProject, dryRun: o.dryRun, download: o.download });
+    if (tilesets.only) return tilesets.run(await api(), out());
+    const f = parseApplyFile(data);
+    const a = await api();
+    const r: ApplyResult = await applySprites(a, f.entries, {
+      project: o.project ?? f.project, defaults: f.defaults, noCreateProject: !o.createProject, dryRun: o.dryRun, render: o.render, download: o.download, previews: o.previews,
+      force: Array.isArray(o.force) ? o.force.flatMap((n) => n.split(',')).map((n) => n.trim()).filter(Boolean) : o.force,
+      timeoutMs: o.minutes * 60_000, onProgress: batchProgress, onLine: progress,
+    });
+    const ts = tilesets.decls.length ? await tilesets.apply(a, r.project.name) : null;
+    print(ts ? { ...r, tilesets: ts.tilesets } : r, out(), () => [
+      `${r.project.name}${r.project.created ? ' (created)' : r.project.wouldCreate ? ' (would be created)' : ''}:`,
+      table(r.sprites.map((x) => [x.id ?? '', x.name, x.asset, x.action, x.render ? `v${x.render.version} ${x.render.status}${x.render.frameCache ? ` (${frameCacheSummary(x.render.frameCache)})` : 
+''}` : x.outdated ? `outdated: ${x.plan}` : x.stale ? 'outdated (renderer updated)' : 'up to date', x.download ? `${x.download.files.length} files` : x.error ?? '']), ['id', 'sprite', 'model', '', 
+'render', 'download']),
+      // SF-FB-004: the dry run shows the settings each sprite will render with.
+      ...(o.dryRun ? r.sprites.map((x) => `  ${x.name}: ${describeSettings(x.settings)}`) : []),
+      ...(ts ? [tilesetApplyTable(ts)] : []),
+      ...(o.dryRun ? ['dry run: nothing was changed'] : []),
+    ].join('\n'));
+    if (!r.ok) process.exitCode = 1;
+  });
+
+/** One line of a sprite's resolved settings for the apply dry run. */
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+mini-swe-agent (step 40, $0.00):
+```
+cd /tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/msa/minimax-T2 && bash -c 'diff -r --exclude=.git --exclude=node_modules 
+--exclude=assets --exclude=dist --exclude=test-results . /home/andrew/projects/monty | head -60'
+```
+
+Tool:
+<returncode>
+0
+<output>
+diff -r '--exclude=.git' '--exclude=node_modules' '--exclude=assets' '--exclude=dist' '--exclude=test-results' ./.gitignore /home/andrew/projects/monty/.gitignore
+1,5c1,5
+< node_modules
+< .vite-cache
+< test-results
+< dist
+< vite.log
+---
+> node_modules/
+> dist/
+> test-results/
+> # Generated by `npm run assets` (scripts/build-assets.mjs from ssg.assets.json).
+> public/assets/
+\ No newline at end of file
+Only in /home/andrew/projects/monty: .mcp.json
+Only in .: AGENTS.md
+Only in /home/andrew/projects/monty: CLAUDE.md
+Only in /home/andrew/projects/monty: FEEDBACK.md
+Only in /home/andrew/projects/monty: TODO.md
+diff -r '--exclude=.git' '--exclude=node_modules' '--exclude=assets' '--exclude=dist' '--exclude=test-results' ./ssg.assets.json /home/andrew/projects/monty/ssg.assets.json
+2c2
+<   "project": "Spike2 msa-minimax-T2",
+---
+>   "project": "Montezuma's Revenge",
+162c162
+< }
+---
+> }
+\ No newline at end of file
+diff -r '--exclude=.git' '--exclude=node_modules' '--exclude=assets' '--exclude=dist' '--exclude=test-results' ./vite.config.ts /home/andrew/projects/monty/vite.config.ts
+4,5c4,11
+<   server: { port: 5325, strictPort: true, host: '127.0.0.1', watch: null },
+<   cacheDir: '.vite-cache',
+---
+>   server: {
+>     port: 5197,
+>     host: '0.0.0.0',
+>     // The checks write screenshots and the asset build rewrites public/assets while the page is open: neither is
+>     // the game's source, so neither should reload the page under a running game.
+>     watch: { ignored: ['**/test-results/**', '**/public/assets/**', '**/dist/**'] },
+>   },
+>   preview: { port: 5197, host: '0.0.0.0' },
+8c14
+< });
+---
+> });
+\ No newline at end of file
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Exit:
+LimitsExceeded
+Saved trajectory to '/home/andrew/projects/sloponator/spikes/weak-model/results/mini-swe-agent/minimax/T2/transcript.json'

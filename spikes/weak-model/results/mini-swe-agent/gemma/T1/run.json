@@ -1,0 +1,10 @@
+{
+  "model": "google/gemma-4-31b-it:free",
+  "task": "T1",
+  "calls": 0,
+  "wallSeconds": 139,
+  "exit": "infra",
+  "rateLimited": 20,
+  "infraFailure": true,
+  "notes": "Never got a single completion. Three whole-run attempts (11:19, 11:24, 11:43 local), each with the harness's own retries (5, then 8 and 8 attempts, exponential 4..60 s backoff, ~2 min per attempt): every request answered HTTP 429 'google/gemma-4-31b-it:free is temporarily rate-limited upstream' (limit_source: upstream_provider_shared_pool, provider Google AI Studio). Not our key's quota: the free pool for this model was exhausted for everyone. The attempts' logs are in T1-attempt1-429, T1-attempt2-429 and T1-attempt3-429 (this folder holds attempt 3). Not graded (no copy was touched)."
+}

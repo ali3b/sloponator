@@ -1,0 +1,4 @@
+ M src/rooms.ts
+ M src/scenes/Room.ts
+ M ssg.assets.json
+ A ssg.assets.json.backup

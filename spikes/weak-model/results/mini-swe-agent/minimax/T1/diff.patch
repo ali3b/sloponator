@@ -1,0 +1,181 @@
+diff --git a/scripts/_pause-check.mjs b/scripts/_pause-check.mjs
+new file mode 100644
+index 0000000..b713f54
+--- /dev/null
++++ b/scripts/_pause-check.mjs
+@@ -0,0 +1,98 @@
++// Temporary check for the pause feature: P pauses the room, P again resumes it.
++import { chromium } from '@playwright/test';
++
++const url = process.argv[2] ?? 'http://localhost:5324';
++const env = { ...process.env };
++delete env.DISPLAY;
++delete env.WAYLAND_DISPLAY;
++
++const browser = await chromium.launch({ env, args: ['--headless=new', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--disable-dev-shm-usage'] });
++const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
++const errors = [];
++page.on('pageerror', (e) => errors.push(e.message));
++page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
++
++let ok = true;
++const fail = (m) => { ok = false; console.log('FAIL: ' + m); };
++
++await page.goto(`${url}/?scene=room&room=entry`);
++await page.waitForFunction(() => window.game?.scene?.isActive('room'), null, { timeout: 90000 });
++await page.waitForTimeout(1500);
++
++const state = () =>
++  page.evaluate(() => {
++    const s = window.game.scene.getScene('room');
++    const texts = s.children.list.filter((c) => c.type === 'Text').map((c) => ({ text: c.text, x: c.x, y: c.y }));
++    return {
++      paused: s.paused,
++      clockPaused: s.time.paused,
++      tweensPaused: s.tweens.paused,
++      now: s.time.now,
++      joe: [Math.round(s.joe.mover.x), Math.round(s.joe.mover.y)],
++      joeAnimPaused: s.joe.view.anims.isPaused,
++      creature: s.creatures[0] ? [Math.round(s.creatures[0].mover.x), Math.round(s.creatures[0].mover.y)] : null,
++      creatureAnimPaused: s.creatures[0] ? s.creatures[0].view.anims.isPaused : null,
++      texts,
++    };
++  });
++
++const before = await state();
++console.log('before:', JSON.stringify(before));
++
++// --- pause ---
++await page.keyboard.press('p');
++await page.waitForTimeout(1200);
++const paused = await state();
++console.log('paused:', JSON.stringify(paused));
++if (!paused.paused) fail('the room did not pause');
++if (!paused.clockPaused) fail('the clock did not stop');
++if (!paused.tweensPaused) fail('the tweens did not stop');
++if (paused.now !== before.now) fail(`the clock kept running (${before.now} -> ${paused.now})`);
++if (paused.joe[0] !== before.joe[0] || paused.joe[1] !== before.joe[1]) fail(`Joe moved while paused (${before.joe} -> ${paused.joe})`);
++if (paused.creature && (paused.creature[0] !== before.creature[0] || paused.creature[1] !== before.creature[1])) {
++  fail(`the creature moved while paused (${before.creature} -> ${paused.creature})`);
++}
++if (!paused.joeAnimPaused) fail("Joe's animation did not stop");
++const sign = paused.texts.find((t) => t.text === 'PAUSED');
++if (!sign) fail('the PAUSED sign is missing');
++else {
++  console.log('PAUSED sign at', sign.x, sign.y);
++  if (Math.abs(sign.x - 320) > 2 || Math.abs(sign.y - 256) > 2) fail(`the PAUSED sign is not in the middle (${sign.x}, ${sign.y})`);
++}
++
++// Joe must not move even with a key held down.
++await page.keyboard.down('ArrowRight');
++await page.waitForTimeout(900);
++const held = await state();
++await page.keyboard.up('ArrowRight');
++if (held.joe[0] !== paused.joe[0]) fail(`Joe walked while paused (${paused.joe[0]} -> ${held.joe[0]})`);
++
++// --- resume ---
++await page.keyboard.press('p');
++await page.waitForTimeout(400);
++const resumed = await state();
++console.log('resumed:', JSON.stringify(resumed));
++if (resumed.paused) fail('the room did not resume');
++if (resumed.clockPaused) fail('the clock stayed stopped');
++if (resumed.tweensPaused) fail('the tweens stayed stopped');
++if (resumed.texts.find((t) => t.text === 'PAUSED')) fail('the PAUSED sign is still there');
++if (resumed.joeAnimPaused) fail("Joe's animation stayed stopped");
++
++// Joe walks again.
++await page.keyboard.down('ArrowRight');
++await page.waitForTimeout(900);
++const walked = await state();
++await page.keyboard.up('ArrowRight');
++console.log('walked:', JSON.stringify(walked.joe));
++if (walked.joe[0] <= resumed.joe[0]) fail(`Joe did not walk after the resume (${resumed.joe[0]} -> ${walked.joe[0]})`);
++
++// The clock runs again.
++if (walked.now <= paused.now) fail('the clock did not start again');
++
++await page.screenshot({ path: 'test-results/pause.png' });
++
++const uniq = [...new Set(errors)].filter((e) => !/favicon/.test(e));
++if (uniq.length) console.log('page errors:', uniq.slice(0, 5).join(' | '));
++console.log(ok && !uniq.length ? 'pause ok' : 'FAILED');
++await browser.close();
++process.exit(ok && !uniq.length ? 0 : 1);
+diff --git a/src/scenes/Room.ts b/src/scenes/Room.ts
+index f466274..5f4b139 100644
+--- a/src/scenes/Room.ts
++++ b/src/scenes/Room.ts
+@@ -75,6 +75,10 @@ export class Room extends Phaser.Scene {
+   private bonusMode = false;
+   private bonusLeft = 0;
+   private frozen = false;
++  /** Set while the P key has the room paused. */
++  private paused = false;
++  /** The PAUSED sign in the middle of the screen, while the room is paused. */
++  private pauseText: Phaser.GameObjects.Text | null = null;
+   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
+   /** The crumbling floors that have let go, shared by everyone in the room. */
+   private gone = new Set<string>();
+@@ -113,6 +117,8 @@ export class Room extends Phaser.Scene {
+     this.busy = false;
+     this.nextRoom = null;
+     this.gone = new Set<string>();
++    this.paused = false;
++    this.pauseText = null;
+   }
+ 
+   // ---- building --------------------------------------------------------------------------------------------
+@@ -148,6 +154,8 @@ export class Room extends Phaser.Scene {
+       down: kb!.addKey(K.S),
+       space: kb!.addKey(K.SPACE),
+     };
++    // The P key pauses and resumes the room.
++    this.input.keyboard?.on('keydown-P', this.togglePause, this);
+ 
+     this.drawScenery();
+     this.buildClimbables();
+@@ -446,6 +454,7 @@ private drawClimbable(c: Climbable) {
+ 
+   override update(_time: number, delta: number) {
+     if (this.frozen) return;
++    if (this.paused) return;
+     const dt = Math.min(delta / 1000, 1 / 20);
+     const k = this.keys;
+     const input = {
+@@ -473,6 +482,35 @@ private drawClimbable(c: Climbable) {
+     }
+   }
+ 
++  /** The P key pauses and resumes the room: Joe, the creatures, the clock and the tweens all stop. */
++  private togglePause() {
++    this.paused = !this.paused;
++    // The clock and the tweens freeze with the game, so nothing times out while it is paused.
++    this.time.paused = this.paused;
++    this.tweens.paused = this.paused;
++    if (this.paused) {
++      // Joe and the creatures hold still, animation and all.
++      this.joe.view.anims.pause();
++      for (const c of this.creatures) c.view.anims.pause();
++      this.pauseText = this.add
++        .text(WIDTH / 2, HEIGHT / 2, 'PAUSED', {
++          fontFamily: '"Press Start 2P", monospace',
++          fontSize: '12px',
++          color: '#f4e4c4',
++          stroke: '#000000',
++          strokeThickness: 5,
++        })
++        .setOrigin(0.5)
++        .setDepth(960)
++        .setResolution(2);
++    } else {
++      this.joe.view.anims.resume();
++      for (const c of this.creatures) c.view.anims.resume();
++      this.pauseText?.destroy();
++      this.pauseText = null;
++    }
++  }
++
+   private updateCreatures(dt: number) {
+     for (const c of this.creatures) {
+       if (c.dead || c.spent) continue;

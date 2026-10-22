@@ -1,0 +1,10 @@
+{
+  "model": "minimax/minimax-m3.1-flash:free",
+  "task": "T1",
+  "calls": 40,
+  "wallSeconds": 280,
+  "exit": "LimitsExceeded",
+  "rateLimited": 0,
+  "infraFailure": false,
+  "notes": "Hit the 40-call step limit without submitting. Grader: PASS (typecheck, loadCheck, feature). Read AGENTS.md first. Spent ~15 calls reading Phaser's source under node_modules (keyboard plugin, animation manager, clock) instead of trusting the API. Wrote a thorough Playwright test of its own (scripts/_pause-check.mjs) and ran the dev server itself; never ran the mandated npm run typecheck + load-check sequence before the limit hit (typecheck was run once and passed). STRAYED OUTSIDE THE COPY: one patch command began with `cd /home/andrew/projects/monty 2>/dev/null || cd \"$(pwd)\"` and patched the real Monty repo's src/scenes/Room.ts; it noticed two calls later and reverted it with `git checkout -- src/scenes/Room.ts` (monty was clean before and is clean after). Also left its test file in the diff. Its own test then reported 'the clock kept running' (false alarm: Phaser's time.now is wall time even with the clock paused) and 'the room did not resume' (second press of p in its script; the grader's second KeyP did resume), and it was reading Phaser's Clock.js to debug these when the limit hit."
+}

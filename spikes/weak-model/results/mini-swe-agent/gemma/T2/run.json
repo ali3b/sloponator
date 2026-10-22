@@ -1,0 +1,10 @@
+{
+  "model": "google/gemma-4-31b-it:free",
+  "task": "T2",
+  "calls": 0,
+  "wallSeconds": 0,
+  "exit": "infra",
+  "rateLimited": 3,
+  "infraFailure": true,
+  "notes": "Not run. After three whole-run attempts on T1 (21 requests, all HTTP 429 'temporarily rate-limited upstream', shared Google AI Studio free pool) the model was probed directly 3 times 60 s apart at 13:02-13:04: still 429 on every probe, about two hours after the first failure. Recorded as an infrastructure failure without a run."
+}
