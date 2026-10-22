@@ -1,0 +1,12 @@
+{
+  "name": "synty_legacy",
+  "description": "Older Synty skeleton (POLYGON War Character_*)",
+  "map": {
+    "hips": "Hips", "spine1": "Spine_01", "spine2": "Spine_02", "spine3": "Spine_03",
+    "neck": "Neck", "head": "Head",
+    "clavicle_l": "Clavicle_L", "upperarm_l": "Shoulder_L", "lowerarm_l": "Elbow_L", "hand_l": "Hand_L",
+    "clavicle_r": "Clavicle_R", "upperarm_r": "Shoulder_R", "lowerarm_r": "Elbow_R", "hand_r": "Hand_R",
+    "thigh_l": "UpperLeg_L", "calf_l": "LowerLeg_L", "foot_l": "Ankle_L", "toe_l": "Ball_L",
+    "thigh_r": "UpperLeg_R", "calf_r": "LowerLeg_R", "foot_r": "Ankle_R", "toe_r": "Ball_R"
+  }
+}

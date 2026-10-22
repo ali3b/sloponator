@@ -1,0 +1,17 @@
+{
+  "description": "Canonical humanoid bones. Every rig profile maps its native bone names onto these.",
+  "bones": [
+    "hips", "spine1", "spine2", "spine3", "neck", "head",
+    "clavicle_l", "upperarm_l", "lowerarm_l", "hand_l",
+    "clavicle_r", "upperarm_r", "lowerarm_r", "hand_r",
+    "thigh_l", "calf_l", "foot_l", "toe_l",
+    "thigh_r", "calf_r", "foot_r", "toe_r"
+  ],
+  "parents": {
+    "spine1": "hips", "spine2": "spine1", "spine3": "spine2", "neck": "spine3", "head": "neck",
+    "clavicle_l": "spine3", "upperarm_l": "clavicle_l", "lowerarm_l": "upperarm_l", "hand_l": "lowerarm_l",
+    "clavicle_r": "spine3", "upperarm_r": "clavicle_r", "lowerarm_r": "upperarm_r", "hand_r": "lowerarm_r",
+    "thigh_l": "hips", "calf_l": "thigh_l", "foot_l": "calf_l", "toe_l": "foot_l",
+    "thigh_r": "hips", "calf_r": "thigh_r", "foot_r": "calf_r", "toe_r": "foot_r"
+  }
+}
