@@ -4,6 +4,7 @@
     { "path": "packages/schema" },
     { "path": "packages/library" },
     { "path": "packages/formats" },
-    { "path": "packages/sprites" }
+    { "path": "packages/sprites" },
+    { "path": "packages/models3d" }
   ]
 }
