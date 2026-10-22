@@ -1,0 +1,31 @@
+{
+  "name": "@slop/cli",
+  "version": "0.0.0",
+  "private": true,
+  "description": "`slop`: build a game's content pack from its declaration files. `slop build ssg.assets.json --out <dir>` validates the file (@slop/schema), plans every sprite, renders through @slop/render and packs through @slop/sprites.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "bin": {
+    "slop": "./bin/slop.mjs"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@slop/library": "0.0.0",
+    "@slop/render": "0.0.0",
+    "@slop/schema": "0.0.0",
+    "@slop/sprites": "0.0.0",
+    "pngjs": "7.0.0",
+    "tsx": "4.19.2"
+  },
+  "devDependencies": {
+    "@types/pngjs": "6.0.5",
+    "vitest": "2.1.9"
+  }
+}
