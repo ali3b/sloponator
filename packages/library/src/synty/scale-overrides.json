@@ -1,0 +1,13 @@
+{
+  "description": "Per-model scale overrides exported from the old generator's library.db (table scale_overrides), so they survive a database rebuild. A row is keyed as the DB keys it: pack name, FBX path inside the pack, body variant ('' for the whole file). `scale` multiplies the model's root nodes to get true metres and replaces the automatic fix (synty/scale.ts). Regenerate with `npm run scale-overrides -w @slop/library` against the real data dir; the library test checks the DB and this file agree.",
+  "overrides": [
+    {
+      "pack": "POLYGON_War",
+      "fbx": "Source Files/FBX/SM_Wep_German_Pistol_01.fbx",
+      "variant": "",
+      "name": "SM_Wep_German_Pistol_01",
+      "scale": 10,
+      "why": "Modelled 10x larger than its pack siblings: the pack-wide auto fix (100) makes the luger 2.3 m long, and an aligned export that holds it fails validation with frame_overflow. With 10 it is 0.23 m."
+    }
+  ]
+}
