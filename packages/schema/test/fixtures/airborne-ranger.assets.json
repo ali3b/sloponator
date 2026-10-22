@@ -1,0 +1,835 @@
+{
+  "project": "Airborne Ranger",
+  "tile": "64x32",
+  "metresPerTile": 1,
+  "view": "iso8",
+  "format": "phaser3",
+  "fps": 10,
+  "maxSeconds": 2,
+  "sprites": [
+    {
+      "name": "ranger",
+      "asset": "POLYGON_War/Character_American_Soldier_01",
+      "class": "rifle",
+      "anim": [
+        "idle",
+        "walk",
+        "run",
+        "shoot",
+        "prone_idle",
+        "crawl",
+        "prone_shoot",
+        "death",
+        "reload",
+        {
+          "clip": "Knife_Stab_Fore",
+          "trim": "0:0.9",
+          "with": "POLYGON_Palm_City/SM_Wep_Knife_01",
+          "as": "knife"
+        }
+      ],
+      "with": [
+        "POLYGON_War/SM_Wep_American_Rifle_01",
+        "POLYGON_War/SM_Char_Attach_American_Helmet_01"
+      ],
+      "dirs": "8",
+      "uniform": true,
+      "template": [
+        {
+          "template": "throw",
+          "with": "POLYGON_War/SM_Wep_American_Grenade_01",
+          "as": "grenade"
+        },
+        {
+          "template": "shoulder_fire:kneel=1",
+          "with": "POLYGON_War/SM_Wep_American_RocketLauncher_01",
+          "as": "law"
+        },
+        {
+          "template": "kneel_place",
+          "with": "POLYGON_BattleRoyale/SM_Prop_C4_01",
+          "as": "bomb"
+        },
+        {
+          "template": "kneel_place",
+          "with": "POLYGON_BattleRoyale/SM_Prop_MedicalBox_01",
+          "as": "medkit"
+        },
+        {
+          "template": "kneel_shoot:duration=1.5,twoHanded=1,kick=0",
+          "with": "POLYGON_Apocalypse/SM_Item_Camera_01",
+          "as": "camera"
+        }
+      ],
+      "split": {
+        "at": "waist",
+        "whole": true,
+        "legs": [
+          "idle",
+          "walk",
+          "run"
+        ],
+        "torso": [
+          "idle",
+          "walk",
+          "run",
+          "shoot",
+          "reload",
+          "throw",
+          "shoulder_fire"
+        ]
+      }
+    },
+    {
+      "name": "german",
+      "asset": "POLYGON_War/Character_German_Soldier_01",
+      "class": "rifle",
+      "anim": [
+        "idle",
+        "walk",
+        "shoot",
+        "death"
+      ],
+      "with": [
+        "POLYGON_War/SM_Wep_German_Rifle_01",
+        "POLYGON_War/SM_Char_Attach_German_Helmet_01"
+      ],
+      "dirs": "8",
+      "uniform": true
+    },
+    {
+      "name": "bunker",
+      "asset": "POLYGON_War/SM_Bld_Bunker_01",
+      "template": "still",
+      "facings": 4
+    },
+    {
+      "name": "sandbags",
+      "asset": "POLYGON_War/SM_Env_Sandbag_Wall_01",
+      "template": "still",
+      "facings": 4
+    },
+    {
+      "name": "wire",
+      "asset": "POLYGON_War/SM_Prop_Wire_01",
+      "template": "still",
+      "facings": 2
+    },
+    {
+      "name": "tree",
+      "asset": "POLYGON_War/SM_Env_Tree_01",
+      "template": "still"
+    },
+    {
+      "name": "crate",
+      "asset": "POLYGON_War/SM_Prop_Crate_02",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1",
+      "template": "still"
+    },
+    {
+      "name": "tank",
+      "asset": "POLYGON_War/SM_Veh_German_Tank_01",
+      "states": "auto,destroyed@destroy",
+      "template": "still"
+    },
+    {
+      "name": "bunker_large",
+      "asset": "POLYGON_War/SM_Bld_Bunker_Large_01",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "crate_pile",
+      "asset": "POLYGON_War/SM_Prop_Crate_Pile_01",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1",
+      "template": "still"
+    },
+    {
+      "name": "barrel_pile",
+      "asset": "POLYGON_War/SM_Prop_Barrel_Pile_01",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1",
+      "template": "still"
+    },
+    {
+      "name": "container",
+      "asset": "POLYGON_Apocalypse/SM_Prop_Shipping_Container_01",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1",
+      "facings": 2
+    },
+    {
+      "name": "tent",
+      "asset": "POLYGON_War/SM_Bld_Camonetting_Tent_01",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1",
+      "template": "still"
+    },
+    {
+      "name": "tree_small",
+      "asset": "POLYGON_War/SM_Env_Tree_03",
+      "template": "still"
+    },
+    {
+      "name": "rock",
+      "asset": "POLYGON_BattleRoyale/SM_Env_Rock_01",
+      "template": "still"
+    },
+    {
+      "name": "tanktrap",
+      "asset": "POLYGON_War/SM_Prop_TankTrap_01",
+      "template": "still"
+    },
+    {
+      "name": "palm",
+      "asset": "POLYGON_City/SM_Env_PalmTree_01",
+      "template": "still"
+    },
+    {
+      "name": "bush",
+      "asset": "POLYGON_Palm_City/SM_Env_Bush_01",
+      "template": "still"
+    },
+    {
+      "name": "rock_big",
+      "asset": "POLYGON_BattleRoyale/SM_Env_Rock_02",
+      "template": "still"
+    },
+    {
+      "name": "radar_dish",
+      "asset": "POLYGON_Palm_City/SM_Prop_Satelite_Dish_02",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1",
+      "collision": "full"
+    },
+    {
+      "name": "radio_tower",
+      "asset": "POLYGON_War/SM_Prop_Radio_Tower_01",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "truck",
+      "asset": "POLYGON_BattleRoyale/SM_Veh_Truck_01",
+      "template": "still",
+      "states": "auto,destroyed@destroy"
+    },
+    {
+      "name": "smoke",
+      "asset": "POLYGON_Particle_FX/SM_Particle_Smoke_01",
+      "template": "smoke_loop:dark=0.8",
+      "dirs": "1"
+    },
+    {
+      "name": "fire",
+      "asset": "POLYGON_Particle_FX/SM_Particle_Smoke_01",
+      "template": "fire_loop",
+      "dirs": "1"
+    },
+    {
+      "name": "explosion",
+      "asset": "POLYGON_Particle_FX/SM_Particle_Smoke_01",
+      "template": "explosion",
+      "dirs": "1"
+    },
+    {
+      "name": "plane",
+      "asset": "POLYGON_War/SM_Veh_Plane_German_01",
+      "template": "still",
+      "states": "intact=POLYGON_War/SM_Veh_Plane_German_01,destroyed=POLYGON_War/SM_Veh_Plane_Damaged_German_01@destroy"
+    },
+    {
+      "name": "plane_big",
+      "asset": "POLYGON_War/SM_Veh_Plane_German_02",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "hangar",
+      "asset": "POLYGON_War/SM_Bld_Hanger_01",
+      "template": "still"
+    },
+    {
+      "name": "guard_tower",
+      "asset": "POLYGON_War/SM_Bld_Guard_Tower_01",
+      "template": "still"
+    },
+    {
+      "name": "pine_snow",
+      "asset": "POLYGON_Adventure_Pack/SM_Env_TreePine_01_Snow",
+      "template": "still"
+    },
+    {
+      "name": "pine_snow_small",
+      "asset": "POLYGON_Adventure_Pack/SM_Env_TreePine_02_Snow",
+      "template": "still"
+    },
+    {
+      "name": "rock_snow",
+      "asset": "POLYGON_Adventure_Pack/SM_Env_Rock_05_Snow",
+      "template": "still"
+    },
+    {
+      "name": "truck_drive",
+      "asset": "POLYGON_BattleRoyale/SM_Veh_Truck_01",
+      "template": [
+        "drive"
+      ],
+      "dirs": "8"
+    },
+    {
+      "name": "truck_wreck",
+      "asset": "POLYGON_BattleRoyale/SM_Veh_Truck_01",
+      "states": "auto,destroyed@destroy",
+      "template": "still",
+      "dirs": "8",
+      "facings": 0
+    },
+    {
+      "name": "searchlight",
+      "asset": "POLYGON_War/SM_Prop_Searchlight_Base_01",
+      "template": "turret_sweep:angle=120,duration=4",
+      "maxSeconds": 4
+    },
+    {
+      "name": "radar_spin",
+      "asset": "POLYGON_Palm_City/SM_Prop_Satelite_Dish_02",
+      "template": "spin:duration=3",
+      "maxSeconds": 3
+    },
+    {
+      "name": "pipe",
+      "asset": "POLYGON_Apocalypse/SM_Prop_Pipe_Large_01",
+      "template": "still",
+      "facings": 2
+    },
+    {
+      "name": "pipe_valve",
+      "asset": "POLYGON_Apocalypse/SM_Prop_Pipe_Valve_02",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "fern",
+      "asset": "POLYGON_Generic/SM_Gen_Env_Fern_02",
+      "template": "still"
+    },
+    {
+      "name": "law_rocket",
+      "asset": "POLYGON_BattleRoyale/SM_Wep_RPG_Rocket_Active_01",
+      "template": "projectile",
+      "dirs": "8"
+    },
+    {
+      "name": "time_bomb",
+      "asset": "POLYGON_BattleRoyale/SM_Prop_C4_01",
+      "template": "still"
+    },
+    {
+      "name": "supply_pod",
+      "asset": "POLYGON_Apocalypse/SM_Item_Duffle_Bag_01",
+      "template": "still"
+    },
+    {
+      "name": "item_mag",
+      "asset": "POLYGON_Apocalypse/SM_Item_Ammo_556_01",
+      "template": "still",
+      "tile": null,
+      "scale": "fit"
+    },
+    {
+      "name": "item_grenade",
+      "asset": "POLYGON_War/SM_Wep_American_Grenade_01",
+      "template": "still",
+      "tile": null,
+      "scale": "fit"
+    },
+    {
+      "name": "item_medkit",
+      "asset": "POLYGON_BattleRoyale/SM_Prop_MedicalBox_01",
+      "template": "still",
+      "tile": null,
+      "scale": "fit"
+    },
+    {
+      "name": "item_law",
+      "asset": "POLYGON_War/SM_Wep_American_RocketLauncher_01",
+      "template": "still",
+      "tile": null,
+      "scale": "fit"
+    },
+    {
+      "name": "item_bomb",
+      "asset": "POLYGON_BattleRoyale/SM_Prop_C4_01",
+      "template": "still",
+      "tile": null,
+      "scale": "fit"
+    },
+    {
+      "name": "officer",
+      "asset": "POLYGON_War/Character_Gernman_Officer_01",
+      "class": "unarmed",
+      "anim": [
+        "idle",
+        "walk",
+        "run"
+      ],
+      "dirs": "8",
+      "uniform": true,
+      "template": [
+        "hit_react",
+        "death_fall"
+      ]
+    },
+    {
+      "name": "pow_prisoner",
+      "asset": "POLYGON_Generic/SM_Gen_Chr_Prisoner_Male_01",
+      "class": "unarmed",
+      "anim": [
+        "idle",
+        "walk",
+        "run"
+      ],
+      "dirs": "8",
+      "uniform": true,
+      "template": [
+        "hit_react",
+        "death_fall"
+      ]
+    },
+    {
+      "name": "code_book",
+      "asset": "POLYGON_Apocalypse/SM_Item_Book_01",
+      "template": "still"
+    },
+    {
+      "name": "hq_table",
+      "asset": "POLYGON_War/SM_Prop_Table_01",
+      "template": "still",
+      "facings": 2
+    },
+    {
+      "name": "hq_hut_snow",
+      "asset": "POLYGON_Adventure_Pack/SM_Bld_Hut_01_Snow",
+      "template": "still"
+    },
+    {
+      "name": "sam_launcher",
+      "asset": "POLYGON_War/SM_Prop_German_Flak_01",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "sam_missiles",
+      "asset": "POLYGON_BattleRoyale/SM_Prop_MissileStack_01",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "pow_fence",
+      "asset": "POLYGON_War/SM_Prop_Fence_Wire_01",
+      "template": "still",
+      "facings": 2
+    },
+    {
+      "name": "pow_gate",
+      "asset": "POLYGON_War/SM_Prop_Fence_Gate_01",
+      "template": "still",
+      "facings": 2,
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "pow_barracks",
+      "asset": "POLYGON_War/SM_Bld_Barracks_01",
+      "template": "still",
+      "facings": 2
+    },
+    {
+      "name": "mg_nest",
+      "asset": "POLYGON_War/SM_Env_Sandbag_Wall_Curved_01",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1",
+      "facings": 4
+    },
+    {
+      "name": "mg_gunner",
+      "asset": "POLYGON_War/Character_German_Soldier_01",
+      "class": "rifle",
+      "anim": [
+        "crouch_idle",
+        "death"
+      ],
+      "template": [
+        "kneel_shoot:twoHanded=1,kick=6"
+      ],
+      "with": [
+        "POLYGON_War/SM_Wep_German_HeavyMachineGun_01",
+        "POLYGON_War/SM_Char_Attach_German_Helmet_01"
+      ],
+      "dirs": "8",
+      "uniform": true
+    },
+    {
+      "name": "mine",
+      "asset": "POLYGON_War/SM_Prop_Landmine_01",
+      "template": "still"
+    },
+    {
+      "name": "tank_drive",
+      "asset": "POLYGON_War/SM_Veh_German_Tank_01",
+      "template": [
+        "drive",
+        "fire:duration=0.6"
+      ],
+      "dirs": "8"
+    },
+    {
+      "name": "tank_wreck",
+      "asset": "POLYGON_War/SM_Veh_German_Tank_01",
+      "states": "auto,destroyed@destroy",
+      "template": "still",
+      "dirs": "8",
+      "facings": 0
+    },
+    {
+      "name": "plane_pickup",
+      "asset": "POLYGON_War/SM_Veh_American_Plane_Transport_01",
+      "template": [
+        "propeller_spin:duration=0.2"
+      ],
+      "dirs": "1"
+    },
+    {
+      "name": "prototype_rocket",
+      "asset": "POLYGON_War/SM_Veh_Rocket_01",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "hostage",
+      "asset": "POLYGON_War/Character_Resistance_Male_01",
+      "class": "unarmed",
+      "anim": [
+        "idle",
+        "walk",
+        "run"
+      ],
+      "template": [
+        "sit",
+        "death_fall"
+      ],
+      "dirs": "8",
+      "uniform": true
+    },
+    {
+      "name": "prison_hut",
+      "asset": "POLYGON_War/SM_Bld_Shed_01",
+      "template": "still",
+      "facings": 2
+    },
+    {
+      "name": "stockade",
+      "asset": "POLYGON_War/SM_Prop_Fence_High_01",
+      "template": "still",
+      "facings": 2
+    },
+    {
+      "name": "stockade_gate",
+      "asset": "POLYGON_War/SM_Prop_Fence_High_02",
+      "template": "still",
+      "facings": 2,
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "fuel_tank",
+      "asset": "POLYGON_Apocalypse/SM_Bld_WaterTank_01",
+      "template": "still",
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "fuel_bowser",
+      "asset": "POLYGON_Apocalypse/SK_Veh_Army_Truck_Tank_01",
+      "template": "still",
+      "facings": 2,
+      "states": "destroyed=@scorch:dark=0.9@collapse:blast=1"
+    },
+    {
+      "name": "alarm_pole",
+      "asset": "POLYGON_War/SM_Prop_AlarmPole_01",
+      "template": "still"
+    }
+  ],
+  "tilesets": [
+    {
+      "name": "temperate",
+      "noisePeriod": 4,
+      "variants": 2,
+      "terrains": [
+        {
+          "name": "grass",
+          "texture": "POLYGON_Generic_v3/Textures/Generic_Grass.png",
+          "scale": 4,
+          "variants": 16
+        },
+        "dirt",
+        "sand",
+        "water",
+        "mud",
+        "road"
+      ],
+      "pairs": [
+        [
+          "grass",
+          "dirt"
+        ],
+        [
+          "grass",
+          "sand"
+        ],
+        [
+          "sand",
+          "water"
+        ],
+        [
+          "grass",
+          "mud"
+        ],
+        [
+          "grass",
+          "road"
+        ],
+        [
+          "road",
+          "sand"
+        ],
+        [
+          "dirt",
+          "sand"
+        ],
+        [
+          "dirt",
+          "road"
+        ],
+        [
+          "road",
+          "water"
+        ],
+        [
+          "dirt",
+          "mud"
+        ]
+      ],
+      "mixes": "triples"
+    },
+    {
+      "name": "desert",
+      "noisePeriod": 4,
+      "variants": 4,
+      "terrains": [
+        {
+          "name": "sand",
+          "texture": "POLYGON_Palm_City_v3/SourceFiles/Textures/Terrain/Sand_01.png",
+          "scale": 4,
+          "variants": 16
+        },
+        {
+          "name": "dirt",
+          "texture": "POLYGON_Generic_v3/Textures/Generic_Dirt.png",
+          "scale": 4,
+          "tint": "#b48c5c"
+        },
+        {
+          "name": "rock",
+          "kind": "custom",
+          "texture": "POLYGON_Generic_v3/Textures/Generic_Rock.png",
+          "scale": 2
+        },
+        "road"
+      ],
+      "pairs": "all",
+      "mixes": "triples"
+    },
+    {
+      "name": "arctic",
+      "noisePeriod": 4,
+      "variants": 4,
+      "terrains": [
+        {
+          "name": "snow",
+          "kind": "snow",
+          "texture": "POLYGON_Palm_City_v3/SourceFiles/Textures/Terrain/Sand_01.png",
+          "scale": 4,
+          "tint": "#eef4ff",
+          "variants": 16
+        },
+        {
+          "name": "ice",
+          "kind": "water",
+          "texture": "POLYGON_Generic_v3/Textures/Generic_Water.png",
+          "scale": 4,
+          "tint": "#cfe6f2"
+        },
+        {
+          "name": "rock",
+          "kind": "custom",
+          "texture": "POLYGON_Generic_v3/Textures/Generic_Rock.png",
+          "scale": 2,
+          "tint": "#8c939c"
+        },
+        {
+          "name": "dirt",
+          "texture": "POLYGON_Generic_v3/Textures/Generic_Dirt.png",
+          "scale": 4,
+          "tint": "#857a6c"
+        },
+        "road"
+      ],
+      "pairs": "all"
+    },
+    {
+      "name": "jungle",
+      "noisePeriod": 4,
+      "variants": 4,
+      "terrains": [
+        {
+          "name": "grass",
+          "texture": "POLYGON_Dark_Fortress_v4/Texture/Env/Moss_01.png",
+          "scale": 4,
+          "tint": "#8aa080",
+          "variants": 16
+        },
+        {
+          "name": "mud",
+          "texture": "POLYGON_Generic_v3/Textures/Generic_Dirt.png",
+          "scale": 4,
+          "tint": "#6a5848"
+        },
+        {
+          "name": "water",
+          "texture": "POLYGON_Generic_v3/Textures/Generic_Water.png",
+          "scale": 4,
+          "tint": "#6f8f96"
+        },
+        "road"
+      ],
+      "pairs": "all",
+      "mixes": "triples"
+    }
+  ],
+  "maps": [
+    {
+      "name": "stamp-src-bunker",
+      "size": "12x10",
+      "tileset": "temperate",
+      "ops": "maps/stamp-bunker.ops.json",
+      "stamps": [
+        {
+          "name": "bunker_nest",
+          "rect": [
+            0,
+            0,
+            11,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stamp-src-outpost",
+      "size": "12x12",
+      "tileset": "temperate",
+      "ops": "maps/stamp-outpost.ops.json",
+      "stamps": [
+        {
+          "name": "outpost",
+          "rect": [
+            0,
+            0,
+            11,
+            11
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mission1",
+      "size": "128x256",
+      "tileset": "temperate",
+      "ops": "maps/mission1.ops.json",
+      "export": "public/assets/maps/mission1"
+    },
+    {
+      "name": "mission2",
+      "size": "128x256",
+      "tileset": "desert",
+      "ops": "maps/mission2.ops.json",
+      "export": "public/assets/maps/mission2"
+    },
+    {
+      "name": "mission3",
+      "size": "128x256",
+      "tileset": "arctic",
+      "ops": "maps/mission3.ops.json",
+      "export": "public/assets/maps/mission3"
+    },
+    {
+      "name": "mission4",
+      "size": "128x256",
+      "tileset": "jungle",
+      "ops": "maps/mission4.ops.json",
+      "export": "public/assets/maps/mission4"
+    },
+    {
+      "name": "mission5",
+      "size": "128x256",
+      "tileset": "temperate",
+      "ops": "maps/mission5.ops.json",
+      "export": "public/assets/maps/mission5"
+    },
+    {
+      "name": "mission6",
+      "size": "128x256",
+      "tileset": "arctic",
+      "ops": "maps/mission6.ops.json",
+      "export": "public/assets/maps/mission6"
+    },
+    {
+      "name": "mission7",
+      "size": "128x256",
+      "tileset": "desert",
+      "ops": "maps/mission7.ops.json",
+      "export": "public/assets/maps/mission7"
+    },
+    {
+      "name": "mission8",
+      "size": "128x256",
+      "tileset": "jungle",
+      "ops": "maps/mission8.ops.json",
+      "export": "public/assets/maps/mission8"
+    },
+    {
+      "name": "mission9",
+      "size": "128x256",
+      "tileset": "arctic",
+      "ops": "maps/mission9.ops.json",
+      "export": "public/assets/maps/mission9"
+    },
+    {
+      "name": "mission10",
+      "size": "128x256",
+      "tileset": "desert",
+      "ops": "maps/mission10.ops.json",
+      "export": "public/assets/maps/mission10"
+    },
+    {
+      "name": "mission11",
+      "size": "128x256",
+      "tileset": "temperate",
+      "ops": "maps/mission11.ops.json",
+      "export": "public/assets/maps/mission11"
+    },
+    {
+      "name": "mission12",
+      "size": "128x256",
+      "tileset": "jungle",
+      "ops": "maps/mission12.ops.json",
+      "export": "public/assets/maps/mission12"
+    }
+  ]
+}

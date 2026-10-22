@@ -1,0 +1,162 @@
+{
+  "project": "Montezuma's Revenge",
+  "tilesets": [
+    {
+      "name": "tomb",
+      "tile": "32x32",
+      "terrains": [
+        {
+          "name": "void",
+          "kind": "custom",
+          "color": "#241a20",
+          "noise": 0.1
+        },
+        {
+          "name": "brick",
+          "kind": "custom",
+          "color": "#7a5a3c",
+          "noise": 0.3
+        },
+        {
+          "name": "stone",
+          "kind": "rock",
+          "color": "#a78a5e",
+          "noise": 0.2
+        },
+        {
+          "name": "floor",
+          "kind": "dirt",
+          "color": "#5c4634",
+          "noise": 0.25
+        },
+        {
+          "name": "ember",
+          "kind": "custom",
+          "color": "#c4471a",
+          "noise": 0.35
+        }
+      ]
+    }
+  ],
+  "sprites": [
+    {
+      "name": "joe",
+      "asset": "POLYGON_War/Character_GentleMan_01",
+      "class": "martial_arts",
+      "anim": [
+        "idle",
+        "walk_forward",
+        "walk_back",
+        "jump",
+        "crouch_idle",
+        "hit_head",
+        "get_up",
+        "ko"
+      ],
+      "with": [
+        "POLYGON_Palm_City/SM_Chr_Attach_Hat_03"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "asset": "POLYGON_Dungeon_Pack/Character_Skeleton_Slave_01",
+      "set": "builtin_locomotion",
+      "anim": [
+        "Idle_Standing",
+        "Walk_F",
+        "Run_F"
+      ],
+      "template": [
+        "hit_react",
+        "death_fall"
+      ]
+    },
+    {
+      "name": "skull",
+      "asset": "POLYGON_Dark_Fantasy/SM_Prop_Skull_01",
+      "kind": "prop",
+      "template": "bounce"
+    },
+    {
+      "name": "key_gold",
+      "asset": "POLYGON_Dark_Fortress/SM_Prop_Key_01",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "key_silver",
+      "asset": "POLYGON_Dark_Fortress/SM_Prop_Key_02",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "key_red",
+      "asset": "POLYGON_Dark_Fortress/SM_Prop_Key_03",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "jewel",
+      "asset": "POLYGON_Dungeon_Pack/SM_Prop_Gem_01",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "gold",
+      "asset": "POLYGON_Dungeon_Pack/SM_Item_Coins_01",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "torch",
+      "asset": "POLYGON_Dark_Fantasy/SM_Prop_Torch_01",
+      "kind": "prop",
+      "template": "still"
+    },
+    {
+      "name": "sword",
+      "asset": "POLYGON_Dark_Fantasy/SM_Wep_Sword_01",
+      "kind": "prop",
+      "template": "bob"
+    },
+    {
+      "name": "flame",
+      "asset": "POLYGON_Particle_FX/SM_Flame_FX",
+      "kind": "prop",
+      "template": "still",
+      "fx": {
+        "enabled": true,
+        "tint": "#ff7a20",
+        "intensity": 1.2
+      }
+    },
+    {
+      "name": "ladder",
+      "asset": "POLYGON_Dark_Fortress/SM_Prop_Ladder_01"
+    },
+    {
+      "name": "door",
+      "asset": "POLYGON_Dungeon_Pack/SM_Env_Door_01",
+      "kind": "prop",
+      "template": "still"
+    },
+    {
+      "name": "web",
+      "asset": "POLYGON_Dark_Fortress/SM_Env_Spiderweb_01",
+      "kind": "prop",
+      "template": "still"
+    },
+    {
+      "name": "vase",
+      "asset": "POLYGON_Dungeon_Pack/SM_Prop_Vase_01",
+      "kind": "prop",
+      "template": "still"
+    },
+    {
+      "name": "skull_pile",
+      "asset": "POLYGON_Dark_Fantasy/SM_Prop_Skull_03",
+      "kind": "prop",
+      "template": "still"
+    }
+  ]
+}
