@@ -6,6 +6,6 @@
     "noEmit": false,
     "emitDeclarationOnly": true
   },
-  "references": [{ "path": "../library" }, { "path": "../sprites" }],
+  "references": [{ "path": "../bake" }, { "path": "../library" }, { "path": "../sprites" }],
   "include": ["src/**/*.ts", "test/**/*.ts"]
 }

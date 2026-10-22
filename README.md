@@ -23,7 +23,7 @@ The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
 |---|---|---|
 | P0 | Review and spikes (renderer, weak-model baseline) | in progress |
 | P1 | Foundations: repo tooling, one schema, library import | done (#64, #65) |
-| P2 | Sprites through `slop build` | done for sprites with existing bakes: `@slop/sprites`, `@slop/formats`, `@slop/render`, `@slop/cli`; all 16 Monty sprites build pixel-identical to the old generator (#8, #9, #10, #11, #13). Open: Blender bakes on demand, layered sheets, splits, portraits |
+| P2 | Sprites through `slop build` | done for sprites: `@slop/sprites`, `@slop/formats`, `@slop/render`, `@slop/cli`, `@slop/bake` (Blender bakes on demand, #69); all 16 Monty sprites build pixel-identical to the old generator (#8, #9, #10, #11, #13). Open: layered sheets, splits, portraits |
 | P3 | 3D models and textures | done: `@slop/models3d` (#14/#15/#16), GLBs byte-identical to Off Road / Car Smash's; `slop build` wiring → cli |
 | P4 | Levels: tilesets, maps, routes | — |
 | P4b | Component catalogue | — |
@@ -69,6 +69,10 @@ CI (`.github/workflows/ci.yml`) runs the four on every push and PR and fails whe
   sprite as the old `ssg sprite apply` did, renders through `@slop/render`, packs through `@slop/sprites` and
   writes the same files the old generator downloaded. Goldens: Monty's sprites, pixel for pixel against the old
   generator on both backends, and byte-identical rebuilds. See [packages/cli/README.md](packages/cli/README.md).
+- **`@slop/bake`** (`packages/bake`): Blender bakes on demand. The old retarget worker (Python, with its tests), a bake
+  store owned by the Sloponator (`~/.cache/slop/bakes`, keyed by input hashes and the Blender and worker versions),
+  imports of the old generator's bakes, per-key locks and one Blender at a time. `slop build` bakes what it needs
+  before the browser starts. See [packages/bake/README.md](packages/bake/README.md).
 - **`@slop/models3d`** (`packages/models3d`): the 3D model export moved from the old generator: GLB + manifest per
   asset (scale, wheels, clips from existing bakes, variants, LODs, poses, seats, dashboards, colliders, meshopt),
   track pieces, terrain, skydomes, composites, the texture export, a content-addressed cache and the

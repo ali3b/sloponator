@@ -14,6 +14,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { chromium, type Browser, type Page, type Route } from 'playwright';
 import { assetDto, animationDto, type Library } from '@slop/library';
+import { BakeStore, type BakeRequest } from '@slop/bake';
 import { frameUnitKey, frameUnitDigests, FRAME_CACHE_VERSION, type CachedFrame, type FrameSource, type FrameUnitKeyInput, type FrameProgress, type RenderBackend, type RendererId } from '@slop/sprites';
 import { backendOf, chromiumLaunch, type GpuChoice, type ChromiumLaunch } from './browser.js';
 import { defaultCacheDir, ensureBundle, type BundleInfo } from './bundle.js';
@@ -34,6 +35,38 @@ export interface RunnerOptions {
   log?: (m: string) => void;
   /** Rebuild the bundle even when the cache has it. */
   rebuildBundle?: boolean;
+  /**
+   * Where `/slop/bake` finds baked clips: the bake store `slop build` filled before starting the runner (default: a
+   * @slop/bake store on `<cacheDir>/bakes`). The runner only looks clips up (and imports the old generator's): it
+   * never starts Blender, which must not run beside the render.
+   */
+  bakes?: BakeFinder;
+}
+
+/** The bake lookup the runner needs (a @slop/bake BakeStore). */
+export interface BakeFinder {
+  find(req: BakeRequest): FoundBake | null;
+}
+
+/** A baked clip: its GLB, its track name, its ground speed (m/s, null when none). */
+export interface FoundBake {
+  glb: string;
+  clip: string;
+  speed: number | null;
+}
+
+/** Without a bake store: the old generator's bakes, read in place (the library's bakePath), as before @slop/bake. */
+function oldBakes(lib: Library): BakeFinder {
+  return {
+    find: (req) => {
+      const anim = lib.animation(req.animation);
+      const inPlace = !req.rootMotion;
+      const glb = anim?.bakePath(req.asset, { inPlace });
+      if (!anim || !glb) return null;
+      const clip = `n${anim.id}${inPlace ? '' : '_rm'}`;
+      return { glb, clip, speed: anim.bakeSpeed(req.asset, { inPlace }) };
+    },
+  };
 }
 
 export interface RenderHooks {
@@ -84,8 +117,12 @@ function findFile(dir: string, lowerName: string): string | null {
   return null;
 }
 
-/** The data the page asks for, answered from the library. Exported for tests (no browser needed). */
-export function dataHandler(lib: Library): (pathname: string, search: URLSearchParams) => { status: number; type: string; body: Buffer | string } {
+/**
+ * The data the page asks for, answered from the library (and baked clips from `bakes`; default: the old generator's
+ * bakes in place). Exported for tests (no browser needed).
+ */
+export function dataHandler(lib: Library, opts: { bakes?: BakeFinder } = {}): (pathname: string, search: URLSearchParams) => { status: number; type: string; body: Buffer | string } {
+  const bakes = opts.bakes ?? oldBakes(lib);
   const urls = { glb: (e: { id: number; glb: string | null }) => (e.glb ? `/slop/glb/${e.id}` : null), thumb: () => null };
   const json = (v: unknown) => ({ status: 200, type: 'application/json', body: JSON.stringify(v) });
   const missing = (m: string) => ({ status: 404, type: 'application/json', body: JSON.stringify({ error: m }) });
@@ -107,12 +144,17 @@ export function dataHandler(lib: Library): (pathname: string, search: URLSearchP
       const anim = lib.animation(animId);
       const asset = lib.asset(assetId);
       if (!anim || !asset) return missing(`no clip #${animId} or asset #${assetId}`);
-      const f = anim.bakePath(assetId, { inPlace });
-      if (!f) return { status: 409, type: 'application/json', body: JSON.stringify({ error: `no bake of ${anim.pack}/${anim.name} (#${animId}) on ${asset.pack}/${asset.name} (#${assetId}) in data/bakes: the old generator has to retarget it first (Blender bakes on demand are not in the Sloponator yet)` }) };
-      return json({ url: `/slop/bakes/${assetId}/${animId}${inPlace ? '' : '?rm=1'}`, clip: `n${animId}${inPlace ? '' : '_rm'}`, speed: anim.bakeSpeed(assetId, { inPlace }) });
+      let found: FoundBake | null;
+      try {
+        found = bakes.find({ asset: assetId, animation: animId, rootMotion: !inPlace });
+      } catch (e) {
+        return { status: 500, type: 'application/json', body: JSON.stringify({ error: `bake store: ${(e as Error).message}` }) };
+      }
+      if (!found) return { status: 409, type: 'application/json', body: JSON.stringify({ error: `no bake of ${anim.pack}/${anim.name} (#${animId}) on ${asset.pack}/${asset.name} (#${assetId}) in the bake store: slop build bakes every clip it plans with Blender before the render starts (see the "bakes" lines it printed)` }) };
+      return json({ url: `/slop/bakes/${assetId}/${animId}${inPlace ? '' : '?rm=1'}`, clip: found.clip, speed: found.speed });
     }
     if ((m = pathname.match(/^\/slop\/bakes\/(\d+)\/(\d+)$/))) {
-      const f = lib.animation(Number(m[2]))?.bakePath(Number(m[1]), { inPlace: search.get('rm') !== '1' });
+      const f = bakes.find({ asset: Number(m[1]), animation: Number(m[2]), rootMotion: search.get('rm') === '1' })?.glb;
       return f ? { status: 200, type: MIME['.glb']!, body: fs.readFileSync(f) } : missing('no such bake');
     }
     if ((m = pathname.match(/^\/slop\/fx\/(\w+)$/))) {
@@ -135,7 +177,7 @@ export async function startRunner(opts: RunnerOptions): Promise<Runner> {
   const store = new FrameStore(path.join(cacheDir, 'frames'));
   const launch = chromiumLaunch(opts.gpu ?? 'auto');
   const browser: Browser = await chromium.launch({ env: launch.env, args: launch.args });
-  const data = dataHandler(opts.lib);
+  const data = dataHandler(opts.lib, { bakes: opts.bakes ?? new BakeStore({ lib: opts.lib, dir: path.join(cacheDir, 'bakes'), log }) });
   let page: Page;
   const pageErrors: string[] = [];
   // What the page's bridge functions dispatch to for the render in progress.

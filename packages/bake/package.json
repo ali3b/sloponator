@@ -1,0 +1,25 @@
+{
+  "name": "@slop/bake",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Blender bakes on demand: the retarget worker (Python, run headless by Blender), a Sloponator-owned bake store keyed by the inputs and the Blender/worker versions, imports of the old generator's bakes, per-key locks and one Blender at a time.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@slop/library": "0.0.0",
+    "@slop/sprites": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/three": "0.170.0",
+    "three": "0.170.0",
+    "vitest": "2.1.9"
+  }
+}

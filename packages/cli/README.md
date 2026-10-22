@@ -50,15 +50,16 @@ clean, medium, generic).
   the profile's Liquid files, `validateSheets` (recorded in the meta/json), the generic `.sheet.json` next to every
   sheet unless the format's `{base}.json` already is it.
 
-Cache: `$SLOP_CACHE_DIR` or `~/.cache/slop` (`bundles/<sourceHash>/`, `frames/<kk>/<key>/`); the frame-cache key is
+**Bakes:** after planning and before the browser starts, `bakeForBuild` (`@slop/bake`) collects every skeletal clip
+the sprites (and their uniform-frame siblings) play, imports the old generator's bakes, and bakes the missing ones
+with Blender, one at a time (`baking 3 clips with Blender 4.0.2: 1/3 Walk_F on … …`). See packages/bake/README.md.
+
+Cache: `$SLOP_CACHE_DIR` or `~/.cache/slop` (`bundles/<sourceHash>/`, `frames/<kk>/<key>/`, `bakes/a<asset>/n<anim>/<key>/`); the frame-cache key is
 `@slop/sprites` `frameUnitKey` with `renderer: { backend, bundle }` — see `packages/render/README.md`. The library:
 `--data-dir`, `$SLOP_OLD_DATA_DIR`, else `~/projects/synty-sprite-generator/data`.
 
 ## What this version does not build (said loudly, never silently)
 
-- **Characters and objects whose clips already have bakes** in `data/bakes` only: a clip the old generator never
-  retargeted onto the model fails the sprite with `no bake of <clip> on <model> … (Blender bakes on demand are not in
-  the Sloponator yet)`.
 - No tilesets or maps (reported as skipped; P4), no 3D (P3).
 - No layered equipment sheets (`layered`), waist or turret splits, portraits: a sprite that asks for one fails with
   a message before anything renders. Equipment baked into the body (Monty's hat) is fine.

@@ -13,3 +13,4 @@ public/models/
 *.gltf
 *.unitypackage
 test-results/
+__pycache__/

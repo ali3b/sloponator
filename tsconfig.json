@@ -5,6 +5,7 @@
     { "path": "packages/library" },
     { "path": "packages/formats" },
     { "path": "packages/sprites" },
+    { "path": "packages/bake" },
     { "path": "packages/render" },
     { "path": "packages/cli" },
     { "path": "packages/models3d" }
