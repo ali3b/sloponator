@@ -96,38 +96,60 @@ They raised **189 feedback entries**. About 92% of them are fixed, usually withi
 
 **Docs research.** An auto-generated or bloated AGENTS.md *hurts* agents. Only short, human-reviewed, task-sized docs help. So every doc fix from the help loop must improve the eval score, not just pass your approval.
 
-## 3. The Sloponator architecture (`~/projects/sloponator`, working name)
+## 3. Architecture: two repos
+
+**Decision (22 Oct, after the first draft):** the asset pipeline and the game kit are separate repos. The old
+generator sprawled because game concerns (levels, gameplay data, a demo game) grew inside a sprite tool; the kit
+must not be able to do that to the pipeline, and games (and the weak model) must never see pipeline code.
+
+### `ali3b/sloponator`: the asset pipeline (`slop`)
 
 ```
 packages/
-  schema/    zod: the one source for every option → CLI, MCP, JSON Schema, REST, docs
-  library/   pack ingest + Blender worker + Synty knowledge; imports the existing data/glb + packs read-only (no re-ingest)
+  schema/    zod: the one source for every option → CLI, MCP, JSON Schema, docs            (done, P1)
+  formats/   JSON Schemas + TS types for everything a game reads: the contract with slopkit
+  library/   pack ingest + Blender worker + Synty knowledge; imports the existing data/glb + packs read-only
   render/    the three.js render bundle (built once, hashed) + a runner launched by the build tool; GPU/SwiftShader, blank-frame check
-  sprites/   characters/objects → sheets: export core, profiles, layers, events, frame cache (key = inputs + bundle hash)
-  levels/    tilesets + Tiled maps + level tools (routes, zones, game markers): moved out of the "sprite" scope
+  sprites/   characters/objects → sheets: export core, profiles, layers, events, frame cache (key = inputs + bundle hash + backend)
+  levels/    tilesets + Tiled maps + level tools (routes, zones, game markers)
   models3d/  GLB export + manifest, textures, track pieces / terrain / sky
   catalog/   the Synty component catalogue: curated ids, tags, sizes, slots, movesets, behaviour hints; prebuilt
-             outputs + build-on-demand into the same content-addressed store
-  scenes/    scene scripts: schema, prose→script (LLM), director (timeline, paths, cameras), video render + audio
-  formats/   generated JSON Schemas + TS types for everything a game reads
-  runtime-core/   loop, actions (keys/pad/touch), audio (unlock, FM synth, sequencer, sfx), save + migrations, events, directions, debug hooks
-  runtime-phaser/ sprite loader (phaser3 + generic + layers/outfits/sockets/events), Arcade body from pivot, iso depth, Tiled, touch overlay
-  runtime-three/  model loader (variants, wheels, sockets, seats, LODs, colliders), renderer/quality/retro, cameras, touch widgets
-  cli/       `slop`: new · find · add · build · check · run · help-me · deploy · record · doctor (+ a 6–8 tool MCP)
+             outputs + build-on-demand into one content-addressed store
+  cli/       `slop`: build · find · info · catalog · doctor (+ a small MCP for the same)
+docs/        REVIEW.md · PLAN.md · api/ (generated)
+```
+
+- **`slop build`** works like a compiler: it reads a game's declaration files (`ssg.assets.json`, `ssg.models.json`,
+  `ssg.textures.json`, accepted unchanged), hashes each job, reuses cached frames, launches its own render process
+  and writes a **content pack** (sheets, GLBs, tilesets, maps, manifests). No server, no Vite, no restarts.
+- **A sprite owns its renders.** Jobs are temporary.
+- The pipeline knows nothing about Phaser, three.js at runtime, templates, scenes or the weak model.
+
+### `ali3b/slopkit`: the game kit (`kit`)
+
+```
+packages/
+  core/      engine-free: fixed-step loop, actions (keys/pad/touch → named actions), audio (unlock, mixer, FM synth,
+             sequencer, sfx), save + migrations, event bus, directions/projection, rng, debug hooks
+  phaser/    content-pack loader (sheets, layers/outfits, sockets, events), SsgSprite (dir from angle, Arcade body from
+             pivot), iso depth sort, Tiled map + zones, touch overlay, scene helpers, text styles
+  three/     model loader (variants, wheels, sockets, seats, LODs, colliders), renderer/quality/retro, cameras, touch widgets
+  components/ Character, Vehicle, Door, Pickup, Prop, Spawner for both runtimes; world.spawn(id)
+  scenes/    scene scripts: schema, prose→script (LLM), director (timeline, paths, cameras), playScene(), frame-exact video capture + TTS/music
+  cli/       `kit`: new · find · add · build · check · run · scene · help-me · deploy · record · doctor (+ a 6–8 tool MCP)
 templates/   phaser-topdown · phaser-side · phaser-iso · three-vehicle · three-arena (each runs as-is)
 examples/    one small finished game per template, made only through the kit
-docs/        AGENTS.md (short, human-reviewed) · recipes/ (one task each, full code) · api/ (generated) · REVIEW.md
+docs/        AGENTS.md (short, human-reviewed) · recipes/ (one task each, full code) · api/ (generated)
 help/ evals/ .claude/skills/{review-help,run-evals}
 ```
 
-**Key behaviours**
-- **`slop build` works like a compiler.** It reads the game's declaration files, hashes each job, reuses cached frames and launches its own render process. It needs no running server, no Vite and no restarts. A small optional daemon serves the later UI.
-- **A sprite owns its renders.** Jobs are temporary.
-- **Weak-model rules:**
-  - one way to do each thing;
-  - errors name the fix and the recipe;
-  - `slop check` gives PASS/FAIL with screenshots;
-  - assets are added by description: `slop find` then `slop add`.
+- The kit depends on the pipeline **only** through `@slop/formats` (a versioned package) and the `slop` CLI, which
+  `kit build` calls. `kit doctor` checks the two versions agree. A game can also run on a prebuilt catalogue pack
+  with no pipeline installed.
+- **`kit find` / `kit add`** are the weak model's way to get assets: they query the catalogue and edit the
+  declaration files; `kit build` runs `slop build`.
+- **Weak-model rules:** one way to do each thing; errors name the fix and the recipe; `kit check` gives PASS/FAIL
+  with screenshots; templates already run and the model edits marked `// EDIT:` regions.
 
 ### Component catalogue (Synty-only)
 
@@ -141,11 +163,11 @@ Because the asset set is closed, everything in it can be known, labelled and bui
   - the built outputs, listed below.
 - **Built outputs.** Every component gets a GLB with its manifest. Characters also get standard movesets. 2D sprites come in the standard presets: top-down 8, iso 8 and side 2, each in a clean and a pixel look.
 - **Prebuild in two tiers:**
-  - **Tier 1** is about 300 curated common components, built in advance. Games and the weak model get instant results, and `slop find` shows real previews.
+  - **Tier 1** is about 300 curated common components, built in advance. Games and the weak model get instant results, and `kit find` shows real previews.
   - **Tier 2** is everything else, built on first request with the current pipeline and cached under the same content key. Every build grows the shared catalogue.
 - **Runtime components.** For each behaviour hint, `runtime-phaser` and `runtime-three` provide a component: `Character`, `Vehicle`, `Door`, `Pickup`, `Prop`, `Spawner`. A template does `world.spawn('soldier_us_rifle', {x, y})` and gets a working, animated, colliding thing. Weak models compose these instead of writing loaders.
 - **Labelling.** Tags and descriptions are generated once with Claude and saved as data in the repo, so you can review them. The existing `labels`/`roles.json` rules seed them.
-- **Known gaps are explicit.** For example, there is no spider, snake or bat. `slop find` answers "not in your packs; closest: …; pack that has it: …". Gaps are listed in `catalog/GAPS.md`, and you decide what to buy.
+- **Known gaps are explicit.** For example, there is no spider, snake or bat. `kit find` answers "not in your packs; closest: …; pack that has it: …". Gaps are listed in `catalog/GAPS.md`, and you decide what to buy.
 
 ### Scene scripts and video
 
@@ -157,7 +179,7 @@ You write a scene, and the Sloponator plays it out with the characters and rende
   - beats: `walk_to`, `run_to`, `drive_to`, `say`, `play` (a clip or emote), `look_at`, `pick_up`/`hand_to`, `sit`/`enter_vehicle`, `wait`, `together`;
   - shots: wide, close, over the shoulder, follow, orbit, cut or blend;
   - music, and sound effects bound to events.
-- **Prose to script.** `slop scene write "two soldiers meet at a jeep, one hands over a map, they drive off"` turns the description into a script using only catalogue ids and known clips. It validates the script and fills in defaults. You can edit the YAML afterwards.
+- **Prose to script.** `kit scene write "two soldiers meet at a jeep, one hands over a map, they drive off"` turns the description into a script using only catalogue ids and known clips. It validates the script and fills in defaults. You can edit the YAML afterwards.
 - **The director** turns the script into a timeline:
   - routes are computed on the level's walk grid, reusing the generator's route code;
   - clips are blended and placed by the existing Blender-baked retargets;
@@ -167,7 +189,7 @@ You write a scene, and the Sloponator plays it out with the characters and rende
 - **Outputs:** an MP4, a contact sheet of shots, and the timeline JSON. A game can play the same script through the runtime's `playScene()`.
 
 ### Help loop
-1. **The model asks for help.** `slop help-me "…"`, or the MCP tool `ask_for_help`, records:
+1. **The model asks for help.** `kit help-me "…"`, or the MCP tool `ask_for_help`, records:
    - the question;
    - the template;
    - the `check` output;
@@ -184,7 +206,7 @@ You write a scene, and the Sloponator plays it out with the characters and rende
 
 ## Public on GitHub, so you can track progress
 
-- **Repository.** The repo is public on GitHub (`ali3b/sloponator`, with the name settled at P0) from the first commit of P0. `gh` auth already works.
+- **Repositories.** Both are public on GitHub from their first commit: `ali3b/sloponator` (pipeline) and `ali3b/slopkit` (game kit).
 - **Progress tracking:**
   - one GitHub **milestone** per phase (P0–P9) and one **issue** per work item, taken from this plan;
   - a **Project board** with the columns Todo, In progress, Review (waiting for you) and Done;
@@ -212,23 +234,23 @@ You write a scene, and the Sloponator plays it out with the characters and rende
   - Write the curated ids and labels.
   - Prebuild Tier 1, about 300 components: GLBs plus the standard sprite presets, run in the background on the one GPU worker.
   - Build Tier 2 on demand.
-  - Add `slop find` with previews, and `GAPS.md`.
-- **P5 Runtimes.**
+  - Add `slop catalog find` with previews, and `GAPS.md` (the kit's `kit find` wraps it).
+- **P5 Runtimes (slopkit).**
   - Build runtime-core, runtime-phaser and runtime-three, extracted from the games and tested against real exports.
   - Add the runtime components (`Character`, `Vehicle`, `Door`, `Pickup`, `Prop`, `Spawner`) and `world.spawn(id)`.
-- **P5b Scene scripts and video.**
-  - The script schema, and `slop scene write` (prose to script).
+- **P5b Scene scripts and video (slopkit).**
+  - The script schema, and `kit scene write` (prose to script).
   - The director: routes, clips, sockets, seats, shots.
   - Frame-exact video render with TTS, subtitles and music.
   - `playScene()` in the runtimes.
   - Three demo scenes, all checked into examples: a meeting at a jeep, a tavern conversation, and a chase.
-- **P6 Agent layer.** The `slop` CLI and MCP, templates, examples, the docs, and the error-message pass.
-- **P7 Help loop and evals.**
+- **P6 Agent layer (slopkit).** The `kit` CLI and MCP, templates, examples, the docs, and the error-message pass.
+- **P7 Help loop and evals (slopkit).**
   - Write 8 briefs, for example: top-down survival, coin platformer, iso defence, 1v1 fighter, kart race, 3D marble, arena brawler, modding an example.
-  - For each brief: a new game, then the free model, then `slop check`, then a Claude judge scoring screenshots and video, then a scoreboard.
+  - For each brief: a new game, then the free model, then `kit check`, then a Claude judge scoring screenshots and video, then a scoreboard.
   - **Target:** at least 5 of the 8 briefs reach PASS and are judged "good".
-- **P8 Migration proof.** Move Monty (2D) and Off Road (3D) onto the Sloponator. Their existing load-checks must pass.
-- **P9 One simple UI.** A single viewer/editor (library, sprite with inspect and placement, levels) on the Sloponator daemon. Retire the old web app once it matches the features you still use.
+- **P8 Migration proof (both).** Move Monty (2D) and Off Road (3D) onto the Sloponator. Their existing load-checks must pass.
+- **P9 One simple UI (sloponator).** A single viewer/editor (library, sprite with inspect and placement, levels) on the Sloponator daemon. Retire the old web app once it matches the features you still use.
 
 ## Verification
 
@@ -242,8 +264,8 @@ You write a scene, and the Sloponator plays it out with the characters and rende
   - asking for a Tier 2 item builds it and caches it;
   - asking for a known gap gives the "closest / pack that has it" answer.
 - **Scenes:**
-  - `slop scene write` followed by `slop scene render` turns a one-line description into an MP4 with the right cast, voices, subtitles and shots;
+  - `kit scene write` followed by `kit scene render` turns a one-line description into an MP4 with the right cast, voices, subtitles and shots;
   - rendering the same script twice gives the same frames;
   - the same script plays as a cutscene in a template game, and its load-check passes.
-- **Help loop:** in a scratch game, `slop help-me` produces an inbox entry. `/review-help` answers it and drafts a branch with an eval case.
+- **Help loop:** in a scratch game, `kit help-me` produces an inbox entry. `/review-help` answers it and drafts a branch with an eval case.
 - **End to end:** the eval scoreboard (model, briefs, pass rate, judge scores, requests used), and a game the free model built, played in the browser.

@@ -7,10 +7,11 @@ model can make a good game with it.
   built like a compiler from one declaration file.
 - **Component catalogue:** every Synty asset as a ready-to-use component (`world.spawn('soldier_us_rifle')`), the
   common ones prebuilt, the rest built on first use.
-- **Runtimes:** Phaser 3 (2D) and three.js (3D) libraries for loading, input, audio, saves and cameras.
-- **Scene scripts:** describe a scene, get a video of the characters playing it out, or a cutscene in a game.
-- **For weak models:** templates that already run, one-task recipes, errors that say how to fix them, `slop check`,
-  and `slop help-me`, which sends a request to a stronger model that answers it and fixes the docs.
+
+This repo is the **asset pipeline** only (`slop`). The game side — Phaser 3 and three.js runtimes, ready
+components, templates, scene scripts that play out as video, and the help loop for weak models — is the separate
+**game kit**, [ali3b/slopkit](https://github.com/ali3b/slopkit). The kit talks to the pipeline only through the
+manifest formats and `slop build`, so games never contain pipeline code.
 
 The Sloponator is the successor of the Synty Sprite Generator. Why it exists: **[docs/REVIEW.md](docs/REVIEW.md)**.
 The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
@@ -21,16 +22,13 @@ The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
 | Phase | What | Status |
 |---|---|---|
 | P0 | Review and spikes (renderer, weak-model baseline) | in progress |
-| P1 | Foundations: repo, one schema, library import | — |
+| P1 | Foundations: repo tooling, one schema | done (#64); library import → P2 |
 | P2 | Sprites through `slop build` | — |
 | P3 | 3D models and textures | — |
 | P4 | Levels: tilesets, maps, routes | — |
 | P4b | Component catalogue | — |
-| P5 | Runtimes: core, Phaser, three.js | — |
-| P5b | Scene scripts and video | — |
-| P6 | Agent layer: CLI, MCP, templates, examples, docs | — |
-| P7 | Help loop and evals | — |
-| P8 | Migration proof: Monty and Off Road | — |
+| P5–P7 | Runtimes, scenes, agent layer, help loop, evals | in [slopkit](https://github.com/ali3b/slopkit) |
+| P8 | Migration proof: Monty and Off Road (both repos) | — |
 | P9 | One simple UI | — |
 
 ## Development
