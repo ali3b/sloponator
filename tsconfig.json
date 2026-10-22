@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "packages/schema" },
+    { "path": "packages/library" },
     { "path": "packages/formats" },
     { "path": "packages/sprites" }
   ]

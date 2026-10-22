@@ -1,0 +1,117 @@
+{
+  "description": "Part-role rules for rigid multi-part assets. Patterns are matched case-insensitively against the part name with the asset name prefix removed. First match wins (so steering wheels match `steering` before the generic `wheel` rule, CS-FB-009). Applied by the server at read time (apps/server/src/roles.ts) and by worker/synty/roles.py at ingest; user overrides win over both.",
+  "rules": [
+    {
+      "role": "needle",
+      "pattern": "needle"
+    },
+    {
+      "role": "gauge",
+      "pattern": "speedo|tacho|rev_?counter|gauge|(^|_)dial(_|\\d|$)"
+    },
+    {
+      "role": "wheel_door",
+      "pattern": "wheel_?door"
+    },
+    {
+      "role": "steering",
+      "pattern": "steer|handle_?bars?"
+    },
+    {
+      "role": "wheel",
+      "pattern": "(^|_)wheels?(_|\\d|$)"
+    },
+    {
+      "role": "track",
+      "pattern": "(^|_)tracks?(_|\\d|$)"
+    },
+    {
+      "role": "canopy",
+      "pattern": "canopy|cockpit_?(glass|cover)?$"
+    },
+    {
+      "role": "door",
+      "pattern": "door"
+    },
+    {
+      "role": "propeller",
+      "pattern": "(^|_)(prop|propeller|rotor)(_|\\d|$)"
+    },
+    {
+      "role": "static",
+      "pattern": "mud_?flaps?"
+    },
+    {
+      "role": "control_surface",
+      "pattern": "flap|aileron|rudder|elevator"
+    },
+    {
+      "role": "turret",
+      "pattern": "turret"
+    },
+    {
+      "role": "barrel",
+      "pattern": "barrel|cannon|(^|_)gun(_|\\d|$)"
+    },
+    {
+      "role": "trigger",
+      "pattern": "trigger"
+    },
+    {
+      "role": "bolt",
+      "pattern": "(^|_)bolt|slide|hammer"
+    },
+    {
+      "role": "magazine",
+      "pattern": "(^|_)(mag|magazine|clip|ammo_?box)(_|\\d|$)"
+    },
+    {
+      "role": "projectile",
+      "pattern": "missile|rocket|(^|_)shell(_|\\d|$)|bomb"
+    },
+    {
+      "role": "lever",
+      "pattern": "lever|gear_?stick|gear_?shift|joy_?stick|(^|_)e_?brake|hand_?brake|(^|_)handle(_|\\d|$)|(^|_)switch(_|\\d|$)"
+    },
+    {
+      "role": "drawer",
+      "pattern": "drawer"
+    },
+    {
+      "role": "gate",
+      "pattern": "(^|_)(gate|portcullis|grate|grill|bars)(_|\\d|$)"
+    },
+    {
+      "role": "blade",
+      "pattern": "(^|_)(blades?|spikes?|saw)(_|\\d|$)"
+    },
+    {
+      "role": "arm",
+      "pattern": "(^|_)(arm|bow|throwing_?arm)(_|\\d|$)"
+    },
+    {
+      "role": "chain",
+      "pattern": "(^|_)chains?(_|\\d|$)"
+    },
+    {
+      "role": "flag",
+      "pattern": "(^|_)(flag|banner|cloth|sail)(_|\\d|$)"
+    },
+    {
+      "role": "lid",
+      "pattern": "lid|hatch|trunk|boot|bonnet|hood|cover|latch|trapdoor"
+    },
+    {
+      "role": "lift",
+      "pattern": "beams|platform|fork"
+    },
+    {
+      "role": "emissive",
+      "pattern": "light|lamp|siren"
+    },
+    {
+      "role": "static",
+      "pattern": "glass|plates?|stick|seat|interior|attach|body|stand|sights?|stock|sheath|panel|fueltank|pin"
+    }
+  ]
+}
