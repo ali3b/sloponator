@@ -24,7 +24,7 @@ The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
 | P0 | Review and spikes (renderer, weak-model baseline) | in progress |
 | P1 | Foundations: repo tooling, one schema | done (#64); library import → P2 |
 | P2 | Sprites through `slop build` | in progress: export core moved (#8: `@slop/sprites`, `@slop/formats`) |
-| P3 | 3D models and textures | — |
+| P3 | 3D models and textures | in progress: export moved (#14/#15/#16: `@slop/models3d`, `.model.json` in `@slop/formats`); `slop build` wiring → cli |
 | P4 | Levels: tilesets, maps, routes | — |
 | P4b | Component catalogue | — |
 | P5–P7 | Runtimes, scenes, agent layer, help loop, evals | in [slopkit](https://github.com/ali3b/slopkit) |
@@ -53,13 +53,18 @@ CI (`.github/workflows/ci.yml`) runs the four on every push and PR and fails whe
   `ssg.models.json` and `ssg.textures.json` are ported from the old generator, and the real games' files validate
   unchanged (`packages/schema/test/fixtures`).
 - **`@slop/formats`** (`packages/formats`): what a game reads. zod schemas, TS types and JSON Schemas of
-  `ssg-meta/1`, `ssg-layers/1`, `ssg-split/1`, `ssg-turret/1`, the generic sheet JSON, the Phaser 3 anims JSON and
-  the object block; the games' real manifests validate unchanged (`packages/formats/test/fixtures`). The contract
-  with slopkit.
+  `ssg-meta/1`, `ssg-layers/1`, `ssg-split/1`, `ssg-turret/1`, the generic sheet JSON, the Phaser 3 anims JSON, the
+  object block, the 3D `.model.json` manifest and the `models.json` index; the games' real manifests validate
+  unchanged (`packages/formats/test/fixtures`). The contract with slopkit.
 - **`@slop/sprites`** (`packages/sprites`): the export core moved from the old generator: engine profiles, sheet
   layout and pure RGBA composition, manifests, clip events, validation, the frame-cache key (now keyed by render
   backend and bundle hash). It describes and packs frames; the render bundle draws them. See
   [packages/sprites/README.md](packages/sprites/README.md).
+- **`@slop/models3d`** (`packages/models3d`): the 3D model export moved from the old generator: GLB + manifest per
+  asset (scale, wheels, clips from existing bakes, variants, LODs, poses, seats, dashboards, colliders, meshopt),
+  track pieces, terrain, skydomes, composites, the texture export, a content-addressed cache and the
+  `ssg.models.json` / `ssg.textures.json` builds (`buildModels`, `buildTextures`); the games' files rebuild byte for
+  byte. See [packages/models3d/README.md](packages/models3d/README.md).
 
 ## Licence
 

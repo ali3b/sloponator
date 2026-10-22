@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "noUncheckedIndexedAccess": false
+  },
+  "references": [{ "path": "../schema" }, { "path": "../formats" }, { "path": "../library" }, { "path": "../sprites" }],
+  "include": ["src/**/*.ts", "src/**/*.json"]
+}

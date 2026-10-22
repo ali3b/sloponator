@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "name": "barrel",
+  "source": {
+    "pack": "POLYGON_Apocalypse",
+    "asset": "SM_Prop_Barrel_01",
+    "assetId": 10060
+  },
+  "units": "m",
+  "forward": "+Z",
+  "up": "+Y",
+  "origin": "bottom-centre",
+  "bounds": {
+    "min": [
+      -0.3631,
+      0,
+      -0.3474
+    ],
+    "max": [
+      0.3631,
+      1.0454,
+      0.3474
+    ],
+    "size": [
+      0.7262,
+      1.0454,
+      0.6948
+    ]
+  },
+  "parts": [],
+  "sockets": [],
+  "clips": [],
+  "collider": {
+    "box": {
+      "center": [
+        0,
+        0.5227,
+        0
+      ],
+      "size": [
+        0.7262,
+        1.0454,
+        0.6948
+      ]
+    }
+  },
+  "licence": "Synty Store EULA: not for redistribution as source assets"
+}

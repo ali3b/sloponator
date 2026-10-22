@@ -25,5 +25,8 @@
     "typescript": "5.6.3",
     "typescript-eslint": "8.72.0",
     "vitest": "2.1.9"
+  },
+  "overrides": {
+    "ndarray-pixels": "5.0.1"
   }
 }

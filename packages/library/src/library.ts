@@ -16,7 +16,7 @@ import { detect, loadProfiles, type RigProfile } from './synty/rigs.js';
 import { findStateVariants } from './synty/states.js';
 import { knownScaleOverride } from './synty/index.js';
 import type {
-  Animation, AnimationEntry, AnimationQuery, Asset, AssetEntry, AssetKind, AssetPart, AssetQuery, AssetRig, AssetScale, AssetStatus, IngestMeta, Label, LabelField, Library,
+  Animation, AnimationEntry, AnimationQuery, Asset, AssetEntry, AssetKind, AssetPart, AssetQuery, AssetRig, AssetScale, AssetStatus, Grip, IngestMeta, Label, LabelField, Library,
   Pack, PackKind, PackStatus, ScaleOverrideRow,
 } from './types.js';
 
@@ -298,6 +298,8 @@ export function openLibrary(opts: OpenLibraryOptions): Library {
         const siblings = db.prepare(`SELECT id, name, kind FROM assets WHERE pack_id = ? AND status = 'ready'`).all(a.pack_id) as { id: number; name: string; kind: string }[];
         return findStateVariants({ id: a.id, name: a.name, kind: a.kind }, siblings);
       },
+      grip: (): Grip | null =>
+        has('grips') ? parseJson<Grip>((db.prepare('SELECT data FROM grips WHERE pack_name = ? AND asset_name = ?').get(a.pack_name, a.name) as { data: string } | undefined)?.data) : null,
     });
   };
 
