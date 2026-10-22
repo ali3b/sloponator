@@ -1,0 +1,15 @@
+node_modules
+dist
+.env
+.env.*
+# Synty assets and anything rendered from them: never commit
+store/
+packs/
+out/
+public/assets/
+public/models/
+*.fbx
+*.glb
+*.gltf
+*.unitypackage
+test-results/

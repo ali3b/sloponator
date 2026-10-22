@@ -1,0 +1,13 @@
+name: asset-guard
+# Synty assets and renders must never be committed to this public repo.
+on: [push, pull_request]
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Block Synty assets and rendered outputs
+        run: |
+          bad=$(git ls-files | grep -Ei '\.(fbx|glb|gltf|unitypackage|blend|tga|psd)$|^(store|packs|out)/|public/(assets|models)/' || true)
+          if [ -n "$bad" ]; then echo "Synty assets or renders are committed:"; echo "$bad"; exit 1; fi
+          echo "clean"
