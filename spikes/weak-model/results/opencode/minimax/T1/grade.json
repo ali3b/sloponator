@@ -1,0 +1,1 @@
+{"task":"T1","typecheck":false,"loadCheck":true,"feature":true,"pass":false,"notes":["typecheck: src/hud.ts(96,51): error TS2345: Argument of type 'string' is not assignable to parameter of type '\"#f4e4c4\"'. | ","T1: PAUSED shown=true removed=true scenePaused=true"]}

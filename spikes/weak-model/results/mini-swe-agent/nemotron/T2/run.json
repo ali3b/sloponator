@@ -1,0 +1,10 @@
+{
+  "model": "nvidia/nemotron-3-super-120b-a12b:free",
+  "task": "T2",
+  "calls": 0,
+  "wallSeconds": 0,
+  "exit": "infra",
+  "rateLimited": 0,
+  "infraFailure": true,
+  "notes": "Not run. The model's only provider answered the T1 attempt and 3 probes at 11:16-11:18 with HTTP 404 'Function ac74040f-...: Not found for account ...' (deleted backend function), and 3 more probes 60 s apart at 13:02-13:04 gave the same 404. Recorded as an infrastructure failure without a run."
+}

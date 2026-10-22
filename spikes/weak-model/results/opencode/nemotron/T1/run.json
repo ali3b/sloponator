@@ -1,0 +1,39 @@
+{
+  "model": "nvidia/nemotron-3-super-120b-a12b:free",
+  "task": "T1",
+  "harness": "opencode 1.19.0",
+  "calls": 0,
+  "wallSeconds": 80,
+  "exit": 1,
+  "rateLimited": 0,
+  "infraFailure": true,
+  "cappedAt40Calls": false,
+  "timedOut": false,
+  "toolCalls": 0,
+  "toolCallErrors": 0,
+  "malformedToolCalls": 0,
+  "toolNames": {},
+  "streamErrors": 6,
+  "finishReasons": {},
+  "tokens": {
+    "input": 0,
+    "output": 0,
+    "reasoning": 0
+  },
+  "errors": [
+    "[Nvidia] Function 'ac74040f-9fc9-4c5e-ac74-279ba5161d69': Not found for account 'sxpm0VR-knE2_K2__i14ZbzmXEludXpJbFGRvrvc08w'"
+  ],
+  "toolErrorSamples": [],
+  "strayedOutsideCopy": false,
+  "grade": {
+    "pass": false,
+    "typecheck": true,
+    "loadCheck": true,
+    "feature": false
+  },
+  "notes": [
+    "attempt 1: no step ran, error: {\"type\":\"error\",\"timestamp\":1792649298143,\"sessionID\":\"ses_e9dc78e1cffe2KJxGDixPGw2c9\",\"error\":{\"name\":\"APIError\",\"data\":{\"message\":\"[Nvidia] Function 'ac74040f-9fc9-4c5e-ac74-279ba5161d69': Not found for account 'sxpm0VR-knE2_K2__i14ZbzmXEludXpJbFGRvrvc08w'\",\"statusCode\":404,\"isRetryable\":false,\"re",
+    "attempt 2: no step ran, error: {\"type\":\"error\",\"timestamp\":1792649437039,\"sessionID\":\"ses_e9dc57daeffeeuWnSpFR3ho595\",\"error\":{\"name\":\"APIError\",\"data\":{\"message\":\"[Nvidia] Function 'ac74040f-9fc9-4c5e-ac74-279ba5161d69': Not found for account 'sxpm0VR-knE2_K2__i14ZbzmXEludXpJbFGRvrvc08w'\",\"statusCode\":404,\"isRetryable\":false,\"re",
+    "attempt 3: no step ran, error: {\"type\":\"error\",\"timestamp\":1792649574462,\"sessionID\":\"ses_e9dc36d6affeEz6s660q2hKiXW\",\"error\":{\"name\":\"APIError\",\"data\":{\"message\":\"[Nvidia] Function 'ac74040f-9fc9-4c5e-ac74-279ba5161d69': Not found for account 'sxpm0VR-knE2_K2__i14ZbzmXEludXpJbFGRvrvc08w'\",\"statusCode\":404,\"isRetryable\":false,\"re"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "model": "minimax/minimax-m3.1-flash:free",
+  "task": "T2",
+  "harness": "opencode 1.19.0",
+  "calls": 41,
+  "wallSeconds": 383,
+  "exit": 143,
+  "rateLimited": 0,
+  "infraFailure": false,
+  "cappedAt40Calls": true,
+  "timedOut": false,
+  "toolCalls": 51,
+  "toolCallErrors": 0,
+  "malformedToolCalls": 0,
+  "toolNames": {
+    "read": 9,
+    "bash": 40,
+    "todowrite": 1,
+    "edit": 1
+  },
+  "streamErrors": 0,
+  "finishReasons": {
+    "tool-calls": 40
+  },
+  "tokens": {
+    "input": 96860,
+    "output": 5993,
+    "reasoning": 16135
+  },
+  "errors": [],
+  "toolErrorSamples": [],
+  "strayedOutsideCopy": false,
+  "grade": {
+    "pass": false,
+    "typecheck": true,
+    "loadCheck": false,
+    "feature": false
+  },
+  "notes": []
+}

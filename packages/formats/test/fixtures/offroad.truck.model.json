@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "name": "truck",
+  "source": {
+    "pack": "POLYGON_Palm_City",
+    "asset": "SM_Veh_Pickup_01",
+    "assetId": 2500
+  },
+  "units": "m",
+  "forward": "+Z",
+  "up": "+Y",
+  "origin": "axle-centre",
+  "bounds": {
+    "min": [
+      -1.265,
+      -0.5499,
+      -2.3979
+    ],
+    "max": [
+      1.265,
+      1.7159,
+      2.1021
+    ],
+    "size": [
+      2.53,
+      2.2658,
+      4.5
+    ]
+  },
+  "parts": [
+    {
+      "node": "SM_Veh_Pickup_01_Door_B",
+      "role": "door",
+      "pivot": [
+        0.0055,
+        0.7687,
+        -2.2508
+      ],
+      "hinge": {
+        "pos": [
+          0.0055,
+          0.7687,
+          -2.2508
+        ],
+        "axis": [
+          -1,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "node": "SM_Veh_Pickup_01_Door_L_Glass",
+      "role": "door",
+      "pivot": [
+        0.6883,
+        1.1423,
+        0.9474
+      ],
+      "hinge": {
+        "pos": [
+          0.6883,
+          1.1423,
+          0.9474
+        ],
+        "axis": [
+          0,
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "node": "SM_Veh_Pickup_01_Door_L",
+      "role": "door",
+      "pivot": [
+        0.6883,
+        1.1423,
+        0.9474
+      ],
+      "hinge": {
+        "pos": [
+          0.6883,
+          1.1423,
+          0.9474
+        ],
+        "axis": [
+          0,
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "node": "SM_Veh_Pickup_01_Door_R_Glass",
+      "role": "door",
+      "pivot": [
+        -0.6773,
+        1.1423,
+        0.9474
+      ],
+      "hinge": {
+        "pos": [
+          -0.6773,
+          1.1423,
+          0.9474
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "node": "SM_Veh_Pickup_01_Door_R",
+      "role": "door",
+      "pivot": [
+        -0.6773,
+        1.1423,
+        0.9474
+      ],
+      "hinge": {
+        "pos": [
+          -0.6773,
+          1.1423,
+          0.9474
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "node": "SM_Veh_Pickup_01_Gearstick",
+      "role": "static",
+      "pivot": [
+        0.0055,
+        0.2155,
+        -0.1479
+      ]
+    },
+    {
+      "node": "SM_Veh_Pickup_01_Glass",
+      "role": "static",
+      "pivot": [
+        0.0055,
+        0.2155,
+        -0.1479
+      ]
+    },
+    {
+      "node": "SM_Veh_Pickup_01_Steering_Wheel",
+      "role": "wheel",
+      "pivot": [
+        0.3508,
+        1.1023,
+        0.6598
+      ],
+      "radius": 0.1634,
+      "spinAxis": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "node": "SM_Veh_Pickup_Lift_01_Wheel_FL",
+      "role": "wheel",
+      "pivot": [
+        0.9997,
+        0,
+        1.4231
+      ],
+      "radius": 0.5499,
+      "spinAxis": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "node": "SM_Veh_Pickup_Lift_01_Wheel_FR",
+      "role": "wheel",
+      "pivot": [
+        -0.9997,
+        0,
+        1.4231
+      ],
+      "radius": 0.5499,
+      "spinAxis": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "node": "SM_Veh_Pickup_Lift_01_Wheel_RL",
+      "role": "wheel",
+      "pivot": [
+        0.9997,
+        0,
+        -1.4231
+      ],
+      "radius": 0.5499,
+      "spinAxis": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "node": "SM_Veh_Pickup_Lift_01_Wheel_RR",
+      "role": "wheel",
+      "pivot": [
+        -0.9997,
+        0,
+        -1.4231
+      ],
+      "radius": 0.5499,
+      "spinAxis": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "wheels": {
+    "fl": {
+      "node": "SM_Veh_Pickup_Lift_01_Wheel_FL",
+      "radius": 0.5499,
+      "axle": [
+        1,
+        0,
+        0
+      ],
+      "steer": true,
+      "pos": [
+        0.9997,
+        0,
+        1.4231
+      ]
+    },
+    "fr": {
+      "node": "SM_Veh_Pickup_Lift_01_Wheel_FR",
+      "radius": 0.5499,
+      "axle": [
+        1,
+        0,
+        0
+      ],
+      "steer": true,
+      "pos": [
+        -0.9997,
+        0,
+        1.4231
+      ]
+    },
+    "rl": {
+      "node": "SM_Veh_Pickup_Lift_01_Wheel_RL",
+      "radius": 0.5499,
+      "axle": [
+        1,
+        0,
+        0
+      ],
+      "steer": false,
+      "pos": [
+        0.9997,
+        0,
+        -1.4231
+      ]
+    },
+    "rr": {
+      "node": "SM_Veh_Pickup_Lift_01_Wheel_RR",
+      "radius": 0.5499,
+      "axle": [
+        1,
+        0,
+        0
+      ],
+      "steer": false,
+      "pos": [
+        -0.9997,
+        0,
+        -1.4231
+      ]
+    }
+  },
+  "sockets": [],
+  "clips": [],
+  "collider": {
+    "box": {
+      "center": [
+        0,
+        0.583,
+        -0.1479
+      ],
+      "size": [
+        2.53,
+        2.2658,
+        4.5
+      ]
+    }
+  },
+  "licence": "Synty Store EULA: not for redistribution as source assets",
+  "scale": {
+    "modelScale": 0.657217,
+    "fit": {
+      "length": 4.5
+    }
+  },
+  "variants": [
+    {
+      "name": "red",
+      "tint": "#c62828"
+    },
+    {
+      "name": "blue",
+      "tint": "#1e5bc6"
+    },
+    {
+      "name": "yellow",
+      "tint": "#f2c618"
+    },
+    {
+      "name": "grey",
+      "tint": "#8a8f94"
+    }
+  ],
+  "compress": "meshopt"
+}

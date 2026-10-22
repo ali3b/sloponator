@@ -1,0 +1,39 @@
+{
+  "model": "google/gemma-4-31b-it:free",
+  "task": "T1",
+  "harness": "opencode 1.19.0",
+  "calls": 0,
+  "wallSeconds": 80,
+  "exit": 1,
+  "rateLimited": 6,
+  "infraFailure": true,
+  "cappedAt40Calls": false,
+  "timedOut": false,
+  "toolCalls": 0,
+  "toolCallErrors": 0,
+  "malformedToolCalls": 0,
+  "toolNames": {},
+  "streamErrors": 6,
+  "finishReasons": {},
+  "tokens": {
+    "input": 0,
+    "output": 0,
+    "reasoning": 0
+  },
+  "errors": [
+    "[Google AI Studio] google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integration"
+  ],
+  "toolErrorSamples": [],
+  "strayedOutsideCopy": false,
+  "grade": {
+    "pass": false,
+    "typecheck": true,
+    "loadCheck": true,
+    "feature": false
+  },
+  "notes": [
+    "attempt 1: no step ran, error: {\"type\":\"error\",\"timestamp\":1792649684975,\"sessionID\":\"ses_e9dc1b3dcffen486BjyXyjroyO\",\"error\":{\"name\":\"APIError\",\"data\":{\"message\":\"[Google AI Studio] google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://o",
+    "attempt 2: no step ran, error: {\"type\":\"error\",\"timestamp\":1792649817000,\"sessionID\":\"ses_e9dbfa387ffetjBQR2cyrG6wFt\",\"error\":{\"name\":\"APIError\",\"data\":{\"message\":\"[Google AI Studio] google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://o",
+    "attempt 3: no step ran, error: {\"type\":\"error\",\"timestamp\":1792649960022,\"sessionID\":\"ses_e9dbd933affelHJEB9y2fQY28H\",\"error\":{\"name\":\"APIError\",\"data\":{\"message\":\"[Google AI Studio] google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://o"
+  ]
+}

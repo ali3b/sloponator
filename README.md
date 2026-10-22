@@ -22,9 +22,9 @@ The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
 | Phase | What | Status |
 |---|---|---|
 | P0 | Review and spikes (renderer, weak-model baseline) | in progress |
-| P1 | Foundations: repo tooling, one schema | done (#64); library import → P2 |
-| P2 | Sprites through `slop build` | in progress: export core moved (#8: `@slop/sprites`, `@slop/formats`); render bundle + runner, `slop build` for sprites, goldens against the old generator (#9, #10, #11, #13: `@slop/render`, `@slop/cli`) |
-| P3 | 3D models and textures | — |
+| P1 | Foundations: repo tooling, one schema, library import | done (#64, #65) |
+| P2 | Sprites through `slop build` | done for sprites with existing bakes: `@slop/sprites`, `@slop/formats`, `@slop/render`, `@slop/cli`; all 16 Monty sprites build pixel-identical to the old generator (#8, #9, #10, #11, #13). Open: Blender bakes on demand, layered sheets, splits, portraits |
+| P3 | 3D models and textures | done: `@slop/models3d` (#14/#15/#16), GLBs byte-identical to Off Road / Car Smash's; `slop build` wiring → cli |
 | P4 | Levels: tilesets, maps, routes | — |
 | P4b | Component catalogue | — |
 | P5–P7 | Runtimes, scenes, agent layer, help loop, evals | in [slopkit](https://github.com/ali3b/slopkit) |
@@ -53,9 +53,9 @@ CI (`.github/workflows/ci.yml`) runs the four on every push and PR and fails whe
   `ssg.models.json` and `ssg.textures.json` are ported from the old generator, and the real games' files validate
   unchanged (`packages/schema/test/fixtures`).
 - **`@slop/formats`** (`packages/formats`): what a game reads. zod schemas, TS types and JSON Schemas of
-  `ssg-meta/1`, `ssg-layers/1`, `ssg-split/1`, `ssg-turret/1`, the generic sheet JSON, the Phaser 3 anims JSON and
-  the object block; the games' real manifests validate unchanged (`packages/formats/test/fixtures`). The contract
-  with slopkit.
+  `ssg-meta/1`, `ssg-layers/1`, `ssg-split/1`, `ssg-turret/1`, the generic sheet JSON, the Phaser 3 anims JSON, the
+  object block, the 3D `.model.json` manifest and the `models.json` index; the games' real manifests validate
+  unchanged (`packages/formats/test/fixtures`). The contract with slopkit.
 - **`@slop/sprites`** (`packages/sprites`): the export core moved from the old generator: engine profiles, sheet
   layout and pure RGBA composition, manifests, clip events, validation, the frame-cache key (now keyed by render
   backend and bundle hash). It describes and packs frames; the render bundle draws them. See
@@ -69,6 +69,11 @@ CI (`.github/workflows/ci.yml`) runs the four on every push and PR and fails whe
   sprite as the old `ssg sprite apply` did, renders through `@slop/render`, packs through `@slop/sprites` and
   writes the same files the old generator downloaded. Goldens: Monty's sprites, pixel for pixel against the old
   generator on both backends, and byte-identical rebuilds. See [packages/cli/README.md](packages/cli/README.md).
+- **`@slop/models3d`** (`packages/models3d`): the 3D model export moved from the old generator: GLB + manifest per
+  asset (scale, wheels, clips from existing bakes, variants, LODs, poses, seats, dashboards, colliders, meshopt),
+  track pieces, terrain, skydomes, composites, the texture export, a content-addressed cache and the
+  `ssg.models.json` / `ssg.textures.json` builds (`buildModels`, `buildTextures`); the games' files rebuild byte for
+  byte. See [packages/models3d/README.md](packages/models3d/README.md).
 
 ## Licence
 

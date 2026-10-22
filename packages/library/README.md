@@ -31,7 +31,8 @@ lib.close();
 
 Everything comes back as plain typed objects (`src/types.ts`: `Pack`, `Asset`, `Animation`, `AssetScale`,
 `AssetPart`, `AssetRig`, `AssetVariants`…, named after the old `Asset`/`Animation` DTOs). An `AssetEntry` /
-`AnimationEntry` is the plain object plus non-enumerable lookups (`glbPath()`, `scale()`, `roles()`…): spread it or
+`AnimationEntry` is the plain object plus non-enumerable lookups (`glbPath()`, `scale()`, `roles()`, `grip()` for the
+old `grips` table…): spread it or
 `JSON.stringify` it and you get the plain object.
 
 How rows become values follows the old server: `apps/server/src/main.ts` (assetDto, animDto), `assetSearch.ts`,

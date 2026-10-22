@@ -176,8 +176,8 @@ export interface AssetEntry extends Asset {
   rig(): AssetRig | null;
   /** Damaged / destroyed versions of this model in its pack, by name. */
   variants(): AssetVariants;
-  /** The saved default grip when held by a character (the old `grips` table: target bone, pos, rot, scale, sockets), or null. */
-  grip(): Record<string, unknown> | null;
+  /** The saved default grip of a weapon or prop (the old generator's `grips` table: bone, offset, custom sockets), else null. */
+  grip(): Grip | null;
   /** Saved placement fixes by moveset ('' = any), with their revision and source (the old `placements` table). */
   placements(): Record<string, Record<string, unknown> & { rev: number; source: 'human' | 'ai-approved' }>;
 }
@@ -193,6 +193,24 @@ export interface Project {
   defaults: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
+}
+
+/** A socket a held object carries (a muzzle, a hand position), in its own space (metres). */
+export interface GripSocket {
+  name: string;
+  pos: [number, number, number];
+}
+
+/** How a character holds a weapon or prop (packages/shared/src/combat.ts Grip in the old generator). */
+export interface Grip {
+  /** Canonical bone (hand_r, hand_l, spine3…) or a raw bone name. */
+  target: string;
+  pos: [number, number, number];
+  /** Degrees. */
+  rot: [number, number, number];
+  scale: number;
+  sockets?: GripSocket[];
+  [k: string]: unknown;
 }
 
 export interface ClipEventMark {

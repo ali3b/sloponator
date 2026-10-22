@@ -1,0 +1,2 @@
+ A scripts/_pause-check.mjs
+ M src/scenes/Room.ts

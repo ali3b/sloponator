@@ -1,0 +1,114 @@
+diff --git a/src/hud.ts b/src/hud.ts
+index 0f35169..49496da 100644
+--- a/src/hud.ts
++++ b/src/hud.ts
+@@ -4,6 +4,9 @@ import { KeyColour } from './rooms';
+ 
+ export const HUD_HEIGHT = 24;
+ 
++/** The lettering of the HUD, so that anything written in the same style can use it. */
++export const HUD_TEXT = { fontFamily: '"Press Start 2P", monospace', color: '#f4e4c4' } as const;
++
+ const KEY_COLOURS: Record<KeyColour, number> = { gold: 0xffd34d, silver: 0xd8d8e0, red: 0xff5a4d };
+ 
+ /**
+@@ -40,9 +43,9 @@ export class Hud {
+     return e && this.scene.textures.exists(e.textureKey) ? this.scene.textures.get(e.textureKey) : null;
+   }
+ 
+-  private label(x: number, y: number, text: string, size = 8, colour = '#f4e4c4') {
++  private label(x: number, y: number, text: string, size = 8, colour = HUD_TEXT.color) {
+     const t = this.scene.add
+-      .text(x, y, text, { fontFamily: '"Press Start 2P", monospace', fontSize: `${size}px`, color: colour })
++      .text(x, y, text, { ...HUD_TEXT, fontSize: `${size}px`, color: colour })
+       .setResolution(2);
+     this.container.add(t);
+     return t;
+diff --git a/src/scenes/Room.ts b/src/scenes/Room.ts
+index f466274..96820ce 100644
+--- a/src/scenes/Room.ts
++++ b/src/scenes/Room.ts
+@@ -4,7 +4,7 @@ import { COLS, ROWS, TILE, WIDTH, HEIGHT, GRAVITY } from '../main';
+ import { state } from '../state';
+ import { sfx } from '../sfx';
+ import { Climbable, Joe } from '../joe';
+-import { HUD_HEIGHT, Hud, packFull } from '../hud';
++import { HUD_HEIGHT, HUD_TEXT, Hud, packFull } from '../hud';
+ import { DoorDef, Facing, RoomDef, START_ROOM, room } from '../rooms';
+ import { Mover, World } from '../world';
+ 
+@@ -75,6 +75,10 @@ export class Room extends Phaser.Scene {
+   private bonusMode = false;
+   private bonusLeft = 0;
+   private frozen = false;
++  /** Set while the game is paused: the room stops and PAUSED is on the screen. */
++  paused = false;
++  /** The pause banner, while the game is paused. */
++  pausedText: Phaser.GameObjects.Text | null = null;
+   private keys!: Record<string, Phaser.Input.Keyboard.Key>;
+   /** The crumbling floors that have let go, shared by everyone in the room. */
+   private gone = new Set<string>();
+@@ -113,6 +117,12 @@ export class Room extends Phaser.Scene {
+     this.busy = false;
+     this.nextRoom = null;
+     this.gone = new Set<string>();
++    // A room that is entered afresh is never paused, and nothing is left frozen from the room before it.
++    this.paused = false;
++    this.pausedText = null;
++    this.time.paused = false;
++    this.tweens.resumeAll();
++    this.anims.resumeAll();
+   }
+ 
+   // ---- building --------------------------------------------------------------------------------------------
+@@ -149,6 +159,9 @@ export class Room extends Phaser.Scene {
+       space: kb!.addKey(K.SPACE),
+     };
+ 
++    // P pauses the room. The key event is used rather than a polled key, so that a quick tap is never missed.
++    this.input.keyboard?.on('keydown-P', () => this.togglePause());
++
+     this.drawScenery();
+     this.buildClimbables();
+     this.buildCrumbles();
+@@ -446,6 +459,8 @@ private drawClimbable(c: Climbable) {
+ 
+   override update(_time: number, delta: number) {
+     if (this.frozen) return;
++    // A paused room does not run: Joe, the creatures and the clocks all wait for the player.
++    if (this.paused) return;
+     const dt = Math.min(delta / 1000, 1 / 20);
+     const k = this.keys;
+     const input = {
+@@ -473,6 +488,31 @@ private drawClimbable(c: Climbable) {
+     }
+   }
+ 
++  /**
++   * P pauses the room and P again starts it up. While the game is paused nothing moves: Joe, the creatures and
++   * the timers all stop, and PAUSED stands in the middle of the screen.
++   */
++  private togglePause() {
++    this.paused = !this.paused;
++    if (this.paused) {
++      // The clock holds the timers, the tweens and the animations hold the picture of it all.
++      this.time.paused = true;
++      this.tweens.pauseAll();
++      this.anims.pauseAll();
++      this.pausedText = this.add
++        .text(WIDTH / 2, HEIGHT / 2, 'PAUSED', { ...HUD_TEXT, fontSize: '10px', stroke: '#000000', strokeThickness: 5 })
++        .setOrigin(0.5)
++        .setDepth(960)
++        .setResolution(2);
++      return;
++    }
++    this.time.paused = false;
++    this.tweens.resumeAll();
++    this.anims.resumeAll();
++    this.pausedText?.destroy();
++    this.pausedText = null;
++  }
++
+   private updateCreatures(dt: number) {
+     for (const c of this.creatures) {
+       if (c.dead || c.spent) continue;

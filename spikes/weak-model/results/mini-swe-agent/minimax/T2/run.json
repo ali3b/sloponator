@@ -1,0 +1,10 @@
+{
+  "model": "minimax/minimax-m3.1-flash:free",
+  "task": "T2",
+  "calls": 40,
+  "wallSeconds": 513,
+  "exit": "LimitsExceeded",
+  "rateLimited": 0,
+  "infraFailure": false,
+  "notes": "Hit the 40-call step limit with an empty diff: it never added the guard sprite to ssg.assets.json, never ran npm run assets, never touched the room. Read AGENTS.md, ssg.assets.json, assets.ts and build-assets.mjs in the first 2 calls (the right files), then from call 3 on prefixed nearly every command with `cd /home/andrew/projects/monty` -- the REAL game repo, a path it guessed from the package name -- and did all its reading there (Room.ts, manifest, skeleton meta.json, Phaser's atlas/pivot/origin source, 8 calls). It ran the ssg CLI only for look-ups (`ssg assets Skeleton_`, `sprite apply --help`, `projects list`, `sprites --project`) and found the copy's project 'Spike2 msa-minimax-T2' does not exist yet, which sent it on a detour: diffing the copy against the real repo, grepping the generator's apps/cli and packages/client source for how projects are created, and opening the generator's SQLite library (read-only URI) to list projects. Only read-only commands outside the copy; monty and the generator repo are clean afterwards. Emitted no reasoning text after the first step (bare tool calls)."
+}
