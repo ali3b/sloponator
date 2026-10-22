@@ -176,6 +176,23 @@ export interface AssetEntry extends Asset {
   rig(): AssetRig | null;
   /** Damaged / destroyed versions of this model in its pack, by name. */
   variants(): AssetVariants;
+  /** The saved default grip when held by a character (the old `grips` table: target bone, pos, rot, scale, sockets), or null. */
+  grip(): Record<string, unknown> | null;
+  /** Saved placement fixes by moveset ('' = any), with their revision and source (the old `placements` table). */
+  placements(): Record<string, Record<string, unknown> & { rev: number; source: 'human' | 'ai-approved' }>;
+}
+
+/** A project of the old generator: the settings its sprites inherited (view card, look, size, format, fps…). */
+export interface Project {
+  id: number;
+  name: string;
+  description: string | null;
+  /** '2d' (sprites) or '3d' (models). */
+  kind: string;
+  /** The old `ProjectDefaults` JSON as stored: viewCardId, view, lookId, sizeId, profileId, layers, uniformFrame, layered, gender. */
+  defaults: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ClipEventMark {
@@ -289,6 +306,10 @@ export interface Library {
   animations(query?: AnimationQuery): AnimationEntry[];
   /** By id, or by name: the ready clip with a rig called so, a non-root-motion copy first, then the lowest id. */
   animation(ref: number | string): AnimationEntry | undefined;
+  /** The old generator's projects (their shared sprite settings), by name. */
+  projects(): Project[];
+  /** A project by id or name (case-insensitive). */
+  project(ref: number | string): Project | undefined;
   /** The DB's scale_overrides rows (what scale-overrides.json is exported from). */
   scaleOverrides(): ScaleOverrideRow[];
   close(): void;

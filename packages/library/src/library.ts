@@ -17,7 +17,7 @@ import { findStateVariants } from './synty/states.js';
 import { knownScaleOverride } from './synty/index.js';
 import type {
   Animation, AnimationEntry, AnimationQuery, Asset, AssetEntry, AssetKind, AssetPart, AssetQuery, AssetRig, AssetScale, AssetStatus, IngestMeta, Label, LabelField, Library,
-  Pack, PackKind, PackStatus, ScaleOverrideRow,
+  Pack, PackKind, PackStatus, Project, ScaleOverrideRow,
 } from './types.js';
 
 export interface OpenLibraryOptions {
@@ -298,6 +298,12 @@ export function openLibrary(opts: OpenLibraryOptions): Library {
         const siblings = db.prepare(`SELECT id, name, kind FROM assets WHERE pack_id = ? AND status = 'ready'`).all(a.pack_id) as { id: number; name: string; kind: string }[];
         return findStateVariants({ id: a.id, name: a.name, kind: a.kind }, siblings);
       },
+      grip: () => (has('grips') ? parseJson<Record<string, unknown>>((db.prepare('SELECT data FROM grips WHERE pack_name = ? AND asset_name = ?').get(a.pack_name, a.name) as { data: string } | undefined)?.data) : null),
+      placements: () => {
+        if (!has('placements')) return {};
+        const rows = db.prepare('SELECT moveset, data, source, rev FROM placements WHERE pack_name = ? AND asset_name = ?').all(a.pack_name, a.name) as { moveset: string; data: string; source: 'human' | 'ai-approved'; rev: number }[];
+        return Object.fromEntries(rows.map((r) => [r.moveset, { ...(parseJson<Record<string, unknown>>(r.data) ?? {}), rev: r.rev, source: r.source }]));
+      },
     });
   };
 
@@ -470,10 +476,27 @@ export function openLibrary(opts: OpenLibraryOptions): Library {
     return r ? animEntry(r) : undefined;
   };
 
+  // ---- projects (projects.ts): the shared settings the old generator's sprites inherited ----
+
+  const projectDto = (r: { id: number; name: string; description: string | null; defaults: string | null; kind: string | null; created_at: string; updated_at: string }): Project => ({
+    id: r.id, name: r.name, description: r.description, kind: r.kind ?? '2d', defaults: parseJson<Record<string, unknown>>(r.defaults) ?? {}, createdAt: r.created_at, updatedAt: r.updated_at,
+  });
+  const projects = (): Project[] =>
+    has('projects') ? (db.prepare('SELECT id, name, description, defaults, kind, created_at, updated_at FROM projects ORDER BY name').all() as Parameters<typeof projectDto>[0][]).map(projectDto) : [];
+  const project = (ref: number | string): Project | undefined => {
+    if (!has('projects')) return undefined;
+    if (typeof ref === 'number' || /^\d+$/.test(String(ref).trim())) {
+      const r = db.prepare('SELECT id, name, description, defaults, kind, created_at, updated_at FROM projects WHERE id = ?').get(Number(ref)) as Parameters<typeof projectDto>[0] | undefined;
+      return r ? projectDto(r) : undefined;
+    }
+    const r = db.prepare('SELECT id, name, description, defaults, kind, created_at, updated_at FROM projects WHERE lower(name) = lower(?) ORDER BY id').get(String(ref).trim()) as Parameters<typeof projectDto>[0] | undefined;
+    return r ? projectDto(r) : undefined;
+  };
+
   const scaleOverrides = (): ScaleOverrideRow[] =>
     has('scale_overrides')
       ? (db.prepare('SELECT pack_name AS pack, fbx, variant, scale FROM scale_overrides ORDER BY pack_name, fbx, variant').all() as ScaleOverrideRow[])
       : [];
 
-  return { dataDir, dbPath, hasFts, packs, pack, assets, asset, assetsNamed, animations, animation, scaleOverrides, close: () => db.close() };
+  return { dataDir, dbPath, hasFts, packs, pack, assets, asset, assetsNamed, animations, animation, projects, project, scaleOverrides, close: () => db.close() };
 }
