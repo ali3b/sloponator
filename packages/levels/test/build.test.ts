@@ -9,7 +9,7 @@ import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { ssgMap } from '@slop/formats';
 import {
-  bodyFromTsj, buildLevels, collisionPolygons, buildTileset, createMap, declareTileset, decodePng, exportMap, findRoute, mapBodyOfFile, mapFileOf, parseTilesetDecls, readMapFile, replayOps,
+  bodyFromTsj, buildLevels, collisionPolygons, mapRoute, buildTileset, createMap, declareTileset, decodePng, exportMap, findRoute, mapBodyOfFile, mapFileOf, parseTilesetDecls, readMapFile, replayOps,
   spriteCatalog, stampFromMap, writeMapFile, writeTsj, MapOpsError, LevelsError, type ObjectLayer, type ZoneLayer,
 } from '../src/index.js';
 
@@ -122,6 +122,7 @@ describe('map documents', () => {
     const wide = findRoute(body, '0.5,2.5', '9.5,2.5', { clearance: 1, collisionPolygon: collisionPolygons(cat, body) });
     expect(wide.found).toBe(true);
     expect(wide.metres).toBeGreaterThan(plain.metres);
+    expect(mapRoute(r.map, { from: '0.5,2.5', to: '9.5,2.5', clearance: 1 }, cat).metres).toBe(wide.metres);
   });
 
   it('stamps cut from one map place into another, sprites and all', () => {

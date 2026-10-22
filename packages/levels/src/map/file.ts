@@ -15,7 +15,8 @@ import type { MapStamp } from './stamp.js';
 import { extractStamp, STAMP_LAYERS, validateStamp, type StampLayer } from './stamp.js';
 import { mapFileName, tiledMapWarnings, writeTmj, writeTmx, type MapTilesetRef, type MapWriteOptions, type ObjectDataMode } from './tiled.js';
 import { missingMixes, missingMixesMessage } from './resolve.js';
-import { mapSpriteInfos, opsContext, resolveOpSprites, type SpriteCatalog } from './sprites.js';
+import { collisionPolygons, mapSpriteInfos, opsContext, resolveOpSprites, type SpriteCatalog } from './sprites.js';
+import { findRoute, type RouteResult } from './route.js';
 import type { TilesetBody } from '../tileset/types.js';
 import { tilesetFileName } from '../tileset/tiled.js';
 
@@ -185,4 +186,20 @@ export function exportMap(map: MapFile, o: MapExportOptions): { files: Record<st
     if (!t) warnings.push(`tileset ${map.tilesets[i]} (slot ${i}) is not declared`);
   });
   return { files, tilesets: refs, warnings };
+}
+
+/**
+ * FB-110/125: the shortest walkable route on a map document between two ends (zone ids or names, or "x,y"),
+ * through open cells only (collision layers and solid object footprints block), keeping `clearance` metres from
+ * what blocks, measured from the placed sprites' collision polygons (FB-128). The old `ssg map route`.
+ */
+export function mapRoute(map: MapFile, q: { from: string; to: string; diagonal?: boolean; ignoreObjects?: boolean; clearance?: number }, sprites: SpriteCatalog): RouteResult & { metresPerTile: number } {
+  if (!q.from?.trim() || !q.to?.trim()) throw new MapFileError('give from and to (zone ids or names, or x,y)');
+  if (q.clearance !== undefined && !(Number.isFinite(q.clearance) && q.clearance >= 0)) throw new MapFileError('clearance must be metres ≥ 0');
+  const body = mapBodyOfFile(map);
+  const r = findRoute(body, q.from, q.to, {
+    ...(q.diagonal !== undefined ? { diagonal: q.diagonal } : {}), ...(q.ignoreObjects ? { ignoreObjects: true } : {}),
+    ...(q.clearance ? { clearance: q.clearance, collisionPolygon: collisionPolygons(sprites, body) } : {}),
+  });
+  return { metresPerTile: map.metresPerTile, ...r };
 }

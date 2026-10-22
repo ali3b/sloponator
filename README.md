@@ -25,7 +25,7 @@ The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
 | P1 | Foundations: repo tooling, one schema, library import | done (#64, #65) |
 | P2 | Sprites through `slop build` | done for sprites with existing bakes: `@slop/sprites`, `@slop/formats`, `@slop/render`, `@slop/cli`; all 16 Monty sprites build pixel-identical to the old generator (#8, #9, #10, #11, #13). Open: Blender bakes on demand, layered sheets, splits, portraits |
 | P3 | 3D models and textures | done: `@slop/models3d` (#14/#15/#16), GLBs byte-identical to Off Road / Car Smash's; `slop build` wiring → cli |
-| P4 | Levels: tilesets, maps, routes | — |
+| P4 | Levels: tilesets, maps, routes | done: `@slop/levels` (#17, #18), file-based maps (`ssg-map/1`); Monty's tomb and Solitary Strike's 4 tilesets and 12 missions byte-identical to the old generator's; `slop build` wiring → cli. Open: map editor, previews |
 | P4b | Component catalogue | — |
 | P5–P7 | Runtimes, scenes, agent layer, help loop, evals | in [slopkit](https://github.com/ali3b/slopkit) |
 | P8 | Migration proof: Monty and Off Road (both repos) | — |
@@ -74,6 +74,10 @@ CI (`.github/workflows/ci.yml`) runs the four on every push and PR and fails whe
   track pieces, terrain, skydomes, composites, the texture export, a content-addressed cache and the
   `ssg.models.json` / `ssg.textures.json` builds (`buildModels`, `buildTextures`); the games' files rebuild byte for
   byte. See [packages/models3d/README.md](packages/models3d/README.md).
+- **`@slop/levels`** (`packages/levels`): tilesets, Tiled maps and the level tools (routes with clearance, zones,
+  game-only markers) moved from the old generator; texture terrains drawn in Node; a map is a `<name>.map.json` a
+  game keeps and edits by replaying ops; `buildLevels` builds the `tilesets` and `maps` of ssg.assets.json. See
+  [packages/levels/README.md](packages/levels/README.md).
 
 ## Licence
 
