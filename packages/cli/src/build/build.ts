@@ -9,6 +9,7 @@ import path from 'node:path';
 import { assetsFile, validate, formatErrors, type AssetsFile } from '@slop/schema';
 import { openLibrary, type Library } from '@slop/library';
 import { startRunner, type GpuChoice, type Runner } from '@slop/render';
+import { bakeForBuild } from '@slop/bake';
 import type { ValidationIssue } from '@slop/sprites';
 import { planSprites, projectDefaultsFrom, parseApplyFile, safeName, type PlannedSprite, type ProjectDefaults } from '../plan/index.js';
 import { pack } from './pack.js';
@@ -164,7 +165,9 @@ export async function build(opts: BuildOptions): Promise<BuildResult> {
     }
     const generatedAt = opts.generatedAt ?? fs.statSync(opts.file).mtime.toISOString();
     fs.mkdirSync(opts.out, { recursive: true });
-    const runner = await startRunner({ lib, gpu: opts.gpu ?? 'auto', cacheDir: opts.cacheDir, log });
+    // Blender bakes (@slop/bake) for every clip the plan needs, before the browser starts: never beside the render.
+    const bakes = await bakeForBuild(planned.map((p) => ({ asset: p.asset.id, spec: p.batch, name: p.name })), { lib, cacheDir: opts.cacheDir, log });
+    const runner = await startRunner({ lib, gpu: opts.gpu ?? 'auto', cacheDir: opts.cacheDir, log, bakes: bakes.store });
     const sprites: BuiltSprite[] = [];
     try {
       let i = 0;
