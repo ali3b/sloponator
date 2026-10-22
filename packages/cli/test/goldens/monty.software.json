@@ -1,0 +1,60 @@
+{
+  "backend": "software",
+  "gpu": "software",
+  "glRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "fixture": "packages/schema/test/fixtures/monty.assets.json",
+  "when": "2026-10-22T06:16:24.781Z",
+  "madeBy": "the old generator, through packages/cli/test/goldens/make-reference.mjs",
+  "sprites": {
+    "joe": {
+      "asset": "POLYGON_War/Character_GentleMan_01",
+      "files": {
+        "Character_GentleMan_01.json": {
+          "normalizedSha256": "c60e366f34fa81776a7228797ea6ec6882388d8e3cbcbb26f3afff730707d3ab",
+          "bytes": 112117
+        },
+        "Character_GentleMan_01.meta.json": {
+          "normalizedSha256": "b9728032d2b8d5e2429d711432b8a7570a343d19006c1525b10984964bf6a0ce",
+          "bytes": 516885
+        },
+        "Character_GentleMan_01.sheet.json": {
+          "normalizedSha256": "974d0005e6677b916b2dc943bcc80a03c07bb91d360c4b4d065453c2d22efb1d",
+          "bytes": 690714
+        },
+        "Character_GentleMan_01_0.png": {
+          "sha256": "6f19e3370f06cc4504d046fefd43321b7ea4baf92e0a9eda125c604e66990978",
+          "bytes": 596313
+        },
+        "Character_GentleMan_01_anims.json": {
+          "normalizedSha256": "67b57b64ff11fc335b1a94108c8212d79c38f06dae77f33fb91d9ea9384a910c",
+          "bytes": 32316
+        }
+      }
+    },
+    "skull": {
+      "asset": "POLYGON_Dark_Fantasy/SM_Prop_Skull_01",
+      "files": {
+        "Prop_Skull_01.json": {
+          "normalizedSha256": "cc9a1d8cc613b87ed3ede9007e4fe5eca0942fced0f170abb6c95fbb549d27f2",
+          "bytes": 5132
+        },
+        "Prop_Skull_01.meta.json": {
+          "normalizedSha256": "c1ba581ca3e9b92e164395fcdba50438fab4e811876ed1dd16bb3efdfb56c313",
+          "bytes": 5608
+        },
+        "Prop_Skull_01.sheet.json": {
+          "normalizedSha256": "6eb6e0b1b0b61f4061bc9597aafa1fefd0894b0f61b51ce92c0c5c26b821cd44",
+          "bytes": 12071
+        },
+        "Prop_Skull_01_0.png": {
+          "sha256": "ec994ec074825bd19d42d29e9932d63a3b8e6b858db55bdb12e696f180b61bfa",
+          "bytes": 7501
+        },
+        "Prop_Skull_01_anims.json": {
+          "normalizedSha256": "73c84639919198cb9c44ae65cf9f259abce4d03dd7d4d1a345a096a8eea7c0aa",
+          "bytes": 1180
+        }
+      }
+    }
+  }
+}
