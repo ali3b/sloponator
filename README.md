@@ -23,7 +23,7 @@ The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
 |---|---|---|
 | P0 | Review and spikes (renderer, weak-model baseline) | in progress |
 | P1 | Foundations: repo tooling, one schema | done (#64); library import → P2 |
-| P2 | Sprites through `slop build` | in progress: export core moved (#8: `@slop/sprites`, `@slop/formats`) |
+| P2 | Sprites through `slop build` | in progress: export core moved (#8: `@slop/sprites`, `@slop/formats`); render bundle + runner, `slop build` for sprites, goldens against the old generator (#9, #10, #11, #13: `@slop/render`, `@slop/cli`) |
 | P3 | 3D models and textures | — |
 | P4 | Levels: tilesets, maps, routes | — |
 | P4b | Component catalogue | — |
@@ -60,6 +60,15 @@ CI (`.github/workflows/ci.yml`) runs the four on every push and PR and fails whe
   layout and pure RGBA composition, manifests, clip events, validation, the frame-cache key (now keyed by render
   backend and bundle hash). It describes and packs frames; the render bundle draws them. See
   [packages/sprites/README.md](packages/sprites/README.md).
+- **`@slop/render`** (`packages/render`): the three.js render bundle (the old generator's browser render code,
+  built once by Vite into the cache dir and named by its content hash) and the Node runner that launches Chromium
+  itself, serves the bundle and answers its data requests from `@slop/library` in-process — no server — with the
+  frame cache around every render and a blank-frame check on the GPU. See
+  [packages/render/README.md](packages/render/README.md).
+- **`@slop/cli`** (`packages/cli`): `slop build ssg.assets.json --out <dir>`: validates the file, plans every
+  sprite as the old `ssg sprite apply` did, renders through `@slop/render`, packs through `@slop/sprites` and
+  writes the same files the old generator downloaded. Goldens: Monty's sprites, pixel for pixel against the old
+  generator on both backends, and byte-identical rebuilds. See [packages/cli/README.md](packages/cli/README.md).
 
 ## Licence
 
