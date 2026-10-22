@@ -48,13 +48,21 @@ export function parsePoses(v: unknown, what = 'poses'): ModelNamedPose[] {
       return { name: x.slice(0, eq).trim(), ...parsePose(x.slice(eq + 1), `${what} ${x.slice(0, eq).trim()}`) };
     })
     : Array.isArray(v) ? v : (() => { throw new ModelError(`${what} must be a list of { name, clip, time? } (or "idle=Idle:0,wave=Wave_01:0.2")`); })();
-  return list.map((x, i) => {
+  const out = list.map((x, i) => {
     const p = parsePose(x, `${what}[${i}]`);
     const name = (x as Record<string, unknown>).name;
     if (typeof name !== 'string' || !name.trim()) throw new ModelError(`${what}[${i}] needs a name (its node in the GLB)`);
     return { name: name.trim(), ...p };
   });
+  const dup = duplicate(out.map((x) => x.name));
+  if (dup) throw new ModelError(`${what}: the name "${dup}" is used twice`);
+  return out;
 }
+
+const duplicate = (names: string[]) => {
+  const lower = names.map((n) => n.toLowerCase());
+  return lower.find((n, i) => lower.indexOf(n) !== i);
+};
 
 /**
  * Paint variants from a list of { name, tint } or the CLI form "red=#c62828,blue=#1e5bc6,plain" (a name without a
@@ -67,17 +75,24 @@ export function parseVariants(v: unknown, what = 'variants'): ModelVariant[] {
       return eq < 0 ? { name: x } : { name: x.slice(0, eq).trim(), tint: x.slice(eq + 1).trim() };
     })
     : Array.isArray(v) ? v : (() => { throw new ModelError(`${what} must be a list of { name, tint } (or "red=#c62828,blue=#1e5bc6")`); })();
-  return list.map((x, i) => {
+  const out = list.map((x, i) => {
     if (!x || typeof x !== 'object' || Array.isArray(x)) throw new ModelError(`${what}[${i}] must be { name, tint }`);
     const o = x as Record<string, unknown>;
     if (typeof o.name !== 'string' || !o.name.trim()) throw new ModelError(`${what}[${i}] needs a name`);
     return { name: o.name.trim(), ...(o.tint ? { tint: String(o.tint).toLowerCase() } : {}) };
   });
+  const dup = duplicate(out.map((x) => x.name));
+  if (dup) throw new ModelError(`${what}: the name "${dup}" is used twice`);
+  return out;
 }
+
+/** A list of names, or the CLI form "a,b". */
+const strList = (v: unknown): string[] => (typeof v === 'string' ? v.split(',') : Array.isArray(v) ? v.map(String) : []).map((s) => s.trim()).filter(Boolean);
 
 /** The string forms the declaration allows (CLI shorthands) turned into the spec's lists. */
 function specOf(raw: Record<string, unknown>): ModelSpec {
   const s = { ...raw } as Record<string, unknown>;
+  for (const k of ['clips', 'attach', 'colliderExclude'] as const) if (s[k] !== undefined) s[k] = strList(s[k]);
   if (s.variants !== undefined) s.variants = parseVariants(s.variants);
   if (s.pose !== undefined) s.pose = parsePose(s.pose);
   if (s.poses !== undefined) s.poses = parsePoses(s.poses);
