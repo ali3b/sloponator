@@ -1,0 +1,18 @@
+{
+  "when": "2026-10-22T03:31:55.827Z",
+  "gpu": "software",
+  "asset": 378,
+  "bundle": "b75cd36e4bdcc79a",
+  "oldDist": "b75cd36e4bdcc79a",
+  "reference": {
+    "seconds": 2.0984052749872206,
+    "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "spike": {
+    "seconds": 2.2272310619950293,
+    "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "spikeAgain": {
+    "seconds": 2.2068060920238497
+  }
+}
