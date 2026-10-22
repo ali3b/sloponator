@@ -1,6 +1,6 @@
 # Review: the Synty Sprite Generator and the games built with it
 
-*Written 22 October 2026, as phase P0 of Forge. It is the evidence behind the decision in [PLAN.md](PLAN.md).*
+*Written 22 October 2026, as phase P0 of the Sloponator. It is the evidence behind the decision in [PLAN.md](PLAN.md).*
 
 ## Summary
 
@@ -17,7 +17,7 @@ in about a week, and they raised 189 requests (feedback entries), 92% of which w
 - **The games repeat the same code.** Every game re-writes the asset loader, the asset build script, the headless
   check, the deploy script, the sound engine and the touch controls.
 
-**Decision:** build a new solution, **Forge**, by moving the good parts into a clean structure (option C below), and
+**Decision:** build a new solution, **The Sloponator**, by moving the good parts into a clean structure (option C below), and
 add what a weak model needs to make games: runtime libraries, ready components, templates, short recipes, a help
 loop and evals. The old generator is frozen to bug fixes and keeps serving the games until they move over.
 
@@ -145,7 +145,7 @@ game's 8 entries were never triaged at all.
 |---|---|
 | **A. Improve the generator in place** | Fixes symptoms. The browser-render coupling, the five option definitions and the sprawl are load-bearing; refactoring them under five live games is the riskiest path. |
 | **B. Rewrite only the render core** | Fixes problems 1–3, not 5–9, and the game stack still has no clean home. |
-| **C. New solution by extraction (Forge)** | Chosen. A clean repo with one schema, a compiler-style build with its own render process, separate modules, runtime libraries and an agent layer. Proven code moves in with its tests; the old generator keeps serving games until they migrate. |
+| **C. New solution by extraction (the Sloponator)** | Chosen. A clean repo with one schema, a compiler-style build with its own render process, separate modules, runtime libraries and an agent layer. Proven code moves in with its tests; the old generator keeps serving games until they migrate. |
 
 ## 7. Outside research (October 2026)
 
@@ -156,7 +156,7 @@ game's 8 entries were never triaged at all.
   rings, without layers or manifests.
 - **Retargeting.** Keep the Blender bake; three.js `SkeletonUtils.retargetClip` is unreliable on Mixamo rigs.
 - **Frameworks for model-written games.** Phaser 3 and three.js have the most training data. Phaser 4 is stable
-  (4.1) but models mix its API with Phaser 3, so Forge pins Phaser 3.80. Frontier agents build about 40% of Godot
+  (4.1) but models mix its API with Phaser 3, so the Sloponator pins Phaser 3.80. Frontier agents build about 40% of Godot
   games end to end (GameCraft-Bench); weak models will do worse.
 - **What helps weak models.** Short, human-reviewed, task-specific instructions (bulk or generated `AGENTS.md`
   files measurably hurt); few tools (accuracy improved when tools were cut from 48 to 25); declarative files with a
@@ -167,11 +167,11 @@ game's 8 entries were never triaged at all.
 
 ## 8. Tribal knowledge to retire
 
-Each item gets a status in Forge: *gone* (the design removes it) or *documented in `forge doctor`*.
+Each item gets a status in the Sloponator: *gone* (the design removes it) or *documented in `slop doctor`*.
 
-| # | Item | Forge |
+| # | Item | the Sloponator |
 |---|---|---|
-| 1 | Fixed ports 5180/5181/5182, lane and game ports (two games share one) | gone: `forge build` needs no server |
+| 1 | Fixed ports 5180/5181/5182, lane and game ports (two games share one) | gone: `slop build` needs no server |
 | 2 | Runner loads Vite or dist depending on how the server started | gone: one pinned render bundle |
 | 3 | Server caches the dist asset list; 404 until restart after a web build | gone |
 | 4 | Stale shared module leaves batches queued forever | gone |
@@ -210,5 +210,5 @@ Each item gets a status in Forge: *gone* (the design removes it) or *documented 
 
 ## 9. Synty licence
 
-Synty packs, the GLBs and sprites made from them, and catalogue outputs are never committed to the public Forge
+Synty packs, the GLBs and sprites made from them, and catalogue outputs are never committed to the public the Sloponator
 repo. Only code, schemas, labels, docs, and demo screenshots and videos are public.
