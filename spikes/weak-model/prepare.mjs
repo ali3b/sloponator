@@ -19,6 +19,18 @@ fs.symlinkSync(path.join(SRC, 'node_modules'), path.join(dest, 'node_modules'));
 const assets = JSON.parse(fs.readFileSync(path.join(dest, 'ssg.assets.json'), 'utf8'));
 assets.project = `Spike2 ${label}`;
 fs.writeFileSync(path.join(dest, 'ssg.assets.json'), JSON.stringify(assets, null, 2) + '\n');
+// The machine's inotify watchers are exhausted and node_modules is shared with the real game, so this copy runs
+// Vite with no file watching, its own dependency cache, and the port it was given.
+fs.writeFileSync(path.join(dest, 'vite.config.ts'), `import { defineConfig } from 'vite';
+
+export default defineConfig({
+  server: { port: ${port}, strictPort: true, host: '127.0.0.1', watch: null },
+  cacheDir: '.vite-cache',
+  base: './',
+  build: { chunkSizeWarningLimit: 2000 },
+});
+`);
+fs.writeFileSync(path.join(dest, '.gitignore'), 'node_modules\n.vite-cache\ntest-results\ndist\nvite.log\n');
 fs.writeFileSync(path.join(dest, 'AGENTS.md'), `# Monty (scratch copy for a test run)
 
 A Phaser 3.80 + TypeScript + Vite game. Source in \`src/\` (scenes in \`src/scenes/\`, the player in \`src/joe.ts\`,
@@ -27,7 +39,7 @@ sprite loading in \`src/assets.ts\`). Sprites come from the Synty Sprite Generat
 
 Commands:
 - \`npm run typecheck\` — TypeScript check (must pass).
-- \`npx vite --port ${port} --strictPort\` — dev server (run it in the background, e.g. \`nohup npx vite --port ${port} --strictPort > vite.log 2>&1 &\`). Restart it after \`npm run assets\`.
+- \`npx vite\` — dev server on port ${port} (run it in the background: \`nohup npx vite > vite.log 2>&1 &\`). It does not watch files: restart it (kill its PID from \`ss -ltnp\`) after you change code or run \`npm run assets\`.
 - \`node scripts/load-check.mjs http://localhost:${port} room\` — plays the first room headlessly and fails on errors (must pass).
 - Generator CLI: \`node /home/andrew/projects/synty-sprite-generator/apps/cli/bin/ssg.mjs --help\` (e.g. \`ssg assets skeleton\`, \`ssg sprite --help\`). Use it only through \`npm run assets\` unless you need to look something up.
 

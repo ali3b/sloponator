@@ -9,6 +9,6 @@ Add a new creature to this Phaser 3 game: a skeleton knight called `guard`.
   facing him. It does not need to move or hurt Joe.
 - Keep the change small and in TypeScript. Never hand-edit `public/assets`.
 
-Before you finish, run `npm run typecheck` and `node scripts/load-check.mjs http://localhost:$PORT room` (start the
-dev server first with `npx vite --port $PORT --strictPort`, in the background; restart it after `npm run assets`),
+Before you finish, run `npm run typecheck` and `node scripts/load-check.mjs http://localhost:<port> room` (the port is in AGENTS.md) (start the
+dev server first as AGENTS.md says; restart it after `npm run assets`),
 and make sure both pass.
