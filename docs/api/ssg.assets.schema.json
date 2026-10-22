@@ -1,0 +1,3200 @@
+{
+  "$id": "https://github.com/ali3b/sloponator/blob/master/docs/api/ssg.assets.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "The JSON Schema this file follows (editors use it); ignored."
+    },
+    "comment": {
+      "description": "A note for people; ignored."
+    },
+    "description": {
+      "description": "A note for people; ignored."
+    },
+    "generatedBy": {
+      "description": "What wrote the file; ignored."
+    },
+    "project": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        }
+      ],
+      "description": "The project's name or id (a new name is created from the settings below); the CLI's --project wins.",
+      "examples": [
+        "My Game"
+      ]
+    },
+    "sprites": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/sprite"
+      },
+      "description": "The sprites."
+    },
+    "tilesets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/tileset"
+      },
+      "description": "The tilesets (see Tileset)."
+    },
+    "maps": {
+      "type": "array",
+      "items": {},
+      "description": "Level maps built from the tilesets; checked by the levels package (P4), passed through here."
+    },
+    "defaults": {
+      "description": "Settings for every sprite (the same keys may also sit at the top level); a sprite's own keys win.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/sprite-defaults"
+        }
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "character",
+        "vehicle",
+        "object",
+        "prop",
+        "weapon"
+      ],
+      "description": "What the model is (default: from the model)."
+    },
+    "class": {
+      "description": "Movesets: \"rifle\", [\"rifle\", \"pistol\"] or \"rifle,pistol\" (unarmed, sword, knife, bow, staff, launcher, rifle, pistol, martial_arts).",
+      "examples": [
+        "rifle"
+      ],
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "anim": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "$ref": "#/definitions/anim"
+            },
+            {
+              "$ref": "#/definitions/template"
+            }
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "$ref": "#/definitions/anim"
+              },
+              {
+                "$ref": "#/definitions/template"
+              }
+            ]
+          }
+        }
+      ],
+      "description": "Clip names, or with class the moves to keep (\"idle\", \"crouch_*\"); each may carry its own trim, cap, events and held items (\"Clip@0.8:2.6\", \"Clip@max=2\", or an Anim entry object). With class, installed clip names are extra clips under their own names.",
+      "examples": [
+        [
+          "idle",
+          "walk",
+          {
+            "clip": "Knife_Stab_Fore",
+            "trim": "0:0.9",
+            "with": "POLYGON_Palm_City/SM_Wep_Knife_01"
+          }
+        ]
+      ]
+    },
+    "template": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "$ref": "#/definitions/template"
+            }
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "$ref": "#/definitions/template"
+              }
+            ]
+          }
+        }
+      ],
+      "description": "Procedural moves: \"still\", [\"crawl\", \"drive_turn:steer=25\"]; with its own held items a Template entry object.",
+      "examples": [
+        "still"
+      ]
+    },
+    "set": {
+      "type": "string",
+      "minLength": 1,
+      "description": "An animation set by id or name (not with class); \"none\" = only the declared anim/template moves (the default whenever any are declared).",
+      "examples": [
+        "builtin_locomotion"
+      ]
+    },
+    "with": {
+      "description": "Held items: \"Pack/Model\", \"@bone\", \"=layer\", \":front\", \"~class\".",
+      "examples": [
+        [
+          "POLYGON_War/SM_Wep_American_Rifle_01"
+        ]
+      ],
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "states": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/definitions/state"
+              }
+            ]
+          }
+        }
+      ],
+      "description": "Objects: \"auto\", \"auto,destroyed@destroy\", \"auto,intact:drive,destroyed@destroy\" or { \"intact\": { \"template\": \"drive\" }, \"destroyed\": { \"asset\", \"transition\" } } (no anim/set/class; a template next to states is the intact state's loop).",
+      "examples": [
+        "auto,destroyed@destroy"
+      ]
+    },
+    "view": {
+      "type": "string",
+      "enum": [
+        "side2",
+        "lowthreequarter",
+        "jrpg4",
+        "topdown8",
+        "high8",
+        "straightdown",
+        "iso8",
+        "iso4d",
+        "trueiso8",
+        "hexflat6",
+        "hexpointy6",
+        "vehicle16",
+        "rts32",
+        "rpgmaker",
+        "lpc"
+      ],
+      "description": "The view preset (default: the project's)."
+    },
+    "dirs": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "number"
+            ]
+          }
+        }
+      ],
+      "description": "Directions: 1, 2, 4, 4d, 8, 16… (on an object in an iso view, 1 = one facing of that view), or the directions by name: \"E\", \"N,S\", [\"N\", \"S\"].",
+      "examples": [
+        "8"
+      ]
+    },
+    "facings": {
+      "anyOf": [
+        {
+          "type": "number",
+          "const": 0
+        },
+        {
+          "type": "number",
+          "const": 1
+        },
+        {
+          "type": "number",
+          "const": 2
+        },
+        {
+          "type": "number",
+          "const": 4
+        }
+      ],
+      "description": "Objects: 1, 2 or 4 grid-aligned facings (0 = use dirs).",
+      "examples": [
+        4
+      ]
+    },
+    "slice": {
+      "type": "string",
+      "const": "columns",
+      "description": "Objects on a diamond tile: \"columns\" (per-tile-column strips)."
+    },
+    "collision": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "base",
+        "full",
+        "concave"
+      ],
+      "description": "Objects: full (whole hull), base (ground slice: a trunk), concave (the outline of the slice: curved walls, fences) or auto (default: vehicles, aircraft, buildings full; trees, poles base)."
+    },
+    "collisionHeight": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Objects: the ground slice's height in metres above the bottom (default min(0.5, 15% of the height)).",
+      "examples": [
+        0.5
+      ]
+    },
+    "pitch": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 90,
+      "description": "Camera pitch in degrees (0 = side, 30 = 2:1 iso, 90 = straight down).",
+      "examples": [
+        30
+      ]
+    },
+    "projection": {
+      "type": "string",
+      "enum": [
+        "ortho",
+        "persp"
+      ],
+      "description": "The camera projection."
+    },
+    "frame": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991,
+      "description": "Square frame size in px (the minimum with ppm/tile).",
+      "examples": [
+        128
+      ]
+    },
+    "ppm": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Fixed pixels per metre (a sprite's own ppm wins over the file's tile; next to its own tile, the tile wins with a warning).",
+      "examples": [
+        64
+      ]
+    },
+    "tile": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean",
+          "const": false
+        }
+      ],
+      "description": "Tile lock \"64x32\" (iso diamond) or \"32x32\" (square): the scale from the game's tile; null/false on a sprite leaves the lock (own ppm, or fit).",
+      "examples": [
+        "64x32"
+      ]
+    },
+    "metresPerTile": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "With tile: metres one tile covers (default 1).",
+      "examples": [
+        1
+      ]
+    },
+    "scale": {
+      "anyOf": [
+        {
+          "type": "string",
+          "const": "fit"
+        },
+        {
+          "type": "number",
+          "minimum": 0.05,
+          "maximum": 20
+        },
+        {
+          "type": "string",
+          "pattern": "^\\s*[x×]?\\s*[\\d.]+\\s*(%|x|×)?\\s*$"
+        }
+      ],
+      "description": "\"fit\": fit the model into the frame (UI icons), leaving the tile lock and ppm; or a number, the model's own size factor (1.3 = a boss 30% bigger, also \"130%\") at the same ppm/tile lock.",
+      "examples": [
+        "fit"
+      ]
+    },
+    "fps": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Frames per second sampled from the clips.",
+      "examples": [
+        12
+      ]
+    },
+    "mirror": {
+      "type": "boolean",
+      "description": "true: render only right-facing directions; the engine flips the rest."
+    },
+    "supersample": {
+      "anyOf": [
+        {
+          "type": "number",
+          "const": 1
+        },
+        {
+          "type": "number",
+          "const": 2
+        },
+        {
+          "type": "number",
+          "const": 3
+        },
+        {
+          "type": "number",
+          "const": 4
+        }
+      ],
+      "description": "1–4: render at N× and average down.",
+      "examples": [
+        2
+      ]
+    },
+    "pixelArt": {
+      "type": "boolean",
+      "description": "Pixel-art style (hard edges, model palette, 1 px outline)."
+    },
+    "outline": {
+      "type": "boolean",
+      "description": "Pixel style: 1 px outline."
+    },
+    "palette": {
+      "type": "string",
+      "enum": [
+        "full",
+        "model",
+        "levels"
+      ],
+      "description": "Pixel style colours: full, model or levels."
+    },
+    "shadow": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "off",
+            "low",
+            "high"
+          ]
+        },
+        {
+          "type": "boolean",
+          "const": false
+        }
+      ],
+      "description": "The drop shadow: off, low or high (false = off).",
+      "examples": [
+        "off"
+      ]
+    },
+    "look": {
+      "type": "string",
+      "enum": [
+        "clean",
+        "pixel",
+        "hand_painted",
+        "stylized"
+      ],
+      "description": "Look card: clean, pixel, hand_painted, stylized."
+    },
+    "size": {
+      "type": "string",
+      "enum": [
+        "small",
+        "medium",
+        "large",
+        "xl"
+      ],
+      "description": "Size card: small (64 px), medium (128), large (256), xl (512)."
+    },
+    "format": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Engine format: generic, godot4, unity, phaser3, pixi, aseprite, libgdx, gamemaker, rpgmaker, lpc (or a custom profile).",
+      "examples": [
+        "phaser3"
+      ]
+    },
+    "layers": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "depth",
+              "uv",
+              "shadow"
+            ]
+          }
+        }
+      ],
+      "description": "Extra layers: normal, depth, uv, shadow.",
+      "examples": [
+        [
+          "normal"
+        ]
+      ]
+    },
+    "uniform": {
+      "type": "boolean",
+      "description": "Same frame size and pivot for every direction and clip (fixed scale); the project's sprites of one model with uniform at the same view share one frame and pivot."
+    },
+    "atlas": {
+      "type": "boolean",
+      "description": "Pack trimmed frames into atlas pages."
+    },
+    "animPrefix": {
+      "type": "string",
+      "description": "Animation key prefix, tokens {base} {asset} (default: the sprite's name; \"\" = bare clip_dir).",
+      "examples": [
+        "{base}/"
+      ]
+    },
+    "movePrefix": {
+      "type": "boolean",
+      "description": "With one class: false = bare move names (keys \"hero/idle_E\", clips \"idle\") instead of \"hero/martial_arts_idle_E\"."
+    },
+    "maxSeconds": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Cap every clip at this many seconds (a clip's own maxSeconds in anim wins).",
+      "examples": [
+        3
+      ]
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "Masculine",
+        "Feminine"
+      ],
+      "description": "Clip gender: auto, Masculine or Feminine."
+    },
+    "layered": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string",
+          "const": "mask"
+        },
+        {
+          "type": "string",
+          "const": "none"
+        }
+      ],
+      "description": "Held items as separate aligned sheets: true / \"mask\" (hidden pixels cut away) or \"none\" (whole items); false (default): baked into one sheet."
+    },
+    "fx": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "$ref": "#/definitions/fx"
+        }
+      ],
+      "description": "Glowing FX look: true or { \"enabled\", \"tint\", \"intensity\", \"blend\" }.",
+      "examples": [
+        {
+          "enabled": true,
+          "tint": "#ff7a20",
+          "intensity": 1.2
+        }
+      ]
+    },
+    "light": {
+      "description": "Lighting (FB-060): day, dusk, night, overcast, desert_noon, arctic (default day), or a Light object.",
+      "examples": [
+        "dusk"
+      ],
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "day",
+                "dusk",
+                "night",
+                "overcast",
+                "desert_noon",
+                "arctic"
+              ]
+            },
+            {
+              "$ref": "#/definitions/light"
+            }
+          ]
+        }
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Sprite tags (default: its movesets).",
+      "examples": [
+        [
+          "enemy"
+        ]
+      ]
+    },
+    "pivot": {
+      "type": "string",
+      "enum": [
+        "anchor",
+        "origin"
+      ],
+      "description": "Objects: the frame pivot in the data files: each direction's object anchor (default) or the model origin."
+    },
+    "turret": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "1",
+            "2",
+            "4",
+            "8",
+            "12",
+            "16",
+            "32",
+            "4d",
+            "6f",
+            "6p"
+          ]
+        },
+        {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        {
+          "$ref": "#/definitions/turret"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Vehicles (FB-096): hull and turret as two sheets, the turret's mount per hull direction in the hull's meta: true, or the turret's own dirs \"16\" / { \"dirs\": \"32\" }; false = one sheet.",
+      "examples": [
+        true
+      ]
+    },
+    "portrait": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 4096
+        },
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/portrait"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Characters (SF-FB-021): also a head-and-shoulders still <base>_portrait.png: true (256 px, 3/4, transparent), a size, \"320x400,front,#203040\" or a Portrait object; false = none.",
+      "examples": [
+        "240x192,front"
+      ]
+    },
+    "split": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/split"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Characters (FB-124): \"waist\" = a legs sheet and a torso sheet with a per-frame waist socket in both, to aim the torso apart from the walk; or a Split object; false = one sheet.",
+      "examples": [
+        "waist"
+      ]
+    },
+    "still": {
+      "description": "One-frame stills of clips or moves: \"Victory_Pose@2.4\" (source seconds) or a list, each a one-frame animation <Clip>_still per direction (\"Clip@2.4=ending\" names it).",
+      "examples": [
+        "Victory_Pose@2.4=ending"
+      ],
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "sprites"
+  ],
+  "additionalProperties": false,
+  "title": "ssg.assets.json",
+  "description": "Declares the sprites (and tilesets) a game needs. `slop build` creates or updates each by name, renders what is outdated and downloads it into the game. Settings for every sprite go in `defaults` or at the top level.",
+  "definitions": {
+    "sprite": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The sprite's name in the project (unique in the file): what the next run matches.",
+          "examples": [
+            "hero"
+          ]
+        },
+        "asset": {
+          "description": "The model: id, name or Pack/Name.",
+          "examples": [
+            "POLYGON_War/Character_American_Soldier_01"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              ]
+            }
+          ]
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "character",
+            "vehicle",
+            "object",
+            "prop",
+            "weapon"
+          ],
+          "description": "What the model is (default: from the model)."
+        },
+        "class": {
+          "description": "Movesets: \"rifle\", [\"rifle\", \"pistol\"] or \"rifle,pistol\" (unarmed, sword, knife, bow, staff, launcher, rifle, pistol, martial_arts).",
+          "examples": [
+            "rifle"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "anim": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "$ref": "#/definitions/anim"
+                },
+                {
+                  "$ref": "#/definitions/template"
+                }
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "$ref": "#/definitions/anim"
+                  },
+                  {
+                    "$ref": "#/definitions/template"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": "Clip names, or with class the moves to keep (\"idle\", \"crouch_*\"); each may carry its own trim, cap, events and held items (\"Clip@0.8:2.6\", \"Clip@max=2\", or an Anim entry object). With class, installed clip names are extra clips under their own names.",
+          "examples": [
+            [
+              "idle",
+              "walk",
+              {
+                "clip": "Knife_Stab_Fore",
+                "trim": "0:0.9",
+                "with": "POLYGON_Palm_City/SM_Wep_Knife_01"
+              }
+            ]
+          ]
+        },
+        "template": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "$ref": "#/definitions/template"
+                }
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "$ref": "#/definitions/template"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": "Procedural moves: \"still\", [\"crawl\", \"drive_turn:steer=25\"]; with its own held items a Template entry object.",
+          "examples": [
+            "still"
+          ]
+        },
+        "set": {
+          "type": "string",
+          "minLength": 1,
+          "description": "An animation set by id or name (not with class); \"none\" = only the declared anim/template moves (the default whenever any are declared).",
+          "examples": [
+            "builtin_locomotion"
+          ]
+        },
+        "with": {
+          "description": "Held items: \"Pack/Model\", \"@bone\", \"=layer\", \":front\", \"~class\".",
+          "examples": [
+            [
+              "POLYGON_War/SM_Wep_American_Rifle_01"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "states": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/definitions/state"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": "Objects: \"auto\", \"auto,destroyed@destroy\", \"auto,intact:drive,destroyed@destroy\" or { \"intact\": { \"template\": \"drive\" }, \"destroyed\": { \"asset\", \"transition\" } } (no anim/set/class; a template next to states is the intact state's loop).",
+          "examples": [
+            "auto,destroyed@destroy"
+          ]
+        },
+        "view": {
+          "type": "string",
+          "enum": [
+            "side2",
+            "lowthreequarter",
+            "jrpg4",
+            "topdown8",
+            "high8",
+            "straightdown",
+            "iso8",
+            "iso4d",
+            "trueiso8",
+            "hexflat6",
+            "hexpointy6",
+            "vehicle16",
+            "rts32",
+            "rpgmaker",
+            "lpc"
+          ],
+          "description": "The view preset (default: the project's)."
+        },
+        "dirs": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": [
+                  "string",
+                  "number"
+                ]
+              }
+            }
+          ],
+          "description": "Directions: 1, 2, 4, 4d, 8, 16… (on an object in an iso view, 1 = one facing of that view), or the directions by name: \"E\", \"N,S\", [\"N\", \"S\"].",
+          "examples": [
+            "8"
+          ]
+        },
+        "facings": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 0
+            },
+            {
+              "type": "number",
+              "const": 1
+            },
+            {
+              "type": "number",
+              "const": 2
+            },
+            {
+              "type": "number",
+              "const": 4
+            }
+          ],
+          "description": "Objects: 1, 2 or 4 grid-aligned facings (0 = use dirs).",
+          "examples": [
+            4
+          ]
+        },
+        "slice": {
+          "type": "string",
+          "const": "columns",
+          "description": "Objects on a diamond tile: \"columns\" (per-tile-column strips)."
+        },
+        "collision": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "base",
+            "full",
+            "concave"
+          ],
+          "description": "Objects: full (whole hull), base (ground slice: a trunk), concave (the outline of the slice: curved walls, fences) or auto (default: vehicles, aircraft, buildings full; trees, poles base)."
+        },
+        "collisionHeight": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Objects: the ground slice's height in metres above the bottom (default min(0.5, 15% of the height)).",
+          "examples": [
+            0.5
+          ]
+        },
+        "pitch": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 90,
+          "description": "Camera pitch in degrees (0 = side, 30 = 2:1 iso, 90 = straight down).",
+          "examples": [
+            30
+          ]
+        },
+        "projection": {
+          "type": "string",
+          "enum": [
+            "ortho",
+            "persp"
+          ],
+          "description": "The camera projection."
+        },
+        "frame": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Square frame size in px (the minimum with ppm/tile).",
+          "examples": [
+            128
+          ]
+        },
+        "ppm": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Fixed pixels per metre (a sprite's own ppm wins over the file's tile; next to its own tile, the tile wins with a warning).",
+          "examples": [
+            64
+          ]
+        },
+        "tile": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "boolean",
+              "const": false
+            }
+          ],
+          "description": "Tile lock \"64x32\" (iso diamond) or \"32x32\" (square): the scale from the game's tile; null/false on a sprite leaves the lock (own ppm, or fit).",
+          "examples": [
+            "64x32"
+          ]
+        },
+        "metresPerTile": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "With tile: metres one tile covers (default 1).",
+          "examples": [
+            1
+          ]
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "fit"
+            },
+            {
+              "type": "number",
+              "minimum": 0.05,
+              "maximum": 20
+            },
+            {
+              "type": "string",
+              "pattern": "^\\s*[x×]?\\s*[\\d.]+\\s*(%|x|×)?\\s*$"
+            }
+          ],
+          "description": "\"fit\": fit the model into the frame (UI icons), leaving the tile lock and ppm; or a number, the model's own size factor (1.3 = a boss 30% bigger, also \"130%\") at the same ppm/tile lock.",
+          "examples": [
+            "fit"
+          ]
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Frames per second sampled from the clips.",
+          "examples": [
+            12
+          ]
+        },
+        "mirror": {
+          "type": "boolean",
+          "description": "true: render only right-facing directions; the engine flips the rest."
+        },
+        "supersample": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 1
+            },
+            {
+              "type": "number",
+              "const": 2
+            },
+            {
+              "type": "number",
+              "const": 3
+            },
+            {
+              "type": "number",
+              "const": 4
+            }
+          ],
+          "description": "1–4: render at N× and average down.",
+          "examples": [
+            2
+          ]
+        },
+        "pixelArt": {
+          "type": "boolean",
+          "description": "Pixel-art style (hard edges, model palette, 1 px outline)."
+        },
+        "outline": {
+          "type": "boolean",
+          "description": "Pixel style: 1 px outline."
+        },
+        "palette": {
+          "type": "string",
+          "enum": [
+            "full",
+            "model",
+            "levels"
+          ],
+          "description": "Pixel style colours: full, model or levels."
+        },
+        "shadow": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "off",
+                "low",
+                "high"
+              ]
+            },
+            {
+              "type": "boolean",
+              "const": false
+            }
+          ],
+          "description": "The drop shadow: off, low or high (false = off).",
+          "examples": [
+            "off"
+          ]
+        },
+        "look": {
+          "type": "string",
+          "enum": [
+            "clean",
+            "pixel",
+            "hand_painted",
+            "stylized"
+          ],
+          "description": "Look card: clean, pixel, hand_painted, stylized."
+        },
+        "size": {
+          "type": "string",
+          "enum": [
+            "small",
+            "medium",
+            "large",
+            "xl"
+          ],
+          "description": "Size card: small (64 px), medium (128), large (256), xl (512)."
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Engine format: generic, godot4, unity, phaser3, pixi, aseprite, libgdx, gamemaker, rpgmaker, lpc (or a custom profile).",
+          "examples": [
+            "phaser3"
+          ]
+        },
+        "layers": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "depth",
+                  "uv",
+                  "shadow"
+                ]
+              }
+            }
+          ],
+          "description": "Extra layers: normal, depth, uv, shadow.",
+          "examples": [
+            [
+              "normal"
+            ]
+          ]
+        },
+        "uniform": {
+          "type": "boolean",
+          "description": "Same frame size and pivot for every direction and clip (fixed scale); the project's sprites of one model with uniform at the same view share one frame and pivot."
+        },
+        "atlas": {
+          "type": "boolean",
+          "description": "Pack trimmed frames into atlas pages."
+        },
+        "animPrefix": {
+          "type": "string",
+          "description": "Animation key prefix, tokens {base} {asset} (default: the sprite's name; \"\" = bare clip_dir).",
+          "examples": [
+            "{base}/"
+          ]
+        },
+        "movePrefix": {
+          "type": "boolean",
+          "description": "With one class: false = bare move names (keys \"hero/idle_E\", clips \"idle\") instead of \"hero/martial_arts_idle_E\"."
+        },
+        "maxSeconds": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Cap every clip at this many seconds (a clip's own maxSeconds in anim wins).",
+          "examples": [
+            3
+          ]
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "Masculine",
+            "Feminine"
+          ],
+          "description": "Clip gender: auto, Masculine or Feminine."
+        },
+        "layered": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "const": "mask"
+            },
+            {
+              "type": "string",
+              "const": "none"
+            }
+          ],
+          "description": "Held items as separate aligned sheets: true / \"mask\" (hidden pixels cut away) or \"none\" (whole items); false (default): baked into one sheet."
+        },
+        "fx": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/fx"
+            }
+          ],
+          "description": "Glowing FX look: true or { \"enabled\", \"tint\", \"intensity\", \"blend\" }.",
+          "examples": [
+            {
+              "enabled": true,
+              "tint": "#ff7a20",
+              "intensity": 1.2
+            }
+          ]
+        },
+        "light": {
+          "description": "Lighting (FB-060): day, dusk, night, overcast, desert_noon, arctic (default day), or a Light object.",
+          "examples": [
+            "dusk"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "day",
+                    "dusk",
+                    "night",
+                    "overcast",
+                    "desert_noon",
+                    "arctic"
+                  ]
+                },
+                {
+                  "$ref": "#/definitions/light"
+                }
+              ]
+            }
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Sprite tags (default: its movesets).",
+          "examples": [
+            [
+              "enemy"
+            ]
+          ]
+        },
+        "pivot": {
+          "type": "string",
+          "enum": [
+            "anchor",
+            "origin"
+          ],
+          "description": "Objects: the frame pivot in the data files: each direction's object anchor (default) or the model origin."
+        },
+        "turret": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "1",
+                "2",
+                "4",
+                "8",
+                "12",
+                "16",
+                "32",
+                "4d",
+                "6f",
+                "6p"
+              ]
+            },
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "$ref": "#/definitions/turret"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Vehicles (FB-096): hull and turret as two sheets, the turret's mount per hull direction in the hull's meta: true, or the turret's own dirs \"16\" / { \"dirs\": \"32\" }; false = one sheet.",
+          "examples": [
+            true
+          ]
+        },
+        "portrait": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 4096
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/portrait"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Characters (SF-FB-021): also a head-and-shoulders still <base>_portrait.png: true (256 px, 3/4, transparent), a size, \"320x400,front,#203040\" or a Portrait object; false = none.",
+          "examples": [
+            "240x192,front"
+          ]
+        },
+        "split": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/split"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Characters (FB-124): \"waist\" = a legs sheet and a torso sheet with a per-frame waist socket in both, to aim the torso apart from the walk; or a Split object; false = one sheet.",
+          "examples": [
+            "waist"
+          ]
+        },
+        "still": {
+          "description": "One-frame stills of clips or moves: \"Victory_Pose@2.4\" (source seconds) or a list, each a one-frame animation <Clip>_still per direction (\"Clip@2.4=ending\" names it).",
+          "examples": [
+            "Victory_Pose@2.4=ending"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "asset"
+      ],
+      "additionalProperties": false,
+      "title": "Sprite",
+      "description": "One sprite: a model and how to render it. Every key but name and asset may also sit in `defaults` or at the top of the file, for every sprite; a sprite's own keys win."
+    },
+    "anim": {
+      "type": "object",
+      "properties": {
+        "clip": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The clip, or with `class` the move (idle, crouch_punch…).",
+          "examples": [
+            "MartialArts_Crouch_Punch"
+          ]
+        },
+        "trim": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^\\s*[^:]*:[^:]*\\s*$"
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              ],
+              "additionalItems": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "end": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          ],
+          "description": "This sprite's window of the clip in SOURCE seconds: \"start:end\" (either side may be empty), [start, end] or { start, end }. It replaces the shared clip trim on the sides it sets.",
+          "examples": [
+            "0.8:2.6"
+          ]
+        },
+        "maxSeconds": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Cap this clip at this many seconds (after the trim); wins over the sprite's maxSeconds.",
+          "examples": [
+            2
+          ]
+        },
+        "reverse": {
+          "type": "boolean",
+          "description": "Play the clip backwards (SF-FB-017): a clip picked by name is exported as <Clip>_reverse; a move is reversed in place."
+        },
+        "lockYaw": {
+          "type": "boolean",
+          "description": "Lock the root's yaw (SF-FB-023): a punch that turns the body punches straight ahead in a side view; false plays the turn even when the shared clip edit locks it."
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "number",
+                "minimum": 0
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "t",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "description": "This sprite's own events for the clip, in SOURCE seconds (SF-FB-022). They replace the clip's shared events for this sprite; [] drops them.",
+          "examples": [
+            [
+              {
+                "t": 1.2,
+                "name": "hit"
+              }
+            ]
+          ]
+        },
+        "autoEvents": {
+          "type": "boolean",
+          "description": "false: no automatic events (footsteps, the key moment) in this sprite's clip."
+        },
+        "label": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][\\w-]*$",
+          "description": "The name the clip is exported under (default: the clip's or move's name), so one clip can appear twice with different windows.",
+          "examples": [
+            "kicks_a"
+          ]
+        },
+        "still": {
+          "type": "number",
+          "minimum": 0,
+          "description": "One frame only (SF-FB-025): the pose at this many source seconds, exported as <Clip>_still unless label names it.",
+          "examples": [
+            2.4
+          ]
+        },
+        "with": {
+          "description": "This clip's own held items (FB-074), as the sprite's `with`: one sprite, several loadouts. Exported as <as>_<clip>; the sprite's other hand-held items are put away during it.",
+          "examples": [
+            "POLYGON_Palm_City/SM_Wep_Knife_01"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "as": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "The loadout group the clip is exported under (default: the first item's moveset, else its name).",
+          "examples": [
+            "knife"
+          ]
+        },
+        "release": {
+          "type": "string",
+          "enum": [
+            "hide",
+            "drop",
+            "keep"
+          ],
+          "description": "What happens to the held items at the clip's `release` event (FB-103): hide (default), drop (falls and stays) or keep."
+        }
+      },
+      "required": [
+        "clip"
+      ],
+      "additionalProperties": false,
+      "title": "Anim entry",
+      "description": "An `anim` entry as an object: one clip or move with this sprite's own trim, cap, events, export name and held items. The string form packs the same into the name: \"Clip@0.8:2.6\", \"Clip@max=2\", \"Clip@reverse\", \"Clip@lockyaw\", \"Clip@hit=1.2@hit_end=1.4\", \"Clip@0:3=kicks_a\", \"Clip@still=2.4\"."
+    },
+    "template": {
+      "type": "object",
+      "properties": {
+        "template": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A procedural move and its parameters: \"still\", \"crawl\", \"shoulder_fire:kneel=1\", \"drive_turn:steer=25\".",
+          "examples": [
+            "shoulder_fire:kneel=1"
+          ]
+        },
+        "with": {
+          "description": "The items held during this template (as the sprite's `with`).",
+          "examples": [
+            "POLYGON_BattleRoyale/SM_Wep_RPG_01"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "as": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "The loadout group the clip is exported under (default: the first item's moveset, else its name).",
+          "examples": [
+            "knife"
+          ]
+        },
+        "release": {
+          "type": "string",
+          "enum": [
+            "hide",
+            "drop",
+            "keep"
+          ],
+          "description": "What happens to the held items at the clip's `release` event (FB-103): hide (default), drop (falls and stays) or keep."
+        }
+      },
+      "required": [
+        "template",
+        "with"
+      ],
+      "additionalProperties": false,
+      "title": "Template entry",
+      "description": "A `template` entry as an object: a procedural move with its own held items, exported as <as>_<template>. The string form is just the template spec."
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "asset": {
+          "description": "The model of this state (default: the sprite's).",
+          "examples": [
+            "POLYGON_War/SM_Veh_Tank_Destroyed_01"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              ]
+            }
+          ]
+        },
+        "transition": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The transition template played into this state (\"destroy\", \"blast=1\"), or null for none.",
+          "examples": [
+            "destroy"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "description": "The state the transition starts from."
+        },
+        "look": {
+          "type": "string",
+          "description": "A look for this state (\"scorch:dark=0.9\")."
+        },
+        "template": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The state's looping template (objects have no skeletal clips).",
+          "examples": [
+            "drive"
+          ]
+        },
+        "anim": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Another name for template."
+        },
+        "collision": {
+          "type": "string",
+          "enum": [
+            "none",
+            "auto",
+            "base",
+            "full",
+            "concave"
+          ],
+          "description": "What the state collides with (FB-085): none (a blown gate), base, full, concave or auto."
+        }
+      },
+      "additionalProperties": false,
+      "title": "State",
+      "description": "One object state in the object form of `states`: `{ \"intact\": { \"template\": \"drive\" }, \"destroyed\": { \"asset\", \"transition\" } }`."
+    },
+    "fx": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the FX look is on."
+        },
+        "tint": {
+          "description": "The glow colour.",
+          "examples": [
+            "#ff7a20"
+          ],
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#[0-9a-f]{6}$"
+            }
+          ]
+        },
+        "intensity": {
+          "type": "number",
+          "minimum": 0,
+          "description": "How strong the glow is (1 = as authored).",
+          "examples": [
+            1.2
+          ]
+        },
+        "blend": {
+          "type": "string",
+          "enum": [
+            "add",
+            "normal"
+          ],
+          "description": "How the sprite blends over the scene: add (light, fire) or normal."
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false,
+      "title": "FX",
+      "description": "The glowing FX look as an object (`\"fx\": true` is the default glow)."
+    },
+    "light": {
+      "type": "object",
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "day",
+            "dusk",
+            "night",
+            "overcast",
+            "desert_noon",
+            "arctic"
+          ],
+          "description": "The preset the other values start from (default day)."
+        },
+        "ambient": {
+          "description": "Ambient (sky) colour.",
+          "examples": [
+            "#8090c0"
+          ],
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#[0-9a-f]{6}$"
+            }
+          ]
+        },
+        "ambientIntensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Ambient strength, 0–10 (day 1.9)."
+        },
+        "key": {
+          "description": "Key light (sun or moon) colour.",
+          "examples": [
+            "#ffe0b0"
+          ],
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#[0-9a-f]{6}$"
+            }
+          ]
+        },
+        "keyIntensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Key light strength, 0–10 (day 1.6)."
+        },
+        "azimuth": {
+          "type": "number",
+          "minimum": -360,
+          "maximum": 360,
+          "description": "Where the key light comes from, degrees around the model as the camera sees it: 0 from the camera, 90 from the right, -90 from the left, 180 from behind (day about -34)."
+        },
+        "elevation": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 90,
+          "description": "Height of the key light above the horizon, 1–90 degrees (day about 48)."
+        }
+      },
+      "additionalProperties": false,
+      "title": "Light",
+      "description": "Lighting as an object: a preset plus overrides. On a sprite it lights the model; on a tileset the same values grade the ground to match (FB-060)."
+    },
+    "turret": {
+      "type": "object",
+      "properties": {
+        "dirs": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "1",
+                "2",
+                "4",
+                "8",
+                "12",
+                "16",
+                "32",
+                "4d",
+                "6f",
+                "6p"
+              ]
+            },
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          ],
+          "description": "The turret's own direction count (default: the hull's).",
+          "examples": [
+            "16"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "title": "Turret",
+      "description": "The object form of `turret` (FB-096): `{ \"dirs\": \"16\" }`."
+    },
+    "portrait": {
+      "type": "object",
+      "properties": {
+        "size": {
+          "description": "Square output size in pixels (default 256).",
+          "examples": [
+            256
+          ],
+          "allOf": [
+            {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 4096
+            }
+          ]
+        },
+        "width": {
+          "description": "Width in pixels, with height for a non-square portrait.",
+          "allOf": [
+            {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 4096
+            }
+          ]
+        },
+        "height": {
+          "description": "Height in pixels.",
+          "allOf": [
+            {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 4096
+            }
+          ]
+        },
+        "angle": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "How far the character is turned from the camera: degrees (-180..180), or front, 3/4 (default, facing right), 3/4 left, side, side left.",
+          "examples": [
+            "3/4"
+          ]
+        },
+        "pitch": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 60
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Camera pitch looking down at the face, 0–60 degrees (default 0)."
+        },
+        "background": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A hex colour (#203040), or null / \"transparent\" (default).",
+          "examples": [
+            "#203040"
+          ]
+        },
+        "clip": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The clip whose first frame poses the bust (default: the first idle, else the first clip)."
+        }
+      },
+      "additionalProperties": false,
+      "title": "Portrait",
+      "description": "The object form of `portrait` (SF-FB-021): a head-and-shoulders still <base>_portrait.png (+ .json). The string form is \"320x400,front,#203040\"."
+    },
+    "split": {
+      "type": "object",
+      "properties": {
+        "at": {
+          "type": "string",
+          "const": "waist",
+          "description": "Where to split: waist (the only place today)."
+        },
+        "legs": {
+          "description": "The moves of the legs sheet (default: idle and locomotion).",
+          "examples": [
+            [
+              "idle",
+              "walk",
+              "run"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "torso": {
+          "description": "The moves of the torso sheet (default: idle, aim, shoot, throw, reload).",
+          "examples": [
+            [
+              "idle",
+              "aim",
+              "shoot"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "whole": {
+          "type": "boolean",
+          "description": "Also write the whole-body sheet <base> (every move) from the same job and framing (FB-126)."
+        }
+      },
+      "additionalProperties": false,
+      "title": "Split",
+      "description": "The object form of `split` (FB-124): a legs sheet and a torso sheet with a per-frame waist socket in both."
+    },
+    "tileset": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The tileset's name (unique in the file): what the next run matches.",
+          "examples": [
+            "temperate"
+          ]
+        },
+        "tile": {
+          "type": "string",
+          "pattern": "^\\s*(\\d+)\\s*[x×]\\s*(\\d+)\\s*$",
+          "description": "\"64x32\" (2:1 iso diamond, the default) or \"32x32\" (square, orthogonal); default: the file's tile.",
+          "examples": [
+            "64x32"
+          ]
+        },
+        "metresPerTile": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Metres one tile covers (default: the file's, else 1).",
+          "examples": [
+            1
+          ]
+        },
+        "noisePeriod": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Period of the large-scale ground noise in tiles (default 4).",
+          "examples": [
+            4
+          ]
+        },
+        "variants": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991,
+          "description": "Default random variants per corner combination (a terrain's own variants wins; default 1).",
+          "examples": [
+            2
+          ]
+        },
+        "terrains": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/terrain"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
+            ]
+          },
+          "description": "The terrains, by name or as Terrain objects."
+        },
+        "pairs": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    ],
+                    "additionalItems": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^[^,+]+[,+][^,+]+$"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "string",
+              "const": "all"
+            }
+          ],
+          "description": "Terrain pairs that get transition tiles ([[\"grass\", \"dirt\"]] or [\"grass,dirt\"]), or \"all\" for every pair.",
+          "examples": [
+            [
+              [
+                "grass",
+                "dirt"
+              ]
+            ]
+          ]
+        },
+        "cliffHeight": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Cliff face height in pixels for raised terrains (default tileHeight / 2).",
+          "examples": [
+            16
+          ]
+        },
+        "mixes": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "triples",
+            "pairs"
+          ],
+          "description": "Tiles where three or four terrains meet: auto (default: every mix while the tileset has few terrains), triples or pairs."
+        },
+        "light": {
+          "description": "Lighting preset (\"dusk\") or a Light object, as a sprite's light: grades the ground to match (FB-060).",
+          "examples": [
+            "dusk"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "day",
+                    "dusk",
+                    "night",
+                    "overcast",
+                    "desert_noon",
+                    "arctic"
+                  ]
+                },
+                {
+                  "$ref": "#/definitions/light"
+                }
+              ]
+            }
+          ]
+        },
+        "comment": {
+          "description": "A note for people; ignored."
+        },
+        "description": {
+          "description": "A note for people; ignored."
+        }
+      },
+      "required": [
+        "name",
+        "terrains"
+      ],
+      "additionalProperties": false,
+      "title": "Tileset",
+      "description": "One tileset: its tile size, terrains and which pairs blend. A declaration is the whole truth about a tileset (terrains it does not list are removed), and tiles that stay keep their ids, so maps made with it stay valid."
+    },
+    "terrain": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The terrain's name (unique in the tileset).",
+          "examples": [
+            "grass"
+          ]
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "grass",
+            "dirt",
+            "sand",
+            "mud",
+            "road",
+            "water",
+            "snow",
+            "jungle",
+            "rock",
+            "custom"
+          ],
+          "description": "What it is (default: the name if it is a kind, else custom): sets the default colour and water/shore behaviour."
+        },
+        "color": {
+          "description": "Flat palette colour (default: the kind's). Not with texture.",
+          "examples": [
+            "#8a6440"
+          ],
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#[0-9a-f]{6}$"
+            }
+          ]
+        },
+        "noise": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "0–1 noise on the palette colour.",
+          "examples": [
+            0.3
+          ]
+        },
+        "texture": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          ],
+          "description": "A texture instead of a colour: a texture path inside the packs, or an installed asset id.",
+          "examples": [
+            "POLYGON_Generic_v3/Textures/Generic_Grass.png"
+          ]
+        },
+        "scale": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "With texture: metres one repeat of the texture covers (default one tile).",
+          "examples": [
+            4
+          ]
+        },
+        "tint": {
+          "description": "A tint over the texture or colour.",
+          "examples": [
+            "#c0d0a0"
+          ],
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#[0-9a-f]{6}$"
+            }
+          ]
+        },
+        "variants": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991,
+          "description": "Random variants of this terrain's tiles (default: the tileset's).",
+          "examples": [
+            3
+          ]
+        },
+        "blend": {
+          "description": "Terrains to make transitions with (the same as listing the pairs).",
+          "examples": [
+            [
+              "grass",
+              "dirt"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "height": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 0
+            },
+            {
+              "type": "number",
+              "const": 1
+            }
+          ],
+          "description": "1 = raised one level: cliffs where it meets ground terrains (`cliff: true` is the same)."
+        },
+        "cliff": {
+          "type": "boolean",
+          "description": "true = raised one level with cliffs (the same as height 1)."
+        },
+        "shore": {
+          "type": "boolean",
+          "description": "Shore treatment where it meets another terrain (default: on for water)."
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "title": "Terrain",
+      "description": "One terrain of a tileset: a colour or a texture, and how it meets its neighbours. A bare string is a terrain with that name."
+    },
+    "sprite-defaults": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "character",
+            "vehicle",
+            "object",
+            "prop",
+            "weapon"
+          ],
+          "description": "What the model is (default: from the model)."
+        },
+        "class": {
+          "description": "Movesets: \"rifle\", [\"rifle\", \"pistol\"] or \"rifle,pistol\" (unarmed, sword, knife, bow, staff, launcher, rifle, pistol, martial_arts).",
+          "examples": [
+            "rifle"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "anim": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "$ref": "#/definitions/anim"
+                },
+                {
+                  "$ref": "#/definitions/template"
+                }
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "$ref": "#/definitions/anim"
+                  },
+                  {
+                    "$ref": "#/definitions/template"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": "Clip names, or with class the moves to keep (\"idle\", \"crouch_*\"); each may carry its own trim, cap, events and held items (\"Clip@0.8:2.6\", \"Clip@max=2\", or an Anim entry object). With class, installed clip names are extra clips under their own names.",
+          "examples": [
+            [
+              "idle",
+              "walk",
+              {
+                "clip": "Knife_Stab_Fore",
+                "trim": "0:0.9",
+                "with": "POLYGON_Palm_City/SM_Wep_Knife_01"
+              }
+            ]
+          ]
+        },
+        "template": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "$ref": "#/definitions/template"
+                }
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "$ref": "#/definitions/template"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": "Procedural moves: \"still\", [\"crawl\", \"drive_turn:steer=25\"]; with its own held items a Template entry object.",
+          "examples": [
+            "still"
+          ]
+        },
+        "set": {
+          "type": "string",
+          "minLength": 1,
+          "description": "An animation set by id or name (not with class); \"none\" = only the declared anim/template moves (the default whenever any are declared).",
+          "examples": [
+            "builtin_locomotion"
+          ]
+        },
+        "with": {
+          "description": "Held items: \"Pack/Model\", \"@bone\", \"=layer\", \":front\", \"~class\".",
+          "examples": [
+            [
+              "POLYGON_War/SM_Wep_American_Rifle_01"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "states": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/definitions/state"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": "Objects: \"auto\", \"auto,destroyed@destroy\", \"auto,intact:drive,destroyed@destroy\" or { \"intact\": { \"template\": \"drive\" }, \"destroyed\": { \"asset\", \"transition\" } } (no anim/set/class; a template next to states is the intact state's loop).",
+          "examples": [
+            "auto,destroyed@destroy"
+          ]
+        },
+        "view": {
+          "type": "string",
+          "enum": [
+            "side2",
+            "lowthreequarter",
+            "jrpg4",
+            "topdown8",
+            "high8",
+            "straightdown",
+            "iso8",
+            "iso4d",
+            "trueiso8",
+            "hexflat6",
+            "hexpointy6",
+            "vehicle16",
+            "rts32",
+            "rpgmaker",
+            "lpc"
+          ],
+          "description": "The view preset (default: the project's)."
+        },
+        "dirs": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": [
+                  "string",
+                  "number"
+                ]
+              }
+            }
+          ],
+          "description": "Directions: 1, 2, 4, 4d, 8, 16… (on an object in an iso view, 1 = one facing of that view), or the directions by name: \"E\", \"N,S\", [\"N\", \"S\"].",
+          "examples": [
+            "8"
+          ]
+        },
+        "facings": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 0
+            },
+            {
+              "type": "number",
+              "const": 1
+            },
+            {
+              "type": "number",
+              "const": 2
+            },
+            {
+              "type": "number",
+              "const": 4
+            }
+          ],
+          "description": "Objects: 1, 2 or 4 grid-aligned facings (0 = use dirs).",
+          "examples": [
+            4
+          ]
+        },
+        "slice": {
+          "type": "string",
+          "const": "columns",
+          "description": "Objects on a diamond tile: \"columns\" (per-tile-column strips)."
+        },
+        "collision": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "base",
+            "full",
+            "concave"
+          ],
+          "description": "Objects: full (whole hull), base (ground slice: a trunk), concave (the outline of the slice: curved walls, fences) or auto (default: vehicles, aircraft, buildings full; trees, poles base)."
+        },
+        "collisionHeight": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Objects: the ground slice's height in metres above the bottom (default min(0.5, 15% of the height)).",
+          "examples": [
+            0.5
+          ]
+        },
+        "pitch": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 90,
+          "description": "Camera pitch in degrees (0 = side, 30 = 2:1 iso, 90 = straight down).",
+          "examples": [
+            30
+          ]
+        },
+        "projection": {
+          "type": "string",
+          "enum": [
+            "ortho",
+            "persp"
+          ],
+          "description": "The camera projection."
+        },
+        "frame": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Square frame size in px (the minimum with ppm/tile).",
+          "examples": [
+            128
+          ]
+        },
+        "ppm": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Fixed pixels per metre (a sprite's own ppm wins over the file's tile; next to its own tile, the tile wins with a warning).",
+          "examples": [
+            64
+          ]
+        },
+        "tile": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "boolean",
+              "const": false
+            }
+          ],
+          "description": "Tile lock \"64x32\" (iso diamond) or \"32x32\" (square): the scale from the game's tile; null/false on a sprite leaves the lock (own ppm, or fit).",
+          "examples": [
+            "64x32"
+          ]
+        },
+        "metresPerTile": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "With tile: metres one tile covers (default 1).",
+          "examples": [
+            1
+          ]
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "fit"
+            },
+            {
+              "type": "number",
+              "minimum": 0.05,
+              "maximum": 20
+            },
+            {
+              "type": "string",
+              "pattern": "^\\s*[x×]?\\s*[\\d.]+\\s*(%|x|×)?\\s*$"
+            }
+          ],
+          "description": "\"fit\": fit the model into the frame (UI icons), leaving the tile lock and ppm; or a number, the model's own size factor (1.3 = a boss 30% bigger, also \"130%\") at the same ppm/tile lock.",
+          "examples": [
+            "fit"
+          ]
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Frames per second sampled from the clips.",
+          "examples": [
+            12
+          ]
+        },
+        "mirror": {
+          "type": "boolean",
+          "description": "true: render only right-facing directions; the engine flips the rest."
+        },
+        "supersample": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 1
+            },
+            {
+              "type": "number",
+              "const": 2
+            },
+            {
+              "type": "number",
+              "const": 3
+            },
+            {
+              "type": "number",
+              "const": 4
+            }
+          ],
+          "description": "1–4: render at N× and average down.",
+          "examples": [
+            2
+          ]
+        },
+        "pixelArt": {
+          "type": "boolean",
+          "description": "Pixel-art style (hard edges, model palette, 1 px outline)."
+        },
+        "outline": {
+          "type": "boolean",
+          "description": "Pixel style: 1 px outline."
+        },
+        "palette": {
+          "type": "string",
+          "enum": [
+            "full",
+            "model",
+            "levels"
+          ],
+          "description": "Pixel style colours: full, model or levels."
+        },
+        "shadow": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "off",
+                "low",
+                "high"
+              ]
+            },
+            {
+              "type": "boolean",
+              "const": false
+            }
+          ],
+          "description": "The drop shadow: off, low or high (false = off).",
+          "examples": [
+            "off"
+          ]
+        },
+        "look": {
+          "type": "string",
+          "enum": [
+            "clean",
+            "pixel",
+            "hand_painted",
+            "stylized"
+          ],
+          "description": "Look card: clean, pixel, hand_painted, stylized."
+        },
+        "size": {
+          "type": "string",
+          "enum": [
+            "small",
+            "medium",
+            "large",
+            "xl"
+          ],
+          "description": "Size card: small (64 px), medium (128), large (256), xl (512)."
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Engine format: generic, godot4, unity, phaser3, pixi, aseprite, libgdx, gamemaker, rpgmaker, lpc (or a custom profile).",
+          "examples": [
+            "phaser3"
+          ]
+        },
+        "layers": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "depth",
+                  "uv",
+                  "shadow"
+                ]
+              }
+            }
+          ],
+          "description": "Extra layers: normal, depth, uv, shadow.",
+          "examples": [
+            [
+              "normal"
+            ]
+          ]
+        },
+        "uniform": {
+          "type": "boolean",
+          "description": "Same frame size and pivot for every direction and clip (fixed scale); the project's sprites of one model with uniform at the same view share one frame and pivot."
+        },
+        "atlas": {
+          "type": "boolean",
+          "description": "Pack trimmed frames into atlas pages."
+        },
+        "animPrefix": {
+          "type": "string",
+          "description": "Animation key prefix, tokens {base} {asset} (default: the sprite's name; \"\" = bare clip_dir).",
+          "examples": [
+            "{base}/"
+          ]
+        },
+        "movePrefix": {
+          "type": "boolean",
+          "description": "With one class: false = bare move names (keys \"hero/idle_E\", clips \"idle\") instead of \"hero/martial_arts_idle_E\"."
+        },
+        "maxSeconds": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Cap every clip at this many seconds (a clip's own maxSeconds in anim wins).",
+          "examples": [
+            3
+          ]
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "Masculine",
+            "Feminine"
+          ],
+          "description": "Clip gender: auto, Masculine or Feminine."
+        },
+        "layered": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "const": "mask"
+            },
+            {
+              "type": "string",
+              "const": "none"
+            }
+          ],
+          "description": "Held items as separate aligned sheets: true / \"mask\" (hidden pixels cut away) or \"none\" (whole items); false (default): baked into one sheet."
+        },
+        "fx": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/fx"
+            }
+          ],
+          "description": "Glowing FX look: true or { \"enabled\", \"tint\", \"intensity\", \"blend\" }.",
+          "examples": [
+            {
+              "enabled": true,
+              "tint": "#ff7a20",
+              "intensity": 1.2
+            }
+          ]
+        },
+        "light": {
+          "description": "Lighting (FB-060): day, dusk, night, overcast, desert_noon, arctic (default day), or a Light object.",
+          "examples": [
+            "dusk"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "day",
+                    "dusk",
+                    "night",
+                    "overcast",
+                    "desert_noon",
+                    "arctic"
+                  ]
+                },
+                {
+                  "$ref": "#/definitions/light"
+                }
+              ]
+            }
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Sprite tags (default: its movesets).",
+          "examples": [
+            [
+              "enemy"
+            ]
+          ]
+        },
+        "pivot": {
+          "type": "string",
+          "enum": [
+            "anchor",
+            "origin"
+          ],
+          "description": "Objects: the frame pivot in the data files: each direction's object anchor (default) or the model origin."
+        },
+        "turret": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "1",
+                "2",
+                "4",
+                "8",
+                "12",
+                "16",
+                "32",
+                "4d",
+                "6f",
+                "6p"
+              ]
+            },
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "$ref": "#/definitions/turret"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Vehicles (FB-096): hull and turret as two sheets, the turret's mount per hull direction in the hull's meta: true, or the turret's own dirs \"16\" / { \"dirs\": \"32\" }; false = one sheet.",
+          "examples": [
+            true
+          ]
+        },
+        "portrait": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 4096
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/portrait"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Characters (SF-FB-021): also a head-and-shoulders still <base>_portrait.png: true (256 px, 3/4, transparent), a size, \"320x400,front,#203040\" or a Portrait object; false = none.",
+          "examples": [
+            "240x192,front"
+          ]
+        },
+        "split": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/split"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Characters (FB-124): \"waist\" = a legs sheet and a torso sheet with a per-frame waist socket in both, to aim the torso apart from the walk; or a Split object; false = one sheet.",
+          "examples": [
+            "waist"
+          ]
+        },
+        "still": {
+          "description": "One-frame stills of clips or moves: \"Victory_Pose@2.4\" (source seconds) or a list, each a one-frame animation <Clip>_still per direction (\"Clip@2.4=ending\" names it).",
+          "examples": [
+            "Victory_Pose@2.4=ending"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "title": "Sprite defaults",
+      "description": "The `defaults` object (and the same keys at the top level): every Sprite key but name and asset."
+    }
+  }
+}

@@ -33,6 +33,28 @@ The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
 | P8 | Migration proof: Monty and Off Road | — |
 | P9 | One simple UI | — |
 
+## Development
+
+Node 18.19+, npm workspaces under `packages/*` (TypeScript 5.6, strict ESM / NodeNext, vitest, Playwright).
+
+```
+npm install
+npm run typecheck   # tsc -b over every package
+npm test            # vitest, every package
+npm run lint        # eslint (typescript-eslint, minimal rules)
+npm run docs        # regenerate docs/api/ (declarations.md + JSON Schemas) from packages/schema
+```
+
+CI (`.github/workflows/ci.yml`) runs the four on every push and PR and fails when `docs/api/` is stale;
+`asset-guard.yml` blocks Synty assets and renders. Packages so far:
+
+- **`@slop/schema`** (`packages/schema`): zod is the one source of truth for every option. `opt()` gives a field its
+  help, `doc()` names an object; from that one definition come the JSON Schema, the CLI flags, the MCP tool inputs,
+  the markdown reference ([docs/api/declarations.md](docs/api/declarations.md)) and errors that teach: the key, the
+  nearest valid key, what it is for and where it is documented. The declaration files `ssg.assets.json`,
+  `ssg.models.json` and `ssg.textures.json` are ported from the old generator, and the real games' files validate
+  unchanged (`packages/schema/test/fixtures`).
+
 ## Licence
 
 Code and docs: MIT. **Synty assets are not included** and are never committed: you need your own Synty licence and

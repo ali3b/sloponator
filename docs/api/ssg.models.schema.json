@@ -1,0 +1,2720 @@
+{
+  "$id": "https://github.com/ali3b/sloponator/blob/master/docs/api/ssg.models.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "description": "The JSON Schema this file follows (editors use it); ignored."
+        },
+        "comment": {
+          "description": "A note for people; ignored."
+        },
+        "project": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          ],
+          "description": "The project's name or id; the CLI's --project wins.",
+          "examples": [
+            "Off Road"
+          ]
+        },
+        "models": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/model"
+          },
+          "description": "The models."
+        },
+        "defaults": {
+          "description": "Settings every model starts from (see Model defaults).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/model-defaults"
+            }
+          ]
+        }
+      },
+      "required": [
+        "models"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/model"
+      }
+    }
+  ],
+  "title": "ssg.models.json",
+  "description": "Declares the 3D models a game keeps in a folder: `slop build` exports each one as a GLB plus a `.model.json` manifest, downloads only what changed, removes files of models no longer declared and indexes them in `models.json`. A bare list of models works too.",
+  "definitions": {
+    "model": {
+      "type": "object",
+      "properties": {
+        "asset": {
+          "description": "Asset id, or name (\"SM_Veh_Pickup_Lift_01\", or \"Pack/Name\" when several packs have it). Not with a built kind.",
+          "examples": [
+            "POLYGON_Palm_City/SM_Veh_Pickup_01"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              ]
+            }
+          ]
+        },
+        "trackpiece": {
+          "description": "A procedural track piece instead of an asset (see Track piece).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/trackpiece"
+            }
+          ]
+        },
+        "terrain": {
+          "description": "Terrain on the track grid instead of an asset (see Terrain (3D)).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/terrain3d"
+            }
+          ]
+        },
+        "skydome": {
+          "description": "A skydome instead of an asset (see Skydome).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/skydome"
+            }
+          ]
+        },
+        "composite": {
+          "description": "One model from several assets at offsets (see Composite).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/composite"
+            }
+          ]
+        },
+        "collider": {
+          "type": "string",
+          "enum": [
+            "box",
+            "convex",
+            "trimesh"
+          ],
+          "description": "The collider the export carries (CS-FB-002): box (the manifest's box; default for assets), trimesh (also a collider node in the GLB; default for track pieces) or convex (assets: the hull of the visual mesh)."
+        },
+        "colliderExclude": {
+          "description": "Parts a trimesh or convex collider leaves out, by role (wheel, door…) or part name. Default the moving parts; [] keeps every part.",
+          "examples": [
+            [
+              "wheel",
+              "door"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "convexMaxVertices": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 65535,
+          "description": "With collider convex: the most vertices the hull may have (default 255, what physics engines take).",
+          "examples": [
+            255
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Output name (file names and the GLB's root node). Default: the asset's name.",
+          "examples": [
+            "truck"
+          ]
+        },
+        "clips": {
+          "description": "Clips baked into the GLB (characters only): a clip name, name@Masculine|Feminine|Neutral, name@Polygon|Sidekick (the rig family), name@<pack>, or an animation id.",
+          "examples": [
+            [
+              "POLY_IDL_Base@Masculine"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "inPlace": {
+          "type": "boolean",
+          "description": "In-place clips (default true); false keeps the root motion."
+        },
+        "attach": {
+          "description": "Extra pieces: bundled attachments of the same file by mesh name, or other attachment assets by name or id.",
+          "examples": [
+            [
+              "SM_Veh_Pickup_Lift_01"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "replaceWheels": {
+          "type": "boolean",
+          "description": "When an attachment brings four road wheels of its own (a lift kit), the model's own are dropped and the attachment's become the wheels (default true)."
+        },
+        "origin": {
+          "type": "string",
+          "enum": [
+            "bottom-centre",
+            "axle-centre",
+            "pivot"
+          ],
+          "description": "Where the model's origin goes: the centre of its bottom (default), the centre of the wheel axles at axle height (vehicles), or the source model's own origin."
+        },
+        "texSize": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 8192,
+          "description": "Largest texture side in pixels (scaled down to fit, never up). Default by kind: props 256, vehicles and characters 1024.",
+          "examples": [
+            1024
+          ]
+        },
+        "texFormat": {
+          "type": "string",
+          "enum": [
+            "png",
+            "webp",
+            "keep"
+          ],
+          "description": "Texture format: webp (default), png, or keep (as ingested)."
+        },
+        "simplify": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "Mesh simplification: the fraction of triangles to keep (0.05–1; 1 or unset = none).",
+          "examples": [
+            0.5
+          ]
+        },
+        "tint": {
+          "description": "A colour (#rgb / #rrggbb): recolours the body paint. Not with variants.",
+          "examples": [
+            "#c62828"
+          ],
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#?([0-9a-f]{3}|[0-9a-f]{6})$"
+            }
+          ]
+        },
+        "variants": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "maxItems": 16,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/model-variant"
+              }
+            }
+          ],
+          "description": "Paint variants in one GLB: [{ name, tint }] (or \"red=#c62828,blue=#1e5bc6,plain\"). The first is the default look.",
+          "examples": [
+            [
+              {
+                "name": "red",
+                "tint": "#c62828"
+              }
+            ]
+          ]
+        },
+        "compress": {
+          "type": "string",
+          "enum": [
+            "meshopt",
+            "none"
+          ],
+          "description": "Geometry compression: meshopt (three.js needs MeshoptDecoder) or none (default)."
+        },
+        "fit": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Z (forward), metres."
+            },
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "X, metres."
+            },
+            "height": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Y, metres."
+            }
+          },
+          "additionalProperties": false,
+          "description": "Scale the model uniformly so a dimension matches, in metres. With several, the smallest scale wins.",
+          "examples": [
+            {
+              "length": 4.5
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "$ref": "#/definitions/model-pose"
+            }
+          ],
+          "description": "Bake a character into one static mesh posed at a clip's time: { clip, time } or \"Clip:0.2\". Not with clips or poses.",
+          "examples": [
+            {
+              "clip": "Crowd_Sit_Idle",
+              "time": 1
+            }
+          ]
+        },
+        "poses": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "maxItems": 32,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/model-named-pose"
+              }
+            }
+          ],
+          "description": "Several posed static meshes in one GLB, a node per pose: [{ name, clip, time }] or \"idle=Idle:0,wave=Wave_01:0.2\". Not with clips or pose."
+        },
+        "splitBySwatch": {
+          "type": "boolean",
+          "description": "Split the model's triangles by palette swatch (OR-FB-022): a child node swatch_<hex> per atlas colour with its own material. Static models only."
+        },
+        "lods": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "maxItems": 4,
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 0.95
+              }
+            }
+          ],
+          "description": "Levels of detail in the same GLB, as falling shares of the triangles ([0.5, 0.2]); at most 4.",
+          "examples": [
+            [
+              0.5,
+              0.2
+            ]
+          ]
+        },
+        "paint": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The paint a tint or variants recolour (CS-FB-026): a colour #rrggbb (the swatch that is its paint) or a material name. Default: found.",
+          "examples": [
+            "#e3b52f"
+          ]
+        },
+        "decals": {
+          "type": "boolean",
+          "description": "CS-FB-028: false paints over every decal and livery in the paint's texture with the paint. Default true: only small lettering enclosed by the paint."
+        }
+      },
+      "additionalProperties": false,
+      "title": "Model",
+      "description": "One model to export: a library asset (or a built kind: trackpiece, terrain, skydome, composite) and its options. `name` is the file name in the folder; it defaults to the asset's name."
+    },
+    "track-profile": {
+      "type": "object",
+      "properties": {
+        "shape": {
+          "type": "string",
+          "enum": [
+            "flat",
+            "pipe",
+            "halfpipe",
+            "tunnel"
+          ],
+          "description": "flat road, closed pipe (the car drives on its inside), half-pipe, or a flat road under a tunnel shell."
+        },
+        "width": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Drivable width between the kerbs' outer edges; for a pipe its diameter (default 10).",
+          "examples": [
+            10
+          ]
+        },
+        "kerb": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Kerb strip width on each edge, 0 for none (default 0.6)."
+        },
+        "kerbHeight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Kerb height."
+        },
+        "kerbs": {
+          "type": "string",
+          "enum": [
+            "both",
+            "left",
+            "right",
+            "none"
+          ],
+          "description": "Which edges get kerbs."
+        },
+        "wall": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20,
+          "description": "Wall / rail height above the deck, 0 for none (default 0.8)."
+        },
+        "wallThickness": {
+          "type": "number",
+          "minimum": 0.02,
+          "maximum": 5,
+          "description": "Wall thickness."
+        },
+        "walls": {
+          "type": "string",
+          "enum": [
+            "both",
+            "left",
+            "right",
+            "none"
+          ],
+          "description": "Which edges get walls."
+        },
+        "thickness": {
+          "type": "number",
+          "minimum": 0.02,
+          "maximum": 10,
+          "description": "Deck slab thickness under the surface (default 0.5)."
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0.2,
+          "maximum": 100,
+          "description": "Half-pipe: the radius of its curved sides (default width / 4)."
+        },
+        "height": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Tunnel: clear height inside (default width / 2 + 2)."
+        },
+        "median": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50,
+          "description": "A divided road (CS-FB-012): the width of the central median strip (default 0: none).",
+          "examples": [
+            3
+          ]
+        },
+        "medianHeight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "The median's height (default 0.8, a concrete barrier; 0: a painted strip)."
+        },
+        "edge": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The edge kind flat road ends report from here on (default the spec's edge, else road; e.g. highway).",
+          "examples": [
+            "highway"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "title": "Track profile",
+      "description": "A track piece's cross-section: the road's shape, width, kerbs, walls and median."
+    },
+    "track-segment": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "type": "number",
+          "minimum": 0.01,
+          "maximum": 5000,
+          "description": "Metres along the centreline.",
+          "examples": [
+            30
+          ]
+        },
+        "turn": {
+          "type": "number",
+          "minimum": -1440,
+          "maximum": 1440,
+          "description": "Yaw over the segment, degrees, + left."
+        },
+        "pitch": {
+          "type": "number",
+          "minimum": -1440,
+          "maximum": 1440,
+          "description": "Pitch over the segment, degrees, + nose up (a loop is 360)."
+        },
+        "roll": {
+          "type": "number",
+          "minimum": -1440,
+          "maximum": 1440,
+          "description": "Rolls the path frame itself over the segment, degrees, + raises the right edge (corkscrews)."
+        },
+        "rollRadius": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 500,
+          "description": "CS-FB-027: roll about an axis this many metres above the deck instead of the centre line (a barrel roll). Only with roll; no turn, pitch, shift or rise."
+        },
+        "rollEase": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "description": "With rollRadius: the share of the length each end takes to ease the roll in or out (0–0.5, default 0.25)."
+        },
+        "bank": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Deck bank at the END of the segment (absolute degrees, eased from the previous end); + raises the right edge."
+        },
+        "shift": {
+          "type": "number",
+          "minimum": -1000,
+          "maximum": 1000,
+          "description": "Sideways offset over the segment, metres, + left, eased in and out."
+        },
+        "rise": {
+          "type": "number",
+          "minimum": -1000,
+          "maximum": 1000,
+          "description": "Upward offset over the segment, metres, eased (an S-shaped slope with level ends)."
+        },
+        "profile": {
+          "description": "This segment's profile, merged over the previous one.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/track-profile"
+            }
+          ]
+        },
+        "blend": {
+          "type": "boolean",
+          "description": "Ease from the previous segment's profile to this one over the segment (pipe-road transitions)."
+        },
+        "gap": {
+          "type": "boolean",
+          "description": "No geometry: the path flies on (the gap of a jump)."
+        }
+      },
+      "required": [
+        "length"
+      ],
+      "additionalProperties": false,
+      "title": "Track segment",
+      "description": "One segment of a custom track path: how far it goes and how it turns, pitches, rolls, banks and shifts on the way."
+    },
+    "track-branch": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z][\\w-]{0,31}$",
+          "description": "Socket name(s): name for its one open end, name_in / name_out when both are open.",
+          "examples": [
+            "pit"
+          ]
+        },
+        "from": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Start where the main path is after this many segments (0: the entry). Not with start."
+        },
+        "start": {
+          "type": "object",
+          "properties": {
+            "pos": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                },
+                {
+                  "type": "number",
+                  "minimum": -10000,
+                  "maximum": 10000
+                }
+              ],
+              "additionalItems": false,
+              "minItems": 3,
+              "maxItems": 3,
+              "description": "A position in the piece, metres."
+            },
+            "heading": {
+              "type": "number",
+              "minimum": -360,
+              "maximum": 360,
+              "description": "Degrees, 0 = +Z, + left."
+            },
+            "bank": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180,
+              "description": "The deck bank at the start."
+            }
+          },
+          "required": [
+            "pos"
+          ],
+          "additionalProperties": false,
+          "description": "Or start here: a position in the piece and a heading."
+        },
+        "path": {
+          "minItems": 1,
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/track-segment"
+          },
+          "description": "The branch's segments."
+        },
+        "profile": {
+          "description": "Profile changes over the main path's (the profile where it starts).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/track-profile"
+            }
+          ]
+        },
+        "open": {
+          "type": "string",
+          "enum": [
+            "start",
+            "end",
+            "both",
+            "none"
+          ],
+          "description": "Which ends are open (get sockets). Default end for from, both for start."
+        }
+      },
+      "required": [
+        "name",
+        "path"
+      ],
+      "additionalProperties": false,
+      "title": "Track branch",
+      "description": "A side path off a track piece (a pit lane, a split) with its own sockets."
+    },
+    "trackpiece": {
+      "type": "object",
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "straight",
+            "curve-left",
+            "curve-right",
+            "banked-curve-left",
+            "banked-curve-right",
+            "bank-transition",
+            "slope-up",
+            "slope-down",
+            "ramp",
+            "landing",
+            "jump",
+            "loop",
+            "corkscrew-left",
+            "corkscrew-right",
+            "pipe",
+            "pipe-in",
+            "pipe-out",
+            "halfpipe",
+            "halfpipe-in",
+            "halfpipe-out",
+            "tunnel",
+            "bridge",
+            "chicane-left",
+            "chicane-right",
+            "split-left",
+            "split-right",
+            "crossroads",
+            "helix-left",
+            "helix-right",
+            "widen",
+            "narrow",
+            "barrel-roll"
+          ],
+          "description": "A ready-made piece; its parameters are the keys below that it takes.",
+          "examples": [
+            "curve-left"
+          ]
+        },
+        "cell": {
+          "type": "number",
+          "minimum": 2,
+          "maximum": 500,
+          "description": "The grid's cell in metres (default 30).",
+          "examples": [
+            30
+          ]
+        },
+        "footprint": {
+          "type": "array",
+          "items": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "Declared footprint in cells [across (X), along (Z)]; checked against the geometry.",
+          "examples": [
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        "elevation": {
+          "type": "number",
+          "minimum": -100,
+          "maximum": 2000,
+          "description": "Height of the entry above the ground (default 0; a bridge preset sets it)."
+        },
+        "bank": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Entry bank, degrees (default 0); on a banked curve, the bank (default 30)."
+        },
+        "pitch": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90,
+          "description": "Entry pitch, degrees (default 0)."
+        },
+        "bankPivot": {
+          "type": "string",
+          "enum": [
+            "low-edge",
+            "centre"
+          ],
+          "description": "Bank about the edge that goes down, which stays at path height (default), or about the centre line."
+        },
+        "profile": {
+          "description": "The cross-section at the entry.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/track-profile"
+            }
+          ]
+        },
+        "width": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "A shorthand for profile.width.",
+          "examples": [
+            10
+          ]
+        },
+        "path": {
+          "minItems": 1,
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/track-segment"
+          },
+          "description": "A custom path of segments instead of a preset."
+        },
+        "branches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/track-branch"
+          },
+          "description": "Side paths with their own sockets."
+        },
+        "materials": {
+          "type": "object",
+          "properties": {
+            "deck": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "kerb": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "kerbAlt": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "wall": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "support": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "description": "Synty swatches per slot (deck, kerb, kerbAlt, wall, support): \"Pack/Asset\", \"Pack/Asset#rrggbb\", \"Pack/Material\" or \"#rrggbb\".",
+          "examples": [
+            {
+              "deck": "#404040"
+            }
+          ]
+        },
+        "supports": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "auto",
+                "none",
+                "pillars",
+                "solid"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "auto",
+                    "none",
+                    "pillars",
+                    "solid"
+                  ],
+                  "description": "Pillars or a solid fill."
+                },
+                "spacing": {
+                  "type": "number",
+                  "minimum": 2,
+                  "maximum": 500,
+                  "description": "Pillars: metres between them along the path (default 15)."
+                },
+                "size": {
+                  "type": "number",
+                  "minimum": 0.1,
+                  "maximum": 20,
+                  "description": "Pillars: the side of their square section (default 1.6)."
+                }
+              },
+              "additionalProperties": false
+            }
+          ],
+          "description": "Pillars or a solid fill down to y = 0 under elevated parts; auto (default) pillars where the deck is over 1.5 m up, solid for ramps."
+        },
+        "stripe": {
+          "type": "number",
+          "minimum": 0.2,
+          "maximum": 100,
+          "description": "Kerb stripe length in metres (default 2)."
+        },
+        "edge": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The edge kind a flat road end reports in its socket (default road; e.g. highway for a dual carriageway).",
+          "examples": [
+            "highway"
+          ]
+        },
+        "length": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 32,
+          "description": "Cells along the piece (straight, slope, ramp, jump, corkscrew, pipe, tunnel, bridge, chicane…).",
+          "examples": [
+            2
+          ]
+        },
+        "size": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 32,
+          "description": "Curves and splits: the footprint in cells (1: 1×1, radius half a cell; 2: 2×2, radius 1.5 cells).",
+          "examples": [
+            2
+          ]
+        },
+        "angle": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1440,
+          "description": "Curves: degrees turned (default 90). Ramps / jumps: the lip angle (default 20). Helix and barrel roll: up to 1440."
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 500,
+          "description": "Loop: its radius in metres. Curves: the centre-line radius (instead of size). Pipe: the tube's radius. Helix: its radius. Barrel roll: the roll axis's height above the deck."
+        },
+        "transition": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "description": "Banked curve: the share of the arc each bank ramp takes. Slope: the share of the run each curved end takes (default 0.25)."
+        },
+        "bankIn": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Banked curve: bank at the entry (default 0)."
+        },
+        "bankOut": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Banked curve: bank at the exit (default 0)."
+        },
+        "from": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "$ref": "#/definitions/track-profile"
+            }
+          ],
+          "description": "Bank transition: the bank at the entry (degrees). Narrow: the wide profile at the entry ({ width, edge, median… })."
+        },
+        "to": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "$ref": "#/definitions/track-profile"
+            }
+          ],
+          "description": "Bank transition: the bank at the exit (degrees). Widen: the wide profile at the exit."
+        },
+        "height": {
+          "type": "number",
+          "minimum": -500,
+          "maximum": 500,
+          "description": "Slopes: the rise (m); ramps / jumps: the lip height; bridges: the deck height; tunnels: the clear height; helix: the climb over its turn (negative descends)."
+        },
+        "shift": {
+          "type": "number",
+          "minimum": -500,
+          "maximum": 500,
+          "description": "Loop and chicane: the sideways offset (m)."
+        },
+        "side": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 32,
+          "description": "Corkscrew: the cells it moves sideways (default 1)."
+        },
+        "align": {
+          "type": "string",
+          "enum": [
+            "offset",
+            "inline"
+          ],
+          "description": "Loop: offset (default; the exit leaves shift metres to the side of the entry) or inline (2 cells, exit on the centre line)."
+        },
+        "turn": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right"
+          ],
+          "description": "Loop: which way the exit moves (default right). Barrel roll: the wall the deck climbs first."
+        },
+        "offset": {
+          "type": "boolean",
+          "description": "Chicane: true makes it a lane change, the exit shift metres to the side of the entry (default false: an S-bend that ends in line)."
+        },
+        "travel": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 32,
+          "description": "Helix: cells it advances along its entry heading while it turns (default 0)."
+        }
+      },
+      "additionalProperties": false,
+      "title": "Track piece",
+      "description": "A procedural track piece instead of an asset (CS-FB-001): a preset with its parameters, or a path of segments swept with a profile; Synty swatch materials; sockets at its open ends."
+    },
+    "terrain-scatter": {
+      "type": "object",
+      "properties": {
+        "asset": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A Synty prop (\"Pack/Asset\" or a name), exported in metres and instanced.",
+          "examples": [
+            "POLYGON_NatureBiomes_AridDesert/SM_Env_Cactus_01"
+          ]
+        },
+        "density": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 200,
+          "description": "Props per tile on average (default 4).",
+          "examples": [
+            4
+          ]
+        },
+        "scale": {
+          "type": "array",
+          "items": [
+            {
+              "type": "number",
+              "minimum": 0.01,
+              "maximum": 100
+            },
+            {
+              "type": "number",
+              "minimum": 0.01,
+              "maximum": 100
+            }
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "Uniform scale range [min, max] (default [0.8, 1.2]).",
+          "examples": [
+            [
+              0.8,
+              1.2
+            ]
+          ]
+        },
+        "maxSlope": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 90,
+          "description": "Steepest ground it stands on, degrees (default 25)."
+        },
+        "on": {
+          "type": "string",
+          "enum": [
+            "land",
+            "shore",
+            "any"
+          ],
+          "description": "Where: land (default, dry ground off the shore), shore (the shore only), any dry ground."
+        },
+        "align": {
+          "type": "boolean",
+          "description": "Tilt with the ground (default false: upright)."
+        }
+      },
+      "required": [
+        "asset"
+      ],
+      "additionalProperties": false,
+      "title": "Terrain scatter",
+      "description": "Props scattered over a terrain (cacti, rocks), instanced in the GLB."
+    },
+    "terrain3d": {
+      "type": "object",
+      "properties": {
+        "cell": {
+          "type": "number",
+          "minimum": 2,
+          "maximum": 500,
+          "description": "The grid's cell in metres (default 30, as track pieces).",
+          "examples": [
+            30
+          ]
+        },
+        "height": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 500,
+          "description": "One height step in metres (default 0.44 cell). Heights count steps.",
+          "examples": [
+            13
+          ]
+        },
+        "tile": {
+          "type": "string",
+          "enum": [
+            "flat",
+            "slope",
+            "corner-outer",
+            "corner-inner",
+            "plateau",
+            "water",
+            "coast"
+          ],
+          "description": "One tile: its kind (not with heights)."
+        },
+        "dir": {
+          "type": "string",
+          "enum": [
+            "N",
+            "E",
+            "S",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ],
+          "description": "The way a tile faces: slope, the uphill side N|E|S|W; corners, the uphill corner NE|NW|SE|SW; coast, the water's corner."
+        },
+        "heights": {
+          "minItems": 2,
+          "type": "array",
+          "items": {
+            "minItems": 2,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": -64,
+              "maximum": 64
+            }
+          },
+          "description": "A grid: corner heights in steps, rows along +Z, columns along +X: (rows + 1) × (cols + 1) numbers (not with tile).",
+          "examples": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          ]
+        },
+        "water": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                }
+              }
+            ]
+          },
+          "description": "Water per tile (rows × cols): \"\" or \".\" land, \"w\" water, NE | NW | SE | SW a coast; a string of one char a tile also works (\"..w\").",
+          "examples": [
+            [
+              "..w",
+              ".ww"
+            ]
+          ]
+        },
+        "level": {
+          "type": "number",
+          "minimum": -1000,
+          "maximum": 1000,
+          "description": "The water surface's height in metres (default 0.02)."
+        },
+        "depth": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "How far the bed under open water sinks below the surface, metres (default 1.5)."
+        },
+        "shape": {
+          "type": "string",
+          "enum": [
+            "planar",
+            "track"
+          ],
+          "description": "Slope faces: planar (default; straight faces) or track (the slope-up piece's curve, so a road slope fits)."
+        },
+        "transition": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "description": "track shape: the share of the run each curved end takes (default 0.25)."
+        },
+        "subdiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32,
+          "description": "Subdivisions per tile side (default 1 planar, 8 track)."
+        },
+        "skirt": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000,
+          "description": "Vertical walls this many metres down from the outer edges (default 0: none)."
+        },
+        "chunk": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128,
+          "description": "Tiles per chunk side: a grid is cut into chunk × chunk meshes (default 10)."
+        },
+        "biome": {
+          "type": "string",
+          "enum": [
+            "meadow",
+            "desert",
+            "alpine",
+            "tropical",
+            "swamp"
+          ],
+          "description": "A swatch set: meadow (default), desert, alpine, tropical, swamp."
+        },
+        "materials": {
+          "type": "object",
+          "properties": {
+            "ground": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "slope": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "shore": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "seabed": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "water": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "skirt": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "description": "Swatches per slot (ground, slope, shore, seabed, water, skirt): \"Pack/Asset\", \"Pack/Asset#rrggbb\", \"Pack/Material\" or \"#rrggbb\".",
+          "examples": [
+            {
+              "ground": "POLYGON_Generic_v3/Generic_Grass"
+            }
+          ]
+        },
+        "slopeAngle": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 90,
+          "description": "Faces steeper than this (degrees) take the slope material (default 45)."
+        },
+        "shade": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.3,
+          "description": "Brightness variation between faces, 0–0.3 (default 0.06)."
+        },
+        "seed": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Seed of the shading and the scatter (default 1)."
+        },
+        "scatter": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/terrain-scatter"
+          },
+          "description": "Props scattered over the ground (at most 8 kinds)."
+        },
+        "clear": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            ],
+            "additionalItems": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "description": "Tiles [i, j] kept free of scatter (where track pieces go).",
+          "examples": [
+            [
+              [
+                0,
+                0
+              ]
+            ]
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "title": "Terrain (3D)",
+      "description": "Terrain on the track grid instead of an asset (CS-FB-003): one tile, or a whole grid of corner heights with water, coasts, swatch materials and scattered props."
+    },
+    "skydome": {
+      "type": "object",
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "desert",
+            "tropical",
+            "alpine",
+            "city",
+            "country"
+          ],
+          "description": "The sky and ring the colours start from.",
+          "examples": [
+            "desert"
+          ]
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 100000,
+          "description": "Dome radius, metres (default 1000; keep it inside the camera's far plane).",
+          "examples": [
+            1000
+          ]
+        },
+        "colors": {
+          "type": "object",
+          "properties": {
+            "zenith": {
+              "description": "The sky straight up.",
+              "allOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-f]{6}$"
+                }
+              ]
+            },
+            "horizon": {
+              "description": "The sky at the horizon.",
+              "allOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-f]{6}$"
+                }
+              ]
+            },
+            "ground": {
+              "description": "Below the horizon (the far ground or sea).",
+              "allOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-f]{6}$"
+                }
+              ]
+            },
+            "ring": {
+              "description": "The silhouette ring's own colour before the haze.",
+              "allOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9a-f]{6}$"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "description": "Colour overrides."
+        },
+        "ring": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "assets": {
+                  "minItems": 1,
+                  "maxItems": 12,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": "Synty background props by reference (\"Pack/Asset\"); default the preset's."
+                },
+                "distance": {
+                  "type": "number",
+                  "minimum": 0.3,
+                  "maximum": 0.98,
+                  "description": "The ring's distance as a share of the radius (default 0.85)."
+                },
+                "elevation": {
+                  "type": "number",
+                  "minimum": 0.5,
+                  "maximum": 45,
+                  "description": "How high the tallest silhouettes reach, degrees above the horizon (default the preset's, 3–8)."
+                },
+                "haze": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "0–1: how far the ring's colour fades into the horizon's (default 0.55)."
+                },
+                "layers": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4,
+                  "description": "Rings, the far ones lower and hazier (default 2)."
+                }
+              },
+              "additionalProperties": false
+            }
+          ],
+          "description": "The silhouette ring: true / left out for the preset's, false for none, or its settings."
+        },
+        "segments": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 128,
+          "description": "Segments around (default 32)."
+        },
+        "seed": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2147483648,
+          "description": "Seed of the ring placement."
+        },
+        "panorama": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 256,
+              "maximum": 8192,
+              "multipleOf": 2
+            },
+            {
+              "type": "boolean",
+              "const": false
+            }
+          ],
+          "description": "Also an equirectangular panorama PNG of the dome and ring, this many pixels wide (default 2048; false: none)."
+        }
+      },
+      "additionalProperties": false,
+      "title": "Skydome",
+      "description": "A skydome instead of an asset (CS-FB-004): a gradient dome and a silhouette ring of Synty background props."
+    },
+    "composite-part": {
+      "type": "object",
+      "properties": {
+        "asset": {
+          "description": "Asset id, name or \"Pack/Name\".",
+          "examples": [
+            "POLYGON_Pro_Racer/SM_Prop_Gantry_06"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              ]
+            }
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Its node in the GLB (default the asset's name; repeats get _2, _3…)."
+        },
+        "pos": {
+          "description": "Position in metres (default [0, 0, 0]).",
+          "examples": [
+            [
+              0,
+              0,
+              5
+            ]
+          ],
+          "allOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "additionalItems": false,
+              "minItems": 3,
+              "maxItems": 3
+            }
+          ]
+        },
+        "rot": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -3600,
+              "maximum": 3600
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "additionalItems": false,
+              "minItems": 3,
+              "maxItems": 3
+            }
+          ],
+          "description": "Degrees: a number turns it about +Y (yaw, + to the left); [x, y, z] are Euler angles applied X, then Y, then Z.",
+          "examples": [
+            90
+          ]
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 1000
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "additionalItems": false,
+              "minItems": 3,
+              "maxItems": 3
+            }
+          ],
+          "description": "A uniform scale, or [x, y, z] (default 1).",
+          "examples": [
+            1
+          ]
+        },
+        "origin": {
+          "type": "string",
+          "enum": [
+            "bottom-centre",
+            "pivot"
+          ],
+          "description": "Where the part's own origin is before it is placed: bottom-centre (default) or pivot (the source model's own origin)."
+        },
+        "attach": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Extra pieces of this part, as a model's attach."
+        },
+        "tint": {
+          "description": "Recolour this part's paint, as a model's tint.",
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#?([0-9a-f]{3}|[0-9a-f]{6})$"
+            }
+          ]
+        },
+        "paint": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The paint its tint recolours, as a model's paint (#rrggbb or a material name)."
+        },
+        "decals": {
+          "type": "boolean",
+          "description": "false: its decals are painted over, as a model's decals."
+        }
+      },
+      "required": [
+        "asset"
+      ],
+      "additionalProperties": false,
+      "title": "Composite part",
+      "description": "One library asset placed in a composite model."
+    },
+    "composite": {
+      "type": "object",
+      "properties": {
+        "parts": {
+          "minItems": 1,
+          "maxItems": 64,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/composite-part"
+          },
+          "description": "The parts, each placed at its pos / rot / scale."
+        }
+      },
+      "required": [
+        "parts"
+      ],
+      "additionalProperties": false,
+      "title": "Composite",
+      "description": "One model from several library assets at offsets (CS-FB-024): each part exported, placed and merged into one GLB with shared materials."
+    },
+    "model-variant": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The variant's name (KHR_materials_variants).",
+          "examples": [
+            "red"
+          ]
+        },
+        "tint": {
+          "description": "#rrggbb; left out, the model's own colours.",
+          "examples": [
+            "#c62828"
+          ],
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#?([0-9a-f]{3}|[0-9a-f]{6})$"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "title": "Model variant",
+      "description": "One paint variant (shared geometry, its own material and texture). The CLI form is \"red=#c62828,blue=#1e5bc6,plain\"."
+    },
+    "model-pose": {
+      "type": "object",
+      "properties": {
+        "clip": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          ],
+          "description": "The clip (any clips form) to pose at.",
+          "examples": [
+            "Crowd_Sit_Idle"
+          ]
+        },
+        "time": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3600,
+          "description": "Seconds into the clip as exported (default 0).",
+          "examples": [
+            1
+          ]
+        }
+      },
+      "required": [
+        "clip"
+      ],
+      "additionalProperties": false,
+      "title": "Model pose",
+      "description": "A pose to bake: a clip and a time. The CLI form is \"Clip:0.2\"."
+    },
+    "model-named-pose": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Its node in the GLB.",
+          "examples": [
+            "sit"
+          ]
+        },
+        "clip": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          ],
+          "description": "The clip (any clips form) to pose at.",
+          "examples": [
+            "Crowd_Sit_Idle"
+          ]
+        },
+        "time": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3600,
+          "description": "Seconds into the clip as exported (default 0).",
+          "examples": [
+            1
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "clip"
+      ],
+      "additionalProperties": false,
+      "title": "Named pose",
+      "description": "One of several baked poses (a node per pose in one GLB). The CLI form is \"idle=Idle:0,wave=Wave_01:0.2\"."
+    },
+    "trackpiece-defaults": {
+      "type": "object",
+      "properties": {
+        "cell": {
+          "type": "number",
+          "minimum": 2,
+          "maximum": 500,
+          "description": "The grid's cell in metres (default 30).",
+          "examples": [
+            30
+          ]
+        },
+        "footprint": {
+          "type": "array",
+          "items": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          ],
+          "additionalItems": false,
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "Declared footprint in cells [across (X), along (Z)]; checked against the geometry.",
+          "examples": [
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        "elevation": {
+          "type": "number",
+          "minimum": -100,
+          "maximum": 2000,
+          "description": "Height of the entry above the ground (default 0; a bridge preset sets it)."
+        },
+        "bank": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Entry bank, degrees (default 0); on a banked curve, the bank (default 30)."
+        },
+        "pitch": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90,
+          "description": "Entry pitch, degrees (default 0)."
+        },
+        "bankPivot": {
+          "type": "string",
+          "enum": [
+            "low-edge",
+            "centre"
+          ],
+          "description": "Bank about the edge that goes down, which stays at path height (default), or about the centre line."
+        },
+        "profile": {
+          "description": "The cross-section at the entry.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/track-profile"
+            }
+          ]
+        },
+        "width": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "A shorthand for profile.width.",
+          "examples": [
+            10
+          ]
+        },
+        "branches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/track-branch"
+          },
+          "description": "Side paths with their own sockets."
+        },
+        "materials": {
+          "type": "object",
+          "properties": {
+            "deck": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "kerb": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "kerbAlt": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "wall": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "support": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "description": "Synty swatches per slot (deck, kerb, kerbAlt, wall, support): \"Pack/Asset\", \"Pack/Asset#rrggbb\", \"Pack/Material\" or \"#rrggbb\".",
+          "examples": [
+            {
+              "deck": "#404040"
+            }
+          ]
+        },
+        "supports": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "auto",
+                "none",
+                "pillars",
+                "solid"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "auto",
+                    "none",
+                    "pillars",
+                    "solid"
+                  ],
+                  "description": "Pillars or a solid fill."
+                },
+                "spacing": {
+                  "type": "number",
+                  "minimum": 2,
+                  "maximum": 500,
+                  "description": "Pillars: metres between them along the path (default 15)."
+                },
+                "size": {
+                  "type": "number",
+                  "minimum": 0.1,
+                  "maximum": 20,
+                  "description": "Pillars: the side of their square section (default 1.6)."
+                }
+              },
+              "additionalProperties": false
+            }
+          ],
+          "description": "Pillars or a solid fill down to y = 0 under elevated parts; auto (default) pillars where the deck is over 1.5 m up, solid for ramps."
+        },
+        "stripe": {
+          "type": "number",
+          "minimum": 0.2,
+          "maximum": 100,
+          "description": "Kerb stripe length in metres (default 2)."
+        },
+        "edge": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The edge kind a flat road end reports in its socket (default road; e.g. highway for a dual carriageway).",
+          "examples": [
+            "highway"
+          ]
+        },
+        "length": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 32,
+          "description": "Cells along the piece (straight, slope, ramp, jump, corkscrew, pipe, tunnel, bridge, chicane…).",
+          "examples": [
+            2
+          ]
+        },
+        "size": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 32,
+          "description": "Curves and splits: the footprint in cells (1: 1×1, radius half a cell; 2: 2×2, radius 1.5 cells).",
+          "examples": [
+            2
+          ]
+        },
+        "angle": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1440,
+          "description": "Curves: degrees turned (default 90). Ramps / jumps: the lip angle (default 20). Helix and barrel roll: up to 1440."
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 500,
+          "description": "Loop: its radius in metres. Curves: the centre-line radius (instead of size). Pipe: the tube's radius. Helix: its radius. Barrel roll: the roll axis's height above the deck."
+        },
+        "transition": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "description": "Banked curve: the share of the arc each bank ramp takes. Slope: the share of the run each curved end takes (default 0.25)."
+        },
+        "bankIn": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Banked curve: bank at the entry (default 0)."
+        },
+        "bankOut": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Banked curve: bank at the exit (default 0)."
+        },
+        "from": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "$ref": "#/definitions/track-profile"
+            }
+          ],
+          "description": "Bank transition: the bank at the entry (degrees). Narrow: the wide profile at the entry ({ width, edge, median… })."
+        },
+        "to": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "$ref": "#/definitions/track-profile"
+            }
+          ],
+          "description": "Bank transition: the bank at the exit (degrees). Widen: the wide profile at the exit."
+        },
+        "height": {
+          "type": "number",
+          "minimum": -500,
+          "maximum": 500,
+          "description": "Slopes: the rise (m); ramps / jumps: the lip height; bridges: the deck height; tunnels: the clear height; helix: the climb over its turn (negative descends)."
+        },
+        "shift": {
+          "type": "number",
+          "minimum": -500,
+          "maximum": 500,
+          "description": "Loop and chicane: the sideways offset (m)."
+        },
+        "side": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 32,
+          "description": "Corkscrew: the cells it moves sideways (default 1)."
+        },
+        "align": {
+          "type": "string",
+          "enum": [
+            "offset",
+            "inline"
+          ],
+          "description": "Loop: offset (default; the exit leaves shift metres to the side of the entry) or inline (2 cells, exit on the centre line)."
+        },
+        "turn": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right"
+          ],
+          "description": "Loop: which way the exit moves (default right). Barrel roll: the wall the deck climbs first."
+        },
+        "offset": {
+          "type": "boolean",
+          "description": "Chicane: true makes it a lane change, the exit shift metres to the side of the entry (default false: an S-bend that ends in line)."
+        },
+        "travel": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 32,
+          "description": "Helix: cells it advances along its entry heading while it turns (default 0)."
+        }
+      },
+      "additionalProperties": false,
+      "title": "Track piece defaults",
+      "description": "`defaults.trackpiece`: track fields every piece shares, merged under each piece's own (never preset or path)."
+    },
+    "terrain3d-defaults": {
+      "type": "object",
+      "properties": {
+        "cell": {
+          "type": "number",
+          "minimum": 2,
+          "maximum": 500,
+          "description": "The grid's cell in metres (default 30, as track pieces).",
+          "examples": [
+            30
+          ]
+        },
+        "height": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 500,
+          "description": "One height step in metres (default 0.44 cell). Heights count steps.",
+          "examples": [
+            13
+          ]
+        },
+        "dir": {
+          "type": "string",
+          "enum": [
+            "N",
+            "E",
+            "S",
+            "W",
+            "NE",
+            "NW",
+            "SE",
+            "SW"
+          ],
+          "description": "The way a tile faces: slope, the uphill side N|E|S|W; corners, the uphill corner NE|NW|SE|SW; coast, the water's corner."
+        },
+        "water": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                }
+              }
+            ]
+          },
+          "description": "Water per tile (rows × cols): \"\" or \".\" land, \"w\" water, NE | NW | SE | SW a coast; a string of one char a tile also works (\"..w\").",
+          "examples": [
+            [
+              "..w",
+              ".ww"
+            ]
+          ]
+        },
+        "level": {
+          "type": "number",
+          "minimum": -1000,
+          "maximum": 1000,
+          "description": "The water surface's height in metres (default 0.02)."
+        },
+        "depth": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "How far the bed under open water sinks below the surface, metres (default 1.5)."
+        },
+        "shape": {
+          "type": "string",
+          "enum": [
+            "planar",
+            "track"
+          ],
+          "description": "Slope faces: planar (default; straight faces) or track (the slope-up piece's curve, so a road slope fits)."
+        },
+        "transition": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "description": "track shape: the share of the run each curved end takes (default 0.25)."
+        },
+        "subdiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32,
+          "description": "Subdivisions per tile side (default 1 planar, 8 track)."
+        },
+        "skirt": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000,
+          "description": "Vertical walls this many metres down from the outer edges (default 0: none)."
+        },
+        "chunk": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128,
+          "description": "Tiles per chunk side: a grid is cut into chunk × chunk meshes (default 10)."
+        },
+        "biome": {
+          "type": "string",
+          "enum": [
+            "meadow",
+            "desert",
+            "alpine",
+            "tropical",
+            "swamp"
+          ],
+          "description": "A swatch set: meadow (default), desert, alpine, tropical, swamp."
+        },
+        "materials": {
+          "type": "object",
+          "properties": {
+            "ground": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "slope": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "shore": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "seabed": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "water": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "skirt": {
+              "allOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "description": "Swatches per slot (ground, slope, shore, seabed, water, skirt): \"Pack/Asset\", \"Pack/Asset#rrggbb\", \"Pack/Material\" or \"#rrggbb\".",
+          "examples": [
+            {
+              "ground": "POLYGON_Generic_v3/Generic_Grass"
+            }
+          ]
+        },
+        "slopeAngle": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 90,
+          "description": "Faces steeper than this (degrees) take the slope material (default 45)."
+        },
+        "shade": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.3,
+          "description": "Brightness variation between faces, 0–0.3 (default 0.06)."
+        },
+        "seed": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Seed of the shading and the scatter (default 1)."
+        },
+        "scatter": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/terrain-scatter"
+          },
+          "description": "Props scattered over the ground (at most 8 kinds)."
+        },
+        "clear": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            ],
+            "additionalItems": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "description": "Tiles [i, j] kept free of scatter (where track pieces go).",
+          "examples": [
+            [
+              [
+                0,
+                0
+              ]
+            ]
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "title": "Terrain (3D) defaults",
+      "description": "`defaults.terrain`: terrain fields every entry shares (cell, height, biome, materials, shape…), merged under each terrain's own (never tile or heights)."
+    },
+    "model-defaults": {
+      "type": "object",
+      "properties": {
+        "collider": {
+          "type": "string",
+          "enum": [
+            "box",
+            "convex",
+            "trimesh"
+          ],
+          "description": "The collider the export carries (CS-FB-002): box (the manifest's box; default for assets), trimesh (also a collider node in the GLB; default for track pieces) or convex (assets: the hull of the visual mesh)."
+        },
+        "colliderExclude": {
+          "description": "Parts a trimesh or convex collider leaves out, by role (wheel, door…) or part name. Default the moving parts; [] keeps every part.",
+          "examples": [
+            [
+              "wheel",
+              "door"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "convexMaxVertices": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 65535,
+          "description": "With collider convex: the most vertices the hull may have (default 255, what physics engines take).",
+          "examples": [
+            255
+          ]
+        },
+        "clips": {
+          "description": "Clips baked into the GLB (characters only): a clip name, name@Masculine|Feminine|Neutral, name@Polygon|Sidekick (the rig family), name@<pack>, or an animation id.",
+          "examples": [
+            [
+              "POLY_IDL_Base@Masculine"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "inPlace": {
+          "type": "boolean",
+          "description": "In-place clips (default true); false keeps the root motion."
+        },
+        "attach": {
+          "description": "Extra pieces: bundled attachments of the same file by mesh name, or other attachment assets by name or id.",
+          "examples": [
+            [
+              "SM_Veh_Pickup_Lift_01"
+            ]
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "replaceWheels": {
+          "type": "boolean",
+          "description": "When an attachment brings four road wheels of its own (a lift kit), the model's own are dropped and the attachment's become the wheels (default true)."
+        },
+        "origin": {
+          "type": "string",
+          "enum": [
+            "bottom-centre",
+            "axle-centre",
+            "pivot"
+          ],
+          "description": "Where the model's origin goes: the centre of its bottom (default), the centre of the wheel axles at axle height (vehicles), or the source model's own origin."
+        },
+        "texSize": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 8192,
+          "description": "Largest texture side in pixels (scaled down to fit, never up). Default by kind: props 256, vehicles and characters 1024.",
+          "examples": [
+            1024
+          ]
+        },
+        "texFormat": {
+          "type": "string",
+          "enum": [
+            "png",
+            "webp",
+            "keep"
+          ],
+          "description": "Texture format: webp (default), png, or keep (as ingested)."
+        },
+        "simplify": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "Mesh simplification: the fraction of triangles to keep (0.05–1; 1 or unset = none).",
+          "examples": [
+            0.5
+          ]
+        },
+        "tint": {
+          "description": "A colour (#rgb / #rrggbb): recolours the body paint. Not with variants.",
+          "examples": [
+            "#c62828"
+          ],
+          "allOf": [
+            {
+              "type": "string",
+              "pattern": "^#?([0-9a-f]{3}|[0-9a-f]{6})$"
+            }
+          ]
+        },
+        "variants": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "maxItems": 16,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/model-variant"
+              }
+            }
+          ],
+          "description": "Paint variants in one GLB: [{ name, tint }] (or \"red=#c62828,blue=#1e5bc6,plain\"). The first is the default look.",
+          "examples": [
+            [
+              {
+                "name": "red",
+                "tint": "#c62828"
+              }
+            ]
+          ]
+        },
+        "compress": {
+          "type": "string",
+          "enum": [
+            "meshopt",
+            "none"
+          ],
+          "description": "Geometry compression: meshopt (three.js needs MeshoptDecoder) or none (default)."
+        },
+        "fit": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Z (forward), metres."
+            },
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "X, metres."
+            },
+            "height": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Y, metres."
+            }
+          },
+          "additionalProperties": false,
+          "description": "Scale the model uniformly so a dimension matches, in metres. With several, the smallest scale wins.",
+          "examples": [
+            {
+              "length": 4.5
+            }
+          ]
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "$ref": "#/definitions/model-pose"
+            }
+          ],
+          "description": "Bake a character into one static mesh posed at a clip's time: { clip, time } or \"Clip:0.2\". Not with clips or poses.",
+          "examples": [
+            {
+              "clip": "Crowd_Sit_Idle",
+              "time": 1
+            }
+          ]
+        },
+        "poses": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "maxItems": 32,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/model-named-pose"
+              }
+            }
+          ],
+          "description": "Several posed static meshes in one GLB, a node per pose: [{ name, clip, time }] or \"idle=Idle:0,wave=Wave_01:0.2\". Not with clips or pose."
+        },
+        "splitBySwatch": {
+          "type": "boolean",
+          "description": "Split the model's triangles by palette swatch (OR-FB-022): a child node swatch_<hex> per atlas colour with its own material. Static models only."
+        },
+        "lods": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "maxItems": 4,
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 0.95
+              }
+            }
+          ],
+          "description": "Levels of detail in the same GLB, as falling shares of the triangles ([0.5, 0.2]); at most 4.",
+          "examples": [
+            [
+              0.5,
+              0.2
+            ]
+          ]
+        },
+        "paint": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The paint a tint or variants recolour (CS-FB-026): a colour #rrggbb (the swatch that is its paint) or a material name. Default: found.",
+          "examples": [
+            "#e3b52f"
+          ]
+        },
+        "decals": {
+          "type": "boolean",
+          "description": "CS-FB-028: false paints over every decal and livery in the paint's texture with the paint. Default true: only small lettering enclosed by the paint."
+        },
+        "trackpiece": {
+          "description": "Track fields every piece shares (cell, width, profile, materials…), merged under each piece's own.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/trackpiece-defaults"
+            }
+          ]
+        },
+        "terrain": {
+          "description": "Terrain fields every entry shares (cell, height, biome, materials…), merged under each terrain's own.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/terrain3d-defaults"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "title": "Model defaults",
+      "description": "The `defaults` object: Model keys every model starts from (never asset or name). Asset fields do not apply to built kinds, and `trackpiece` / `terrain` here hold the fields those kinds share."
+    }
+  }
+}
