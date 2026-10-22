@@ -62,7 +62,7 @@ old generator bumped a `RENDERER_VERSION` constant for that, 3 times in 131 comm
   | `/slop/assets/:id` | `assetDto(lib.asset(id))` (kind, rig, parts and roles, scale fix, grip, placements…) |
   | `/slop/glb/:id` | the asset's ingested GLB (`data/glb/p<pack>/a<id>.glb`) |
   | `/slop/animations` | every ready clip (`animationDto`) |
-  | `/slop/bake/:asset/:anim` | the bake the old generator made (`data/bakes/a<asset>/n<anim>.glb` + its speed sidecar), else **409 naming the clip and the model**: Blender bakes on demand are not here yet |
+  | `/slop/bake/:asset/:anim` | the bake store (`@slop/bake`; `RunnerOptions.bakes`, the store `slop build` filled before starting the runner, else one on `<cacheDir>/bakes`): its own bake, else the old generator's bake imported into it; else **409 naming the clip and the model** (the build bakes before the render; the runner never starts Blender) |
   | `/slop/bakes/:asset/:anim` | the baked GLB |
   | `/slop/fx/:kind` | the POLYGON Particle FX pack's sprites (glow, puff, spark, ring, flame, disc, streak) |
 
@@ -75,7 +75,7 @@ old generator bumped a `RENDERER_VERSION` constant for that, 3 times in 131 comm
   invalidated by hand: the key names the backend and the bundle.
 - `strips.ts`: PNG strips ↔ `FrameSource` with pngjs, straight alpha both ways; `encodePng` is deterministic.
 
-**Cache dir:** `$SLOP_CACHE_DIR`, else `~/.cache/slop` (`bundles/`, `frames/`, and the goldens' references).
+**Cache dir:** `$SLOP_CACHE_DIR`, else `~/.cache/slop` (`bundles/`, `frames/`, `bakes/` (see packages/bake/README.md), and the goldens' references).
 
 ## Blank frames (#10)
 
@@ -95,7 +95,7 @@ change the atlas packing), which is why the key separates them and the goldens c
 ## Not yet
 
 Layered equipment sheets and the layers manifest, waist/turret splits, portraits, GIF previews, several worker pages,
-Blender bakes on demand, the aligned (incremental) passes. `packages/render/web` keeps the code for most of these
+the aligned (incremental) passes. `packages/render/web` keeps the code for most of these
 (`attach.ts`, `extras.ts` list the parts); what is missing is the pass in `export/render.ts` and the packer.
 
 ## Tests
