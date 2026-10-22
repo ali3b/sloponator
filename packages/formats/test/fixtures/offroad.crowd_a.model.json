@@ -1,0 +1,261 @@
+{
+  "version": 1,
+  "name": "crowd_a",
+  "source": {
+    "pack": "POLYGON_City_Characters",
+    "asset": "SK_Character_SummerGirl",
+    "assetId": 18
+  },
+  "units": "m",
+  "forward": "+Z",
+  "up": "+Y",
+  "origin": "bottom-centre",
+  "bounds": {
+    "min": [
+      -0.5436,
+      -0.0043,
+      -0.649
+    ],
+    "max": [
+      0.4043,
+      2.1604,
+      0.3876
+    ],
+    "size": [
+      0.9479,
+      2.1647,
+      1.0366
+    ]
+  },
+  "parts": [],
+  "sockets": [],
+  "clips": [],
+  "collider": {
+    "box": {
+      "center": [
+        -0.0696,
+        1.0781,
+        -0.1307
+      ],
+      "size": [
+        0.9479,
+        2.1647,
+        1.0366
+      ]
+    }
+  },
+  "licence": "Synty Store EULA: not for redistribution as source assets",
+  "compress": "meshopt",
+  "poses": [
+    {
+      "name": "sit",
+      "node": "sit",
+      "clip": "Crowd_Sit_Idle",
+      "time": 1,
+      "source": {
+        "id": 3355,
+        "pack": "_Uploads",
+        "name": "Crowd_Sit_Idle",
+        "variant": null,
+        "set": null
+      },
+      "bounds": {
+        "min": [
+          -0.3226,
+          0,
+          -0.3876
+        ],
+        "max": [
+          0.3226,
+          1.408,
+          0.3876
+        ],
+        "size": [
+          0.6452,
+          1.408,
+          0.7752
+        ]
+      }
+    },
+    {
+      "name": "sit_cheer_a",
+      "node": "sit_cheer_a",
+      "clip": "Crowd_Sit_Cheer",
+      "time": 0.63,
+      "source": {
+        "id": 3352,
+        "pack": "_Uploads",
+        "name": "Crowd_Sit_Cheer",
+        "variant": null,
+        "set": null
+      },
+      "bounds": {
+        "min": [
+          -0.5436,
+          0,
+          -0.3862
+        ],
+        "max": [
+          0.3575,
+          1.4993,
+          0.295
+        ],
+        "size": [
+          0.9011,
+          1.4993,
+          0.6812
+        ]
+      }
+    },
+    {
+      "name": "sit_cheer_b",
+      "node": "sit_cheer_b",
+      "clip": "Crowd_Sit_Cheer",
+      "time": 0.94,
+      "source": {
+        "id": 3352,
+        "pack": "_Uploads",
+        "name": "Crowd_Sit_Cheer",
+        "variant": null,
+        "set": null
+      },
+      "bounds": {
+        "min": [
+          -0.3889,
+          0,
+          -0.3837
+        ],
+        "max": [
+          0.3635,
+          1.644,
+          0.3656
+        ],
+        "size": [
+          0.7524,
+          1.644,
+          0.7493
+        ]
+      }
+    },
+    {
+      "name": "arms_a",
+      "node": "arms_a",
+      "clip": "POLY_EMOT_Happy_ArmsRaised@Feminine",
+      "time": 0.6,
+      "source": {
+        "id": 3104,
+        "pack": "ANIMATION_Emotes_And_Taunts",
+        "name": "POLY_EMOT_Happy_ArmsRaised",
+        "variant": "Feminine",
+        "set": "Polygon"
+      },
+      "bounds": {
+        "min": [
+          -0.4853,
+          -0.0018,
+          -0.649
+        ],
+        "max": [
+          0.3964,
+          2.011,
+          -0.0907
+        ],
+        "size": [
+          0.8817,
+          2.0128,
+          0.5583
+        ]
+      }
+    },
+    {
+      "name": "arms_b",
+      "node": "arms_b",
+      "clip": "POLY_EMOT_Happy_ArmsRaised@Feminine",
+      "time": 1.3,
+      "source": {
+        "id": 3104,
+        "pack": "ANIMATION_Emotes_And_Taunts",
+        "name": "POLY_EMOT_Happy_ArmsRaised",
+        "variant": "Feminine",
+        "set": "Polygon"
+      },
+      "bounds": {
+        "min": [
+          -0.4682,
+          -0.0043,
+          -0.624
+        ],
+        "max": [
+          0.3859,
+          2.0585,
+          -0.1167
+        ],
+        "size": [
+          0.8541,
+          2.0628,
+          0.5073
+        ]
+      }
+    },
+    {
+      "name": "fist_a",
+      "node": "fist_a",
+      "clip": "POLY_EMOT_Happy_FistPump@Feminine",
+      "time": 0.5,
+      "source": {
+        "id": 3105,
+        "pack": "ANIMATION_Emotes_And_Taunts",
+        "name": "POLY_EMOT_Happy_FistPump",
+        "variant": "Feminine",
+        "set": "Polygon"
+      },
+      "bounds": {
+        "min": [
+          -0.4321,
+          0.0046,
+          -0.4514
+        ],
+        "max": [
+          0.2704,
+          1.7924,
+          0.1175
+        ],
+        "size": [
+          0.7025,
+          1.7878,
+          0.5689
+        ]
+      }
+    },
+    {
+      "name": "fist_b",
+      "node": "fist_b",
+      "clip": "POLY_EMOT_Happy_FistPump@Feminine",
+      "time": 1.1,
+      "source": {
+        "id": 3105,
+        "pack": "ANIMATION_Emotes_And_Taunts",
+        "name": "POLY_EMOT_Happy_FistPump",
+        "variant": "Feminine",
+        "set": "Polygon"
+      },
+      "bounds": {
+        "min": [
+          -0.2147,
+          0.0041,
+          -0.4117
+        ],
+        "max": [
+          0.4043,
+          2.1604,
+          0.1365
+        ],
+        "size": [
+          0.619,
+          2.1563,
+          0.5482
+        ]
+      }
+    }
+  ]
+}
