@@ -30,3 +30,4 @@ export * from './map/fence.js';
 export * from './map/route.js';
 export * from './map/sprites.js';
 export * from './map/file.js';
+export * from './build.js';

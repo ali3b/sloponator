@@ -2,7 +2,7 @@
  * @slop/formats: what a game reads. The zod schemas, TypeScript types and JSON Schemas of every file the
  * Sloponator writes for a sprite: `ssg-meta/1` (gameplay metadata), `ssg-layers/1` (layered sheets), `ssg-split/1`
  * (waist split), `ssg-turret/1` (hull + turret), the generic sheet JSON, the Phaser 3 anims JSON, the object
- * data block (footprint, facings, states), and for 3D models the `.model.json` manifest and the `models.json` index. This is the contract between the pipeline and slopkit: the writers in
+ * data block (footprint, facings, states), and for 3D models the `.model.json` manifest and the `models.json` index, and for levels the `.map.json` map document. This is the contract between the pipeline and slopkit: the writers in
  * @slop/sprites return these types, and the games' real files validate against these schemas (test/fixtures).
  */
 import type { z } from 'zod';
@@ -15,6 +15,7 @@ import { ssgSheet } from './sheet.js';
 import { phaserAnims } from './phaser.js';
 import { objectInfo } from './object.js';
 import { ssgModel, ssgModelsIndex } from './model.js';
+import { ssgMap } from './map.js';
 
 export * from './common.js';
 export * from './view.js';
@@ -26,6 +27,7 @@ export * from './split.js';
 export * from './turret.js';
 export * from './phaser.js';
 export * from './model.js';
+export * from './map.js';
 
 export interface FormatSpec {
   /** The schema id a file carries (`schema` field) or, for files without one, a name. */
@@ -49,6 +51,7 @@ export const FORMATS: readonly FormatSpec[] = [
   { id: 'phaser3-anims', file: '{base}_anims.json', schemaFile: 'phaser3-anims.schema.json', schema: phaserAnims, selfDescribing: false },
   { id: 'ssg-object', file: '{base}.meta.json#object', schemaFile: 'ssg-object.schema.json', schema: objectInfo, selfDescribing: false },
   { id: 'ssg-model', file: '{name}.model.json', schemaFile: 'ssg-model.schema.json', schema: ssgModel, selfDescribing: false },
+  { id: 'ssg-map/1', file: '{name}.map.json', schemaFile: 'ssg-map.schema.json', schema: ssgMap, selfDescribing: true },
   { id: 'ssg-models-index', file: 'models.json', schemaFile: 'ssg-models-index.schema.json', schema: ssgModelsIndex, selfDescribing: false },
 ];
 

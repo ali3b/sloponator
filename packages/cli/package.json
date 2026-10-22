@@ -17,6 +17,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@slop/levels": "0.0.0",
     "@slop/library": "0.0.0",
     "@slop/render": "0.0.0",
     "@slop/schema": "0.0.0",

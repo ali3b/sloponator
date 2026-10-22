@@ -52,7 +52,8 @@ export function readMapFile(file: string): MapFile {
   const f = data as MapFile;
   if (!f || typeof f !== 'object' || f.schema !== MAP_SCHEMA) throw new MapFileError(`${file} is not a map document (it needs "schema": "${MAP_SCHEMA}")`);
   if (!Array.isArray(f.tilesets) || f.tilesets.some((t) => typeof t !== 'string')) throw new MapFileError(`${file}: "tilesets" must name the tilesets (["temperate"])`);
-  const errors = validateMap(mapBodyOfFile(f));
+  // Overlaps are not errors in a document: ops may place them on purpose (allowOverlap), as the old maps did.
+  const errors = validateMap(mapBodyOfFile(f)).filter((m) => !/ would overlap /.test(m));
   if (errors.length) throw new MapFileError(`${file}: ${errors.slice(0, 10).join('; ')}${errors.length > 10 ? ` (and ${errors.length - 10} more)` : ''}`);
   return f;
 }
