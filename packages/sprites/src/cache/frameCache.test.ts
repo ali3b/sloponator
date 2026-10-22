@@ -3,10 +3,11 @@ import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { VIEW_PRESETS } from '../view/camera.js';
 import { Sha256, canonicalJson, sha256 } from '../hash.js';
-import { FRAME_CACHE_VERSION, frameCacheSummary, frameUnitKey, stripColumns, type FrameUnitKeyInput } from './frameCache.js';
+import { FRAME_CACHE_VERSION, checkRendererId, frameCacheSummary, frameUnitDigests, frameUnitKey, stripColumns, type FrameUnitKeyInput } from './frameCache.js';
 
 const input = (): FrameUnitKeyInput => ({
-  version: { cache: FRAME_CACHE_VERSION, renderer: 3 },
+  version: { cache: FRAME_CACHE_VERSION },
+  renderer: { backend: 'gpu', bundle: 'sha256:0123abcd' },
   model: { asset: { id: 7, name: 'SK_Soldier', glb: '/glb/7.glb', scale: 1 }, gender: 'auto', loadout: [{ asset: 12, layer: 'weapon' }], fx: null, light: { preset: 'day' }, scene: 'abc123' },
   view: structuredClone(VIEW_PRESETS.find((p) => p.id === 'iso8')!.config),
   framing: { viewHalfW: 1, viewHalfH: 2, centreY: 0.9, frameWidth: 128, frameHeight: 160, pivot: { x: 64, y: 150 }, ppm: 64 },
@@ -61,13 +62,14 @@ describe('frame cache key', () => {
   it('covers every input: changing any one of them changes the key', () => {
     const base = frameUnitKey(input());
     const paths = leaves(input());
-    // Every top-level group is walked (model, view, framing, render, clip, direction, version).
-    expect(new Set(paths.map((p) => p[0]))).toEqual(new Set(['version', 'model', 'view', 'framing', 'render', 'clip', 'direction']));
+    // Every top-level group is walked (model, view, framing, render, clip, direction, version, renderer).
+    expect(new Set(paths.map((p) => p[0]))).toEqual(new Set(['version', 'renderer', 'model', 'view', 'framing', 'render', 'clip', 'direction']));
     expect(paths.length).toBeGreaterThan(40);
     const unchanged: string[] = [];
     for (const p of paths) {
       const x = input();
       mutateAt(x, p);
+      if (p.join('.') === 'renderer.backend') x.renderer.backend = 'software';
       if (frameUnitKey(x) === base) unchanged.push(p.join('.'));
     }
     expect(unchanged).toEqual([]);
@@ -89,8 +91,31 @@ describe('frame cache key', () => {
     expect(changed((x) => (x.clip.data = 'reversed'))).toBe(true);
     expect(changed((x) => ((x.clip.source as { layers: { params: { stride: number } }[] }).layers[0].params.stride = 2))).toBe(true);
     expect(changed((x) => ((x.model as { light: unknown }).light = { preset: 'night' }))).toBe(true);
-    expect(changed((x) => (x.version.renderer += 1))).toBe(true);
+    expect(changed((x) => (x.version.cache += 1))).toBe(true);
     expect(changed((x) => (x.direction.name = 'N'))).toBe(true);
+  });
+});
+
+describe('the renderer in the key (replaces RENDERER_VERSION)', () => {
+  it('a new render bundle invalidates every frame; the backend keeps GPU and software frames apart', () => {
+    const base = frameUnitKey(input());
+    const bundle = input();
+    bundle.renderer.bundle = 'sha256:ffff0000';
+    expect(frameUnitKey(bundle)).not.toBe(base);
+    const soft = input();
+    soft.renderer.backend = 'software';
+    expect(frameUnitKey(soft)).not.toBe(base);
+    expect(frameUnitKey(input())).toBe(base);
+    expect(frameUnitDigests(input()).renderer).toHaveLength(12);
+    expect(frameUnitDigests(soft).renderer).not.toBe(frameUnitDigests(input()).renderer);
+    expect(frameUnitDigests(soft).model).toBe(frameUnitDigests(input()).model);
+  });
+  it('refuses an unknown backend or an empty bundle hash', () => {
+    expect(() => checkRendererId({ backend: 'cpu' as never, bundle: 'x' })).toThrow(/unknown render backend "cpu"/);
+    expect(() => checkRendererId({ backend: 'gpu', bundle: '' })).toThrow(/bundle hash is empty/);
+    const bad = input();
+    bad.renderer.bundle = ' ';
+    expect(() => frameUnitKey(bad)).toThrow(/bundle hash is empty/);
   });
 });
 

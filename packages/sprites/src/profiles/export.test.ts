@@ -7,7 +7,8 @@ import { layoutFrames, packRects, LayoutError, type FrameInput, type LayoutSetti
 import { buildContext, frameKey, scaleRecord, type ClipInput, type ContextOptions } from '../manifest/context.js';
 import { alignmentSignature, buildLayersManifest } from '../manifest/layers.js';
 import { BUILTIN_PROFILES, withAnimPrefix } from './profiles.js';
-import { genericData, metaData, renderProfile } from './render.js';
+import { renderProfile } from './render.js';
+import { genericData, metaData } from '../manifest/meta.js';
 
 const grid: LayoutSettings = { mode: 'grid', grouping: 'single', trim: false, padding: 0, extrude: 0, powerOfTwo: false, maxSize: 4096 };
 

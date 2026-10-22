@@ -5,7 +5,8 @@ import type { ObjectInfo } from '../object/footprint.js';
 import { buildContext, frameKey, objectPivots, type ClipInput } from './context.js';
 import { layoutFrames, type FrameInput, type LayoutSettings } from '../layout/layout.js';
 import { BUILTIN_PROFILES } from '../profiles/profiles.js';
-import { genericData, renderProfile } from '../profiles/render.js';
+import { renderProfile } from '../profiles/render.js';
+import { genericData } from './meta.js';
 import { contextFromGeneric } from './sheetMerge.js';
 import { buildLayersManifest, layersHelperFiles } from './layers.js';
 

@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { VIEW_PRESETS, computeFraming, resolveDirections, type ViewConfig } from '../view/camera.js';
 import { buildContext } from '../manifest/context.js';
-import { genericData } from '../profiles/render.js';
+import { genericData } from '../manifest/meta.js';
 import { objectInfo, type Vec2 } from './footprint.js';
 import { columnStrips, objectSlices } from './slices.js';
 

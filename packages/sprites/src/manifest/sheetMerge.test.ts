@@ -4,7 +4,7 @@ import { VIEW_PRESETS, resolveDirections, type Framing, type ViewConfig } from '
 import { buildContext, frameKey, type ClipInput } from './context.js';
 import { layoutFrames, type FrameInput, type LayoutSettings } from '../layout/layout.js';
 import { BUILTIN_PROFILES } from '../profiles/profiles.js';
-import { genericData } from '../profiles/render.js';
+import { genericData } from './meta.js';
 import { contextFromGeneric, mergeExtensionFiles, mergeGenericSheets, type GenericSheet } from './sheetMerge.js';
 
 const atlas: LayoutSettings = { mode: 'atlas', grouping: 'single', trim: true, padding: 2, extrude: 1, powerOfTwo: false, maxSize: 256 };

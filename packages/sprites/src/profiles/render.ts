@@ -1,6 +1,7 @@
-// Moved from synty-sprite-generator packages/shared/src/export/render.ts (P2, ali3b/sloponator#8).
+// Moved from synty-sprite-generator packages/shared/src/export/render.ts (P2, ali3b/sloponator#8); metaData and genericData went to manifest/meta.ts.
 import { Liquid } from 'liquidjs';
-import { fillPattern, scaleRecord, type ContextAnimation, type ContextFrame, type ExportContext } from '../manifest/context.js';
+import { fillPattern, type ContextAnimation, type ContextFrame, type ExportContext } from '../manifest/context.js';
+import { genericData, metaData } from '../manifest/meta.js';
 import type { ExportProfile } from './profiles.js';
 
 /** FNV-1a 64-bit, as two 32-bit halves (stable ids from names, e.g. Unity guids that survive re-exports). */
@@ -40,77 +41,6 @@ export function createLiquid() {
     String(v).replace(/^(SK_|SM_)/, '').split(/[^A-Za-z0-9]+/).filter(Boolean).map((w) => w[0].toUpperCase() + w.slice(1)).join(''),
   );
   return liquid;
-}
-
-/**
- * Gameplay metadata every engine format gets as `{base}.meta.json`: clip events (release, hit → hit_end with the
- * striking limb, cast, footsteps…), per-frame sockets (weapon_tip, muzzle, hands…) and body boxes (head, torso,
- * legs) in frame pixels, the feet pivot, the blend mode and the scale. Written for every sprite of every kind.
- */
-export function metaData(ctx: ExportContext) {
-  const hasBoxes = ctx.frames.some((f) => f.boxes);
-  const hasSockets = hasBoxes || ctx.frames.some((f) => Object.keys(f.sockets).length);
-  // Always written (FB-104): the scale record alone tells a game a UI icon (fit) from a map sprite (ppm / tile lock).
-  return {
-    schema: 'ssg-meta/1',
-    generator: ctx.generator,
-    asset: ctx.asset,
-    blend: ctx.blend,
-    frameWidth: ctx.frameWidth,
-    frameHeight: ctx.frameHeight,
-    fps: ctx.fps,
-    pivot: ctx.pivot,
-    ...(ctx.pivotSource === 'anchor' ? { pivotSource: 'anchor' as const } : {}),
-    pixelsPerMetre: ctx.pixelsPerMetre,
-    scale: ctx.scale ?? scaleRecord(ctx.view, ctx.pixelsPerMetre),
-    note: hasBoxes
-      ? 'Socket positions and boxes are pixels from the untrimmed frame top-left; for flipX animations use x = frameWidth - x (boxes: x = frameWidth - x - w).'
-      : 'Socket positions are pixels from the untrimmed frame top-left; for flipX animations use x = frameWidth - x.',
-    clips: ctx.clips.map((c) => ({ name: c.name, loop: c.loop, frameCount: c.frameCount, events: c.events, ...(c.speedMps ? { speedMps: c.speedMps } : {}) })),
-    animations: hasSockets
-      ? ctx.animations.map((a) => ({
-          name: a.name, clip: a.clip, direction: a.direction, flipX: a.flipX, sockets: a.frames.map((f) => f.sockets),
-          ...(hasBoxes ? { boxes: a.frames.map((f) => f.boxes ?? {}) } : {}),
-        }))
-      : undefined,
-    ...(ctx.object ? { object: ctx.object } : {}),
-  };
-}
-
-/** A clean, self-describing JSON view of the export (the "generic" format, and the Sheet Viewer's input). */
-export function genericData(ctx: ExportContext) {
-  return {
-    generator: ctx.generator,
-    asset: ctx.asset,
-    frameWidth: ctx.frameWidth,
-    frameHeight: ctx.frameHeight,
-    fps: ctx.fps,
-    pivot: ctx.pivot,
-    ...(ctx.pivotSource === 'anchor' ? { pivotSource: 'anchor' as const } : {}),
-    pixelsPerMetre: ctx.pixelsPerMetre,
-    scale: ctx.scale ?? scaleRecord(ctx.view, ctx.pixelsPerMetre),
-    blend: ctx.blend,
-    ...(ctx.object ? { object: ctx.object } : {}),
-    view: ctx.view,
-    pages: ctx.pages,
-    layers: ctx.layers,
-    clips: ctx.clips.map((c) => ({ name: c.name, loop: c.loop, frameCount: c.frameCount, events: c.events, ...(c.speedMps ? { speedMps: c.speedMps } : {}) })),
-    directions: ctx.directions.map((d) => ({
-      name: d.name, screenAngle: d.screenAngle, worldAngle: d.worldAngle,
-      mirrorOf: d.mirrorOf === null ? null : ctx.directions[d.mirrorOf].name,
-    })),
-    animations: ctx.animations.map((a) => ({
-      name: a.name, clip: a.clip, direction: a.direction, loop: a.loop, fps: a.fps, flipX: a.flipX,
-      // Objects pivot on their anchor, which differs per direction (FB-029).
-      ...(ctx.pivotSource === 'anchor' ? { pivot: a.pivot } : {}),
-      frames: a.frames.map((f) => ({
-        page: f.page, x: f.x, y: f.y, w: f.w, h: f.h, trimX: f.trimX, trimY: f.trimY,
-        sourceW: f.sourceW, sourceH: f.sourceH, durationMs: f.durationMs,
-        ...(Object.keys(f.sockets).length ? { sockets: f.sockets } : {}),
-        ...(f.boxes ? { boxes: f.boxes } : {}),
-      })),
-    })),
-  };
 }
 
 export interface RenderedFile {

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { VIEW_PRESETS, computeFraming, resolveDirections, type ViewConfig } from '../view/camera.js';
 import { buildContext } from '../manifest/context.js';
 import { buildLayersManifest } from '../manifest/layers.js';
-import { genericData, metaData } from '../profiles/render.js';
+import { genericData, metaData } from '../manifest/meta.js';
 import { baseHull, collisionRule, convexHull, defaultCollisionCut, gridAxes, isObjectAssetKind, metresToTiles, objectInfo, polygonArea, projectGround, rotateYaw, toFramePx, type Vec2 } from './footprint.js';
 
 const iso = VIEW_PRESETS.find((p) => p.id === 'iso8')!.config;

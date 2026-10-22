@@ -7,7 +7,8 @@
 import type { Direction } from '../view/camera.js';
 import { fillPattern, scaleRecord, type ContextAnimation, type ContextFrame, type ExportContext } from './context.js';
 import type { ExportProfile } from '../profiles/profiles.js';
-import { renderProfile, type genericData } from '../profiles/render.js';
+import { renderProfile } from '../profiles/render.js';
+import type { genericData } from './meta.js';
 
 export type GenericSheet = ReturnType<typeof genericData>;
 

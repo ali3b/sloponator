@@ -1,4 +1,5 @@
 // Moved from synty-sprite-generator packages/shared/src/export/frameCache.ts (P2, ali3b/sloponator#8).
+// Changed here: the key names the render backend and the render bundle's hash instead of a hand-bumped RENDERER_VERSION.
 import type { ViewConfig, Framing } from '../view/camera.js';
 import { canonicalJson, sha256 } from '../hash.js';
 import type { BodyBoxes } from '../events/bodyBoxes.js';
@@ -8,14 +9,35 @@ import type { ClipEvent } from '../manifest/context.js';
  * FB-121: rendered frames cached per clip × direction, so adding one move to a sprite renders that move only (its
  * other clips' frames come from the cache and the sheet is packed again). An entry's key hashes everything that
  * decides its pixels and per-frame data; anything not covered must not change a frame, so when in doubt it goes in.
+ *
+ * What invalidates every entry at once:
+ *   - FRAME_CACHE_VERSION: the entry format (what a strip or its meta holds) changed;
+ *   - the render bundle's hash (`renderer.bundle`): the code that draws the frames changed, whatever it changed. The
+ *     old generator bumped a RENDERER_VERSION constant by hand for that, and forgot to as often as not;
+ *   - the render backend (`renderer.backend`): a GPU and SwiftShader do not rasterise identically, so their frames
+ *     are different entries, never swapped for each other.
+ * The 3D exporter's version is not in the key: its models change the `model` fingerprint, not the renderer.
  */
 
 /** Bump when the entry format or what a frame holds changes: every older entry stops matching. */
-export const FRAME_CACHE_VERSION = 1;
+export const FRAME_CACHE_VERSION = 2;
+
+/** What rasterises the frames: a real GPU or a software renderer (SwiftShader, Mesa llvmpipe). */
+export type RenderBackend = 'gpu' | 'software';
+export const RENDER_BACKENDS: readonly RenderBackend[] = ['gpu', 'software'];
+
+/** The renderer that made a frame: the backend it ran on and the content hash of the render bundle it ran. */
+export interface RendererId {
+  backend: RenderBackend;
+  /** The render bundle's build hash (the caller computes it over the built bundle files), any non-empty string. */
+  bundle: string;
+}
 
 export interface FrameUnitKeyInput {
-  /** FRAME_CACHE_VERSION and the RENDERER_VERSION (a generator fix invalidates every frame). */
-  version: { cache: number; renderer: number };
+  /** FRAME_CACHE_VERSION: the entry format. */
+  version: { cache: number };
+  /** The render backend and bundle hash: a renderer change invalidates every frame, a backend change keeps them apart. */
+  renderer: RendererId;
   /**
    * The model as the runner prepared it: the asset record (file, variant, scale fix, rig), the batch's gender,
    * loadout, FX look and lighting, and a fingerprint of the prepared scene (mounted items, grips, placement fixes,
@@ -57,14 +79,21 @@ export interface FrameUnitKeyInput {
   direction: { name: string; worldAngle: number };
 }
 
+/** A renderer id that can go into a key: a known backend and a non-empty bundle hash. */
+export function checkRendererId(r: RendererId): void {
+  if (!RENDER_BACKENDS.includes(r.backend)) throw new Error(`frame cache: unknown render backend "${r.backend}" (gpu or software)`);
+  if (typeof r.bundle !== 'string' || !r.bundle.trim()) throw new Error('frame cache: the render bundle hash is empty; the runner must pass the built bundle\'s hash');
+}
+
 /** The cache key of one clip × direction (hex SHA-256 of the canonical input). */
 export function frameUnitKey(input: FrameUnitKeyInput): string {
+  checkRendererId(input.renderer);
   return sha256(canonicalJson(input));
 }
 
 /**
- * A short hash per input group (model, view, framing, render, clip, direction, version), kept in the entry's meta:
- * comparing two entries of one clip × direction shows which input made a render miss the cache.
+ * A short hash per input group (model, view, framing, render, clip, direction, version, renderer), kept in the
+ * entry's meta: comparing two entries of one clip × direction shows which input made a render miss the cache.
  */
 export function frameUnitDigests(input: FrameUnitKeyInput): Record<string, string> {
   return Object.fromEntries(Object.entries(input).map(([k, v]) => [k, sha256(canonicalJson(v)).slice(0, 12)]));
@@ -93,6 +122,8 @@ export interface FrameUnitMeta {
   strips: string[];
   /** frameUnitDigests of the key's inputs (diagnostics). */
   inputs?: Record<string, string>;
+  /** The renderer that made the entry (diagnostics; it is in the key). */
+  renderer?: RendererId;
 }
 
 /** Columns of a strip of `n` frames `w` px wide (kept well under browser canvas limits). */
