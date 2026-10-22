@@ -7,6 +7,7 @@
     { "path": "packages/sprites" },
     { "path": "packages/render" },
     { "path": "packages/cli" },
-    { "path": "packages/models3d" }
+    { "path": "packages/models3d" },
+    { "path": "packages/levels" }
   ]
 }

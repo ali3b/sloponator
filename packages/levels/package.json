@@ -1,0 +1,27 @@
+{
+  "name": "@slop/levels",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tilesets and file-based Tiled maps with the level tools (routes, zones, game-only markers), moved from the old generator's packages/shared tileset/ and map/. Pure Node: the ground tile renderer draws the atlas itself, maps are JSON documents a game keeps and edits with plain ops.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@slop/formats": "0.0.0",
+    "@slop/library": "0.0.0",
+    "@slop/schema": "0.0.0",
+    "@slop/sprites": "0.0.0",
+    "pngjs": "7.0.0"
+  },
+  "devDependencies": {
+    "@types/pngjs": "6.0.5",
+    "vitest": "2.1.9"
+  }
+}
