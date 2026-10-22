@@ -1,0 +1,424 @@
+{
+  "schema": "ssg-meta/1",
+  "generator": {
+    "name": "Synty Sprite Generator",
+    "version": "0.3",
+    "generatedAt": "2026-10-17T17:04:38.369Z"
+  },
+  "asset": {
+    "name": "SM_Prop_Radio_Tower_01",
+    "pack": "POLYGON_War",
+    "kind": "prop"
+  },
+  "blend": "normal",
+  "frameWidth": 116,
+  "frameHeight": 574,
+  "fps": 10,
+  "pivot": {
+    "x": 58,
+    "y": 506
+  },
+  "pivotSource": "anchor",
+  "pixelsPerMetre": 45.25483399593904,
+  "scale": {
+    "mode": "tile",
+    "pixelsPerMetre": 45.2548,
+    "tilePx": 64,
+    "tileHeightPx": 32,
+    "metresPerTile": 1,
+    "shape": "diamond"
+  },
+  "note": "Socket positions are pixels from the untrimmed frame top-left; for flipX animations use x = frameWidth - x.",
+  "clips": [
+    {
+      "name": "intact",
+      "loop": true,
+      "frameCount": 1,
+      "events": []
+    },
+    {
+      "name": "destroyed",
+      "loop": true,
+      "frameCount": 1,
+      "events": []
+    },
+    {
+      "name": "intact_to_destroyed",
+      "loop": false,
+      "frameCount": 15,
+      "events": [
+        {
+          "frame": 0,
+          "name": "impact"
+        }
+      ]
+    }
+  ],
+  "object": {
+    "footprint": {
+      "w": 1.73,
+      "d": 1.734,
+      "minX": -0.865,
+      "maxX": 0.865,
+      "minZ": -0.867,
+      "maxZ": 0.867
+    },
+    "height": 12.124,
+    "bottom": -0.188,
+    "centre": {
+      "x": 0,
+      "z": 0
+    },
+    "tiles": {
+      "w": 2,
+      "d": 2,
+      "wExact": 1.73,
+      "dExact": 1.734,
+      "tilePx": 64,
+      "metresPerTile": 1,
+      "shape": "diamond"
+    },
+    "collision": {
+      "source": "hull",
+      "points": [
+        [
+          -0.865,
+          -0.867
+        ],
+        [
+          0.865,
+          -0.867
+        ],
+        [
+          0.865,
+          0.867
+        ],
+        [
+          -0.865,
+          0.867
+        ]
+      ]
+    },
+    "pixelsPerMetre": 45.2548,
+    "anchor": {
+      "x": 58,
+      "y": 506
+    },
+    "directions": [
+      {
+        "name": "SE",
+        "worldAngle": 315,
+        "mirrorOf": null,
+        "anchor": {
+          "x": 58,
+          "y": 506
+        },
+        "facing": "+u",
+        "polygon": [
+          [
+            2.58,
+            505.97
+          ],
+          [
+            57.94,
+            478.29
+          ],
+          [
+            113.42,
+            506.03
+          ],
+          [
+            58.06,
+            533.71
+          ]
+        ],
+        "tiles": {
+          "u": 2,
+          "v": 2,
+          "uExact": 1.734,
+          "vExact": 1.73,
+          "polygon": [
+            [
+              -0.867,
+              0.865
+            ],
+            [
+              -0.867,
+              -0.865
+            ],
+            [
+              0.867,
+              -0.865
+            ],
+            [
+              0.867,
+              0.865
+            ]
+          ]
+        }
+      }
+    ],
+    "note": "Metres are in the model's own axes (x right, z towards the camera in the S / single-direction sprite, y up; origin = the model pivot). anchor = the pixel (untrimmed frame, from top-left) where the footprint's ground centre is drawn: put it on the centre of the tiles the object covers (an even tile count puts it on a tile corner). Diamond tiles: u runs down-right, v down-left (Tiled isometric); square tiles: u right, v down. polygon = the ground collision polygon in frame pixels; tiles.polygon = the same polygon in tile units around the anchor. collision.source \"base\" = the hull of what stands on the ground (vertices below collision.cut metres above the bottom, e.g. a tree trunk); the whole model's hull is then canopy (canopyPolygon per direction), and footprint/tiles still cover the whole model.",
+    "states": [
+      {
+        "name": "intact",
+        "animation": "intact",
+        "asset": "SM_Prop_Radio_Tower_01",
+        "footprint": {
+          "w": 1.73,
+          "d": 1.734,
+          "minX": -0.865,
+          "maxX": 0.865,
+          "minZ": -0.867,
+          "maxZ": 0.867
+        },
+        "height": 12.124,
+        "bottom": -0.188,
+        "centre": {
+          "x": 0,
+          "z": 0
+        },
+        "tiles": {
+          "w": 2,
+          "d": 2,
+          "wExact": 1.73,
+          "dExact": 1.734,
+          "tilePx": 64,
+          "metresPerTile": 1,
+          "shape": "diamond"
+        },
+        "collision": {
+          "source": "hull",
+          "points": [
+            [
+              -0.865,
+              -0.867
+            ],
+            [
+              0.865,
+              -0.867
+            ],
+            [
+              0.865,
+              0.867
+            ],
+            [
+              -0.865,
+              0.867
+            ]
+          ]
+        },
+        "sameAsBase": true,
+        "directions": [
+          {
+            "name": "SE",
+            "polygon": [
+              [
+                2.58,
+                505.97
+              ],
+              [
+                57.94,
+                478.29
+              ],
+              [
+                113.42,
+                506.03
+              ],
+              [
+                58.06,
+                533.71
+              ]
+            ],
+            "tiles": {
+              "u": 2,
+              "v": 2,
+              "polygon": [
+                [
+                  -0.867,
+                  0.865
+                ],
+                [
+                  -0.867,
+                  -0.865
+                ],
+                [
+                  0.867,
+                  -0.865
+                ],
+                [
+                  0.867,
+                  0.865
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "destroyed",
+        "animation": "destroyed",
+        "asset": "SM_Prop_Radio_Tower_01",
+        "look": "scorch:dark=0.9",
+        "footprint": {
+          "w": 1.964,
+          "d": 1.736,
+          "minX": -1.091,
+          "maxX": 0.873,
+          "minZ": -0.868,
+          "maxZ": 0.868
+        },
+        "height": 10.412,
+        "bottom": -0.949,
+        "centre": {
+          "x": -0.109,
+          "z": 0
+        },
+        "tiles": {
+          "w": 2,
+          "d": 2,
+          "wExact": 1.964,
+          "dExact": 1.736,
+          "tilePx": 64,
+          "metresPerTile": 1,
+          "shape": "diamond"
+        },
+        "collision": {
+          "source": "hull",
+          "points": [
+            [
+              -1.091,
+              -0.51
+            ],
+            [
+              -0.866,
+              -0.867
+            ],
+            [
+              -0.855,
+              -0.868
+            ],
+            [
+              0.873,
+              -0.868
+            ],
+            [
+              0.873,
+              0.867
+            ],
+            [
+              0.862,
+              0.868
+            ],
+            [
+              0.594,
+              0.868
+            ],
+            [
+              -0.866,
+              0.867
+            ],
+            [
+              -1.09,
+              0.58
+            ]
+          ]
+        },
+        "sameAsBase": false,
+        "directions": [
+          {
+            "name": "SE",
+            "polygon": [
+              [
+                6.77,
+                515.3
+              ],
+              [
+                2.54,
+                505.98
+              ],
+              [
+                2.86,
+                505.79
+              ],
+              [
+                58.16,
+                478.14
+              ],
+              [
+                113.68,
+                505.9
+              ],
+              [
+                113.36,
+                506.1
+              ],
+              [
+                104.78,
+                510.38
+              ],
+              [
+                58.03,
+                533.73
+              ],
+              [
+                41.68,
+                532.72
+              ]
+            ],
+            "tiles": {
+              "u": 2,
+              "v": 2,
+              "polygon": [
+                [
+                  -0.51,
+                  1.091
+                ],
+                [
+                  -0.867,
+                  0.866
+                ],
+                [
+                  -0.868,
+                  0.855
+                ],
+                [
+                  -0.868,
+                  -0.873
+                ],
+                [
+                  0.867,
+                  -0.873
+                ],
+                [
+                  0.868,
+                  -0.862
+                ],
+                [
+                  0.868,
+                  -0.594
+                ],
+                [
+                  0.867,
+                  0.866
+                ],
+                [
+                  0.58,
+                  1.09
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "animation": "intact_to_destroyed",
+        "from": "intact",
+        "to": "destroyed",
+        "asset": "SM_Prop_Radio_Tower_01"
+      }
+    ]
+  }
+}

@@ -23,7 +23,7 @@ The plan: **[docs/PLAN.md](docs/PLAN.md)**. Progress is tracked in
 |---|---|---|
 | P0 | Review and spikes (renderer, weak-model baseline) | in progress |
 | P1 | Foundations: repo tooling, one schema | done (#64); library import → P2 |
-| P2 | Sprites through `slop build` | — |
+| P2 | Sprites through `slop build` | in progress: export core moved (#8: `@slop/sprites`, `@slop/formats`) |
 | P3 | 3D models and textures | — |
 | P4 | Levels: tilesets, maps, routes | — |
 | P4b | Component catalogue | — |
@@ -52,6 +52,14 @@ CI (`.github/workflows/ci.yml`) runs the four on every push and PR and fails whe
   nearest valid key, what it is for and where it is documented. The declaration files `ssg.assets.json`,
   `ssg.models.json` and `ssg.textures.json` are ported from the old generator, and the real games' files validate
   unchanged (`packages/schema/test/fixtures`).
+- **`@slop/formats`** (`packages/formats`): what a game reads. zod schemas, TS types and JSON Schemas of
+  `ssg-meta/1`, `ssg-layers/1`, `ssg-split/1`, `ssg-turret/1`, the generic sheet JSON, the Phaser 3 anims JSON and
+  the object block; the games' real manifests validate unchanged (`packages/formats/test/fixtures`). The contract
+  with slopkit.
+- **`@slop/sprites`** (`packages/sprites`): the export core moved from the old generator: engine profiles, sheet
+  layout and pure RGBA composition, manifests, clip events, validation, the frame-cache key (now keyed by render
+  backend and bundle hash). It describes and packs frames; the render bundle draws them. See
+  [packages/sprites/README.md](packages/sprites/README.md).
 
 ## Licence
 

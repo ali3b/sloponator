@@ -1,0 +1,25 @@
+{
+  "name": "@slop/sprites",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The sprite export core: engine profiles, sheet layout, manifests (ssg-meta/1, ssg-layers/1, ssg-split/1, ssg-turret/1), clip events, validation and the frame-cache key. Pure Node/TypeScript: it describes and packs frames, it does not draw them.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@slop/formats": "0.0.0",
+    "liquidjs": "10.30.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "4.0.9",
+    "js-yaml": "4.1.0",
+    "vitest": "2.1.9"
+  }
+}

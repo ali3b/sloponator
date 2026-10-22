@@ -1,0 +1,36 @@
+{
+  "schema": "ssg-meta/1",
+  "generator": {
+    "name": "Synty Sprite Generator",
+    "version": "0.3",
+    "generatedAt": "2026-10-18T10:22:00.884Z"
+  },
+  "asset": {
+    "name": "SM_Flame_FX",
+    "pack": "POLYGON_Particle_FX",
+    "kind": "fx",
+    "category": null
+  },
+  "blend": "add",
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "fps": 12,
+  "pivot": {
+    "x": 32,
+    "y": 60.159998707118675
+  },
+  "pixelsPerMetre": null,
+  "scale": {
+    "mode": "fit",
+    "pixelsPerMetre": null
+  },
+  "note": "Socket positions are pixels from the untrimmed frame top-left; for flipX animations use x = frameWidth - x.",
+  "clips": [
+    {
+      "name": "still",
+      "loop": true,
+      "frameCount": 1,
+      "events": []
+    }
+  ]
+}
