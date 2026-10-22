@@ -1,5 +1,5 @@
 /**
- * Real export files of the games (Solitary Strike, Sidefighter, Monty; copied read-only into fixtures, the big
+ * Real export files of the games (Solitary Strike, Sidefighter, Monty, Off Road, 4D Stunts; copied read-only into fixtures, the big
  * character files cut to their first animations) validate unchanged, and the schemas refuse what they should.
  */
 import { readFileSync, readdirSync } from 'node:fs';
@@ -15,7 +15,7 @@ const load = (f: string) => JSON.parse(readFileSync(join(dir, f), 'utf8')) as Re
 describe('the games\' real files validate', () => {
   it('has fixtures of every kind the games write', () => {
     const kinds = new Set(files.map((f) => detectFormat(f, load(f))?.id));
-    expect([...kinds].sort()).toEqual(['phaser3-anims', 'ssg-meta/1', 'ssg-sheet']);
+    expect([...kinds].sort()).toEqual(['phaser3-anims', 'ssg-meta/1', 'ssg-model', 'ssg-sheet']);
   });
   for (const f of files) {
     it(f, () => {

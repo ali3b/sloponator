@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "name": "driver_grey",
+  "source": {
+    "pack": "POLYGON_City_Characters",
+    "asset": "SK_Character_Roadworker",
+    "assetId": 16
+  },
+  "units": "m",
+  "forward": "+Z",
+  "up": "+Y",
+  "origin": "bottom-centre",
+  "bounds": {
+    "min": [
+      -0.3777,
+      0,
+      -0.2075
+    ],
+    "max": [
+      0.3777,
+      1.8692,
+      0.2075
+    ],
+    "size": [
+      0.7554,
+      1.8692,
+      0.415
+    ]
+  },
+  "parts": [],
+  "sockets": [
+    {
+      "name": "hand_r",
+      "node": "Hand_R",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "rot": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "hand_l",
+      "node": "Hand_L",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "rot": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "head",
+      "node": "head",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "rot": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "chest",
+      "node": "spine_03",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "rot": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "hips",
+      "node": "Pelvis",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "rot": [
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "name": "POLY_IDL_Base@Masculine",
+      "duration": 1.7667,
+      "loop": false,
+      "source": {
+        "id": 174,
+        "pack": "ANIMATION_Idles",
+        "name": "POLY_IDL_Base",
+        "variant": "Masculine",
+        "set": "Polygon"
+      }
+    },
+    {
+      "name": "POLY_EMOT_Celebrate_BeatChest@Masculine",
+      "duration": 3.1333,
+      "loop": false,
+      "source": {
+        "id": 3154,
+        "pack": "ANIMATION_Emotes_And_Taunts",
+        "name": "POLY_EMOT_Celebrate_BeatChest",
+        "variant": "Masculine",
+        "set": "Polygon"
+      }
+    },
+    {
+      "name": "Driver_Trophy",
+      "duration": 4.5,
+      "loop": false,
+      "source": {
+        "id": 3361,
+        "pack": "_Uploads",
+        "name": "Driver_Trophy",
+        "variant": null,
+        "set": null
+      }
+    },
+    {
+      "name": "POLY_EMOT_Celebrate_Clapping_Polite@Masculine",
+      "duration": 3.5333,
+      "loop": false,
+      "source": {
+        "id": 3155,
+        "pack": "ANIMATION_Emotes_And_Taunts",
+        "name": "POLY_EMOT_Celebrate_Clapping_Polite",
+        "variant": "Masculine",
+        "set": "Polygon"
+      }
+    },
+    {
+      "name": "POLY_EMOT_Happy_FistPump@Masculine",
+      "duration": 3.5333,
+      "loop": false,
+      "source": {
+        "id": 3175,
+        "pack": "ANIMATION_Emotes_And_Taunts",
+        "name": "POLY_EMOT_Happy_FistPump",
+        "variant": "Masculine",
+        "set": "Polygon"
+      }
+    },
+    {
+      "name": "Driver_Defeated",
+      "duration": 6.7333,
+      "loop": false,
+      "source": {
+        "id": 3358,
+        "pack": "_Uploads",
+        "name": "Driver_Defeated",
+        "variant": null,
+        "set": null
+      }
+    }
+  ],
+  "collider": {
+    "box": {
+      "center": [
+        0,
+        0.9346,
+        0
+      ],
+      "size": [
+        0.7554,
+        1.8692,
+        0.415
+      ]
+    }
+  },
+  "licence": "Synty Store EULA: not for redistribution as source assets",
+  "compress": "meshopt",
+  "pose": "clip:POLY_IDL_Base@Masculine"
+}
