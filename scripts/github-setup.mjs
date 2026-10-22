@@ -4,6 +4,7 @@
 //
 //   node scripts/github-setup.mjs [--repo ali3b/sloponator] [--dry]
 import { execFileSync } from 'node:child_process';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const argv = process.argv.slice(2);
 const REPO = argv.includes('--repo') ? argv[argv.indexOf('--repo') + 1] : 'ali3b/sloponator';
@@ -111,13 +112,14 @@ if (!DRY) {
 }
 
 for (const [title, description, items] of PHASES) {
-  if (!existingMs.some((m) => m.title === title)) gh('api', `repos/${REPO}/milestones`, '-f', `title=${title}`, '-f', `description=${description}`);
+  if (!existingMs.some((m) => m.title === title)) tryGh('api', `repos/${REPO}/milestones`, '-f', `title=${title}`, '-f', `description=${description}`);
   for (const item of items) {
     const t = `${title.split(' ')[0]}: ${item}`;
     if (titles.has(t)) continue;
     const url = gh('issue', 'create', '--repo', REPO, '--title', t, '--body', `Part of **${title}** — see [docs/PLAN.md](../blob/master/docs/PLAN.md).`, '--milestone', title, '--label', title.startsWith('P0') && /Spike/.test(item) ? 'spike' : 'phase').trim();
     if (projectNumber && url) tryGh('project', 'item-add', String(projectNumber), '--owner', OWNER, '--url', url);
     console.log('issue', t);
+    await sleep(1500); // GitHub's secondary rate limit on rapid issue creation
   }
 }
 console.log(projectNumber ? `project board #${projectNumber}` : 'no project board (gh needs the project scope)');
