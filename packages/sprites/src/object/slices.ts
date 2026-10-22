@@ -14,35 +14,10 @@
  * first U strips are the left halves of the front-left row of tiles (b = V − 1), the rest the right halves of the
  * front-right row (a = U − 1), so each strip's front edge is one tile edge of the footprint's front outline.
  */
+import type { ObjectSlice, ObjectSlices } from '@slop/formats';
 import type { ObjectInfo, Vec2 } from './footprint.js';
-
-export interface ObjectSlice {
-  /** Strip number, left to right. */
-  index: number;
-  /** The strip as a rect in untrimmed-frame pixels (full frame height; the outer strips reach the frame edges). */
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  /** The footprint tile whose front edge this strip shows, from the block's top-corner tile (0..U-1, 0..V-1). */
-  tile: { u: number; v: number };
-  /** The strip's front edge on the ground (left to right), frame pixels: the outline anything behind it is hidden by. */
-  edge: [Vec2, Vec2];
-  /** Middle of the front edge, frame pixels: sort the strip as an object standing here. */
-  ground: { x: number; y: number };
-  /** = ground.y: depth key in frame pixels (add the frame's top on the map for a world y). */
-  sortY: number;
-}
-
-export interface ObjectSlices {
-  mode: 'columns';
-  /** Strip width in pixels (half a tile: 32 at 64×32). */
-  stripPx: number;
-  tilePx: number;
-  tileHeightPx: number;
-  directions: { name: string; strips: ObjectSlice[] }[];
-  note: string;
-}
+// These types are the game-facing contract: defined once in @slop/formats, used and re-exported here.
+export type { ObjectSlice, ObjectSlices };
 
 export const SLICES_NOTE =
   'Strips are rects into the untrimmed frame (subtract the trim offset for trimmed atlases), one per tile column of the ' +

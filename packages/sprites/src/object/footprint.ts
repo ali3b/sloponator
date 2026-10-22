@@ -12,12 +12,12 @@
  * along the screen diagonals like Tiled's isometric maps: u = down-right, v = down-left. A tile is
  * `metresPerTile` metres on a side on the ground in both cases.
  */
+import type { CollisionMode, CollisionRule, CollisionSource, ObjectDirection, ObjectInfo, ObjectStateInfo, ObjectTransitionInfo, Vec2 } from '@slop/formats';
 import { facingAxis, viewGrid, yawForAngle, type Direction, type Framing, type ScaleConfig, type ViewConfig } from '../view/camera.js';
 import { autoCategory, nameWords } from '../inputs/categories.js';
 import { concaveOutline } from './concave.js';
-import type { ObjectSlices } from './slices.js';
-
-export type Vec2 = [number, number];
+// These types are the game-facing contract: defined once in @slop/formats, used and re-exported here.
+export type { Vec2, ObjectDirection, ObjectInfo, ObjectStateInfo, ObjectTransitionInfo, CollisionMode, CollisionSource, CollisionRule };
 
 /** Asset kinds that stand on the map as objects and get an `object` block in their export manifest. */
 export const OBJECT_ASSET_KINDS = ['prop', 'multipart', 'vehicle'];
@@ -104,95 +104,6 @@ const round = (v: number, d: number) => {
   return Object.is(r, -0) ? 0 : r;
 };
 const roundPt = (p: Vec2, d: number): Vec2 => [round(p[0], d), round(p[1], d)];
-
-export interface ObjectDirection {
-  name: string;
-  worldAngle: number;
-  /** This direction shows another one flipped horizontally (its pixels are already flipped here). */
-  mirrorOf: string | null;
-  /** Pixel in the untrimmed frame (from its top-left) where the footprint's ground centre is drawn. */
-  anchor: { x: number; y: number };
-  /** The ground collision polygon in frame pixels (same points and order as `collision.points`). */
-  polygon: Vec2[];
-  /** With a `base` collision: the whole model's hull (`canopy.points`) in frame pixels. */
-  canopyPolygon?: Vec2[];
-  /** With a tile scale: the footprint along the grid's u and v axes, and the polygon in tiles around the anchor. */
-  tiles?: { u: number; v: number; uExact: number; vExact: number; polygon: Vec2[] };
-  /** The grid axis the model's front (+Z) points along ('+u' = down-right on a diamond grid), or null when not grid-aligned. */
-  facing?: '+u' | '+v' | '-u' | '-v' | null;
-}
-
-export interface ObjectInfo {
-  /** Model-axes footprint in metres: w along x, d along z, and its bounds around the model origin. */
-  footprint: { w: number; d: number; minX: number; maxX: number; minZ: number; maxZ: number };
-  /** Top of the model above the ground plane (y = 0 at the model origin), metres. */
-  height: number;
-  /** Lowest point (0 for a model standing on its origin; negative when it reaches below the ground). */
-  bottom: number;
-  /** Ground centre of the footprint relative to the model origin, metres (model axes). The anchor is drawn here. */
-  centre: { x: number; z: number };
-  /** Footprint in whole tiles (ceil) and exact, model axes lined up with the grid. Null without a tile scale. */
-  tiles: { w: number; d: number; wExact: number; dExact: number; tilePx: number; metresPerTile: number; shape: 'square' | 'diamond' } | null;
-  /**
-   * Ground collision polygon in metres, model axes, counter-clockwise in (x, z) (positive signed area). `base` = the
-   * hull of the vertices below `cut` metres above the model's bottom (what stands on the ground: a tree's trunk),
-   * used when it is meaningfully smaller than the whole model's hull (then kept as `canopy`).
-   */
-  collision: { source: CollisionSource; points: Vec2[]; cut?: number; rule?: CollisionRule };
-  /** With a `base` collision: the hull of the whole model seen from above (a tree's canopy), metres, model axes. */
-  canopy?: { source: 'hull' | 'bounds'; points: Vec2[] };
-  /** Pixels per metre the screen coordinates use (the locked scale, or what fitting chose). Null for perspective. */
-  pixelsPerMetre: number | null;
-  /** The first direction's anchor (single-direction props need nothing else); per direction in `directions`. */
-  anchor: { x: number; y: number } | null;
-  /** Screen data per direction (empty for perspective views, which have no single pixel scale). */
-  directions: ObjectDirection[];
-  /** With `slice: 'columns'` on a diamond tile lock: per-tile-column strips of every frame (see `objectSlices`). */
-  slices?: ObjectSlices;
-  note: string;
-  /**
-   * Object states (object/states.ts): each state's own model measured the same way. Every state is drawn with
-   * the same framing, so the object's `anchor` above (the base state's) places all of them.
-   */
-  states?: ObjectStateInfo[];
-  /** Object states: the transition animations (e.g. intact_to_destroyed) and the states they join. */
-  transitions?: ObjectTransitionInfo[];
-}
-
-/** One state of an object export: its animation, model, and its own footprint and collision. */
-export interface ObjectStateInfo {
-  name: string;
-  /** The clip holding this state (one still frame per direction, or a loop: see `loop`). */
-  animation: string;
-  /** The library model drawn for it. */
-  asset: string;
-  /** A procedural look of that model (e.g. "scorch": the intact model burnt out, when there is no destroyed model). */
-  look?: string;
-  /**
-   * The looping template this state plays (FB-056, e.g. "drive"): `animation` then loops instead of holding one
-   * frame. Footprint and collision are measured at its first frame.
-   */
-  loop?: string;
-  footprint: ObjectInfo['footprint'];
-  height: number;
-  bottom: number;
-  centre: ObjectInfo['centre'];
-  tiles: ObjectInfo['tiles'];
-  collision: ObjectInfo['collision'];
-  /** Footprint, tiles and collision equal the base state's (within a centimetre). */
-  sameAsBase: boolean;
-  /** This state's collision polygon in frame pixels, per direction (and in tiles around the object's anchor). */
-  directions: { name: string; polygon: Vec2[]; tiles?: { u: number; v: number; polygon: Vec2[] } }[];
-}
-
-export interface ObjectTransitionInfo {
-  /** The animation name: `<from>_to_<to>`. */
-  animation: string;
-  from: string;
-  to: string;
-  /** The model the transition is rendered on (the `from` state's). */
-  asset: string;
-}
 
 /**
  * The states block of an object export: per state, its own measurements (`info`, measured with the shared
@@ -291,21 +202,12 @@ export const THIN_BASE_RATIO = 0.15;
  * How the collision polygon is chosen: `auto` by what the model is and its shape; `base` / `full` asked for;
  * `concave` = the outline of the ground slice following a curved wall or fence (FB-099).
  */
-export type CollisionMode = 'auto' | 'base' | 'full' | 'concave';
 export const COLLISION_MODES: CollisionMode[] = ['auto', 'base', 'full', 'concave'];
 /** An object state's collision (FB-085): any mode, or `none` (a blown gate, a flattened fence: nothing to collide with). */
 export type StateCollision = CollisionMode | 'none';
 export const STATE_COLLISIONS: StateCollision[] = [...COLLISION_MODES, 'none'];
 /** Where a collision polygon came from: the hull, the bounds, the ground slice's hull, its concave outline, or nothing. */
-export type CollisionSource = 'hull' | 'bounds' | 'base' | 'concave' | 'none';
 export interface CollisionSubject { name?: string; kind?: string; category?: string | null }
-/**
- * Why the collision is what it is: `asked` (collision base/full), `height` (collisionHeight given: the slice when
- * it is at most half the hull), `vehicle` / `building` (always the whole hull), `thin` (vegetation, poles, lamps,
- * signs: the slice when it is at most half the hull), `shape` (anything else: the slice only when it is under
- * 15 % of the hull and sits near the middle, like a trunk under a canopy).
- */
-export type CollisionRule = 'asked' | 'height' | 'vehicle' | 'building' | 'thin' | 'shape';
 
 const wordSet = (s: string) => new Set(s.split(/\s+/).filter(Boolean));
 /** Vehicles and aircraft: whatever touches the ground (wheels, skids, a tail wheel), they collide with their whole body. */

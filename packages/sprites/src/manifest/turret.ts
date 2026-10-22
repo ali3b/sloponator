@@ -6,9 +6,12 @@
  * per hull direction, where the turret's pivot (the point it turns about, at its base) sits relative to the hull's
  * frame pivot, so a game draws the turret at hull position + offset[hull direction] in whatever direction it aims.
  */
+import type { SsgTurret, TurretMount } from '@slop/formats';
 import { DIRECTION_SETS, type Direction, type DirectionSetId, type Framing } from '../view/camera.js';
 import type { AnimationSet, SetItem, TemplateLayerRef } from '../inputs/batch.js';
 import { toFramePx } from '../object/footprint.js';
+// These types are the game-facing contract: defined once in @slop/formats, used and re-exported here.
+export type { TurretMount };
 
 /** The turret split of a vehicle export: `dirs` = the turret sheet's own directions (default: the hull's). */
 export interface TurretSplit {
@@ -92,17 +95,6 @@ export function turretSet(set: AnimationSet): AnimationSet {
   return { ...set, id: `${set.id}_turret`, name: `${set.name} (turret)`, items };
 }
 
-/** Where the turret goes on the hull in one hull direction (pixels, untrimmed hull frame). */
-export interface TurretMount {
-  name: string;
-  worldAngle: number;
-  mirrorOf: string | null;
-  /** The turret's pivot (its axis at its base) in the hull's frame, from the top-left. */
-  pivot: { x: number; y: number };
-  /** The same point relative to the hull frame's pivot for this direction: draw the turret's pivot here. */
-  offset: { x: number; y: number };
-}
-
 const r2 = (v: number) => {
   const r = Math.round(v * 100) / 100;
   return Object.is(r, -0) ? 0 : r;
@@ -145,25 +137,7 @@ export const TURRET_NOTE =
   'Draw the hull sheet, then the turret sheet on top: the turret frame\'s pivot goes at the hull\'s pivot + mounts[hull direction].offset (pixels), in any of the turret sheet\'s directions. axis is where the turret turns, in metres in the model\'s axes (y = the turret\'s base).';
 
 /** The `turret` block in the hull's data files (meta.json, the generic json and .sheet.json). */
-export interface TurretBlock {
-  schema: 'ssg-turret/1';
-  /** The turret sheet's base name (its files are `{base}_0.png`, `{base}.json`/`.meta.json`…). */
-  base: string;
-  files: string[];
-  /** Model parts drawn on the turret sheet (left out of the hull's). */
-  parts: string[];
-  axis: { x: number; y: number; z: number };
-  pixelsPerMetre: number | null;
-  /** The turret sheet's directions (the game picks one by aim, independently of the hull's). */
-  directions: { name: string; worldAngle: number; screenAngle: number; mirrorOf: string | null }[];
-  /** The turret sheet's clips: `turret` (still), `turret_fire`… */
-  clips: string[];
-  /** Per hull direction: where the turret's pivot goes. */
-  mounts: TurretMount[];
-  /** The turret is always drawn over the hull. */
-  draw: 'above';
-  note: string;
-}
+export type TurretBlock = SsgTurret;
 
 export function turretBlock(o: Omit<TurretBlock, 'schema' | 'draw' | 'note' | 'directions'> & { directions: Direction[] }): TurretBlock {
   return {

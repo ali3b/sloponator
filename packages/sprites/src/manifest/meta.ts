@@ -4,6 +4,7 @@
  * sockets, body boxes, pivot, scale, object data) and the generic sheet JSON (`{base}.json` of the generic format,
  * `{base}.sheet.json` for every other format: every rectangle and timing).
  */
+import type { SsgMeta, SsgSheet } from '@slop/formats';
 import { scaleRecord, type ExportContext } from './context.js';
 
 /**
@@ -11,7 +12,7 @@ import { scaleRecord, type ExportContext } from './context.js';
  * striking limb, cast, footsteps…), per-frame sockets (weapon_tip, muzzle, hands…) and body boxes (head, torso,
  * legs) in frame pixels, the feet pivot, the blend mode and the scale. Written for every sprite of every kind.
  */
-export function metaData(ctx: ExportContext) {
+export function metaData(ctx: ExportContext): SsgMeta {
   const hasBoxes = ctx.frames.some((f) => f.boxes);
   const hasSockets = hasBoxes || ctx.frames.some((f) => Object.keys(f.sockets).length);
   // Always written (FB-104): the scale record alone tells a game a UI icon (fit) from a map sprite (ppm / tile lock).
@@ -42,7 +43,7 @@ export function metaData(ctx: ExportContext) {
 }
 
 /** A clean, self-describing JSON view of the export (the "generic" format, and the Sheet Viewer's input). */
-export function genericData(ctx: ExportContext) {
+export function genericData(ctx: ExportContext): SsgSheet {
   return {
     generator: ctx.generator,
     asset: ctx.asset,

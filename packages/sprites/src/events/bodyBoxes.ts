@@ -1,28 +1,8 @@
 // Moved from synty-sprite-generator packages/shared/src/export/bodyBoxes.ts (P2, ali3b/sloponator#8).
-/**
- * Per-frame body boxes for hurtboxes (SF-FB-009): head, torso and legs as axis-aligned rectangles in frame pixels
- * (untrimmed frame, from its top-left, like the sockets), measured from the posed skeleton's joints projected into
- * the frame. A crouch, a lean back or a knockdown changes the boxes by itself; a striking hand or foot does not
- * stretch the torso box (the arms are not part of any box; the legs box does follow a kicking leg).
- *
- * Each box bounds its joints, padded by the body part's half-thickness:
- *   head:  the head joint and the head's top (HEAD_LENGTH along the neck → head direction), padded HEAD_PAD
- *   torso: hips, spine, neck, clavicles / upper arms (the shoulders) and thighs (the hip joints), padded TORSO_PAD
- *   legs:  thighs, calves, feet and toes, padded LEG_PAD
- */
 
-export interface PixelBox {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface BodyBoxes {
-  head?: PixelBox;
-  torso?: PixelBox;
-  legs?: PixelBox;
-}
+import type { BodyBoxes, PixelBox } from '@slop/formats';
+// These types are the game-facing contract: defined once in @slop/formats, used and re-exported here.
+export type { PixelBox, BodyBoxes };
 
 /** Metres from the head joint (the base of the skull) to the top of the head. */
 export const HEAD_LENGTH = 0.17;

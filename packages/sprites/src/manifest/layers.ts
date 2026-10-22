@@ -6,19 +6,13 @@
  * where it is attached. Any engine composes them by drawing the same frame index of every sheet in
  * `drawOrder(z)` order (see docs/LAYERS.md).
  */
-import type { Framing, ViewConfig } from '../view/camera.js';
-import type { ObjectInfo } from '../object/footprint.js';
-import type { AnimationSet, JobPreset } from '../inputs/batch.js';
+import type { DepthRule, LayerAlignment, LayerFrame, LayerPartInfo, OutfitPreset, PartSlot, SsgLayers } from '@slop/formats';
 import type { LoadoutItem } from '../inputs/combat.js';
-import { scaleRecord, type ClipEvent, type ExportContext, type ScaleRecord } from './context.js';
-import type { LayoutSettings } from '../layout/layout.js';
+import { scaleRecord, type ExportContext } from './context.js';
 import { createLiquid, type RenderedFile } from '../profiles/render.js';
 import type { ValidationIssue } from '../validate/validate.js';
-
-export type PartSlot = 'weapon' | 'offhand' | 'head' | 'hair' | 'back' | 'body' | 'accessory' | 'fx';
-
-/** Where a part draws relative to the body: measured per frame ('auto'), forced, or forced per direction name. */
-export type DepthRule = 'auto' | 'front' | 'back' | Record<string, 'front' | 'back'>;
+// These types are the game-facing contract: defined once in @slop/formats, used and re-exported here.
+export type { PartSlot, DepthRule, LayerPartInfo, OutfitPreset, LayerAlignment, LayerFrame };
 
 export interface LayeredOptions {
   /** 'mask': pixels hidden by the body (or other parts) are cut away, so sheets compose in any order over the body. */
@@ -86,96 +80,8 @@ export function applyDepthRule(z: number, rule: DepthRule | undefined, direction
   return r === 'front' ? Math.max(1, Math.abs(z) || 1) : r === 'back' ? -Math.max(1, Math.abs(z) || 1) : z;
 }
 
-export interface LayerPartInfo {
-  name: string;
-  slot: PartSlot;
-  kind: string;
-  asset: string;
-  /** Bone (or part) the item is mounted on, '' for the root. */
-  bone: string;
-  blend: 'normal' | 'add';
-  depth: DepthRule;
-  /** Weapon class: this sheet only has frames for that class's clips (others are transparent). */
-  cls?: string;
-  /** Sheet base name ({base}_{name}): its images and the format's files for it. */
-  base: string;
-  pages: string[];
-  files: string[];
-  /** The loadout item the part was rendered from (tells outfits which part an item is). */
-  item?: { asset: number; layer?: string; cls?: string };
-}
-
-/** A named outfit: which parts to show (the rest are hidden). Written by the generator for its sprites. */
-export interface OutfitPreset {
-  id: string;
-  name: string;
-  parts: string[];
-}
-
-export interface LayerAlignment {
-  /** Part names already in the export (new items aligned to it get names that do not clash). */
-  parts?: string[];
-  view: ViewConfig;
-  framing: Framing;
-  layout: LayoutSettings;
-  /** Sample times per clip, so later renders hit the very same poses. */
-  clips: { name: string; loop: boolean; times: number[] }[];
-  /** Pages every sheet has (they share one layout): new clips are added on pages after these. */
-  pages?: number;
-  /** Hash of everything above: two exports with the same signature line up frame for frame. */
-  signature: string;
-}
-
-export interface LayerFrame {
-  /** Metres along the view axis relative to the body's hips, per part (+ = in front of the body). */
-  z: Record<string, number>;
-  front: Record<string, boolean>;
-  /** The part's attachment point in untrimmed-frame pixels (mirrored directions: x' = frameWidth - x). */
-  offset: Record<string, { x: number; y: number }>;
-}
-
-export interface LayersManifest {
-  schema: 'ssg-layers/1';
-  generator: ExportContext['generator'];
-  asset: ExportContext['asset'];
-  base: string;
-  occlusion: 'mask' | 'none';
-  frameWidth: number;
-  frameHeight: number;
-  fps: number;
-  /** The frame pivot: the model origin, or for objects (pivotSource "anchor") the first direction's anchor. */
-  pivot: { x: number; y: number };
-  /**
-   * "anchor" (objects, FB-029): every sheet pivots per direction on that direction's anchor, given as each
-   * animation's `pivot` (FB-028 follow-up). Absent: the model origin, `pivot` for every animation.
-   */
-  pivotSource?: 'anchor';
-  pixelsPerMetre: number | null;
-  /** The scale lock (or fit) every sheet was rendered at. */
-  scale: ScaleRecord;
-  /** Objects and props: footprint, height, anchor and ground collision polygon (the body model's). */
-  object?: ObjectInfo;
-  alignment: LayerAlignment;
-  body: { base: string; pages: string[]; files: string[] };
-  parts: LayerPartInfo[];
-  clips: { name: string; loop: boolean; frameCount: number; events: ClipEvent[]; cls?: string }[];
-  /** Weapon classes in this export (clips are named `<class>_<clip>`); the body sheet holds all of them. */
-  classes?: { id: string; label: string }[];
-  directions: { name: string; screenAngle: number; mirrorOf: string | null }[];
-  /** Same order and frame counts as every sheet's `animations`. `front` says where to draw each part; `z` is the measured depth. */
-  animations: {
-    name: string; clip: string; direction: string; flipX: boolean;
-    /** pivotSource "anchor": this animation's own pivot (its direction's anchor; a flipX one's is x-flipped, as drawn). */
-    pivot?: { x: number; y: number };
-    frames: LayerFrame[];
-  }[];
-  validation: ValidationIssue[];
-  /** What produced this export (so `--align-to` can add layers or clips later with the same inputs). */
-  source?: { set: AnimationSet; gender: JobPreset['gender']; loadout: LoadoutItem[]; /** Export format id (godot4, generic…). */ profile?: string };
-  /** Named outfits: which parts each one shows. Optional; a game that ignores it can show any parts it likes. */
-  outfits?: OutfitPreset[];
-  note: string;
-}
+/** The manifest (`{base}.layers.json`): its shape is @slop/formats' `ssg-layers/1`. */
+export type LayersManifest = SsgLayers;
 
 export const LAYERS_NOTE =
   'Every sheet (body and parts) has the same frames, pivot, trim and timing: draw frame i of each one at the same ' +

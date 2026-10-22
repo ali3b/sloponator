@@ -10,10 +10,11 @@
  * lands on the legs frame's waist. Sockets and events go with the sheet that draws them: hands, head, muzzle,
  * weapon tip, shoot and release on the torso; feet, knees and footsteps on the legs.
  */
+import type { SplitSheet, SsgSplit } from '@slop/formats';
 import type { AnimationSet, SetItem } from '../inputs/batch.js';
 import { moveName } from '../inputs/classes.js';
-
-export type SplitSheet = 'legs' | 'torso';
+// These types are the game-facing contract: defined once in @slop/formats, used and re-exported here.
+export type { SplitSheet };
 
 /** The waist split of a character export: which moves go on which sheet (default: by the move's name). */
 export interface WaistSplit {
@@ -157,23 +158,7 @@ export const SPLIT_WHOLE_NOTE =
   'the legs + torso pair while aiming apart from the walk.';
 
 /** The `split` block in each sheet's data files (meta.json / the generic json and .sheet.json). */
-export interface SplitBlock {
-  schema: 'ssg-split/1';
-  at: 'waist';
-  /** Which sheet this file belongs to (`whole`: the whole-body sheet of a split with `whole`, FB-126). */
-  sheet: SplitSheet | 'whole';
-  /** Socket name of the per-frame waist pivot (in both sheets). */
-  pivot: typeof WAIST_SOCKET;
-  /** Skeleton joints the cut was made at: the hips bone (legs side) and the first spine bone (torso side). */
-  bones: { hips: string; spine: string };
-  legs: { base: string; files: string[]; clips: string[] };
-  torso: { base: string; files: string[]; clips: string[] };
-  /** FB-126: the whole-body sheet made from the same job and framing (a split with `whole`). */
-  whole?: { base: string; files: string[]; clips: string[]; note: string };
-  /** Draw order: the legs, then the torso over them. */
-  draw: SplitSheet[];
-  note: string;
-}
+export type SplitBlock = SsgSplit;
 
 export function splitBlock(o: { sheet: SplitBlock['sheet']; bones: SplitBlock['bones']; legs: SplitBlock['legs']; torso: SplitBlock['torso']; whole?: Omit<NonNullable<SplitBlock['whole']>, 'note'> }): SplitBlock {
   return {

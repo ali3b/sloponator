@@ -3,10 +3,13 @@
  * The data every export template renders from. Built once per export from the layout; templates (built-in
  * engine formats and user profiles) only reshape it, so all formats agree on every rectangle and timing.
  */
+import type { ClipEvent, ScaleRecord } from '@slop/formats';
 import type { Direction, Framing, ViewConfig } from '../view/camera.js';
 import type { ObjectInfo } from '../object/footprint.js';
 import type { BodyBoxes } from '../events/bodyBoxes.js';
 import type { Page, Placement } from '../layout/layout.js';
+// These types are the game-facing contract: defined once in @slop/formats, used and re-exported here.
+export type { ClipEvent, ScaleRecord };
 
 export interface ClipInput {
   /** Display / animation name, e.g. "Walk_F". */
@@ -86,36 +89,6 @@ export interface ContextAnimation {
   /** First/last flat frame index (contiguous for rendered directions). */
   from: number;
   to: number;
-}
-
-export interface ClipEvent {
-  frame: number;
-  name: string;
-  /** `hit` only: the striking hand, foot, knee, elbow or head (SF-FB-008, SF-FB-020, SF-FB-022). */
-  limb?: 'hand_l' | 'hand_r' | 'foot_l' | 'foot_r' | 'knee_l' | 'knee_r' | 'elbow_l' | 'elbow_r' | 'head';
-  /** `hit` only: the last active frame of the strike (inclusive), the frame of its `hit_end` event. */
-  endFrame?: number;
-}
-
-/**
- * The scale an export was rendered at, written into every data file so a game can check that all its sprites share
- * one grid. `fit` scales each model into its frame (pixelsPerMetre is then null); `ppm` and `tile` lock it.
- */
-export interface ScaleRecord {
-  mode: 'fit' | 'ppm' | 'tile';
-  /** Screen pixels per metre on the ground (null in fit mode and in perspective views). */
-  pixelsPerMetre: number | null;
-  /** Tile lock only: the tile's width and height in pixels (a 2:1 diamond is tilePx × tilePx/2). */
-  tilePx?: number;
-  tileHeightPx?: number;
-  /** Tile lock only: metres one tile covers on the ground, and the tile shape. */
-  metresPerTile?: number;
-  shape?: 'square' | 'diamond';
-  /**
-   * SF-FB-024: the model was drawn this many times its real size (a 1.3× boss) at the world's pixels per metre above,
-   * so it lines up with the other sprites' grid while standing taller. Absent = 1.
-   */
-  modelScale?: number;
 }
 
 /** The scale record of a view, with the pixels per metre the framing used (and the model's own size factor). */

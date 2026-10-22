@@ -3,14 +3,11 @@
  * Checks an export is usable as-is in an engine: every sheet of a layered export has the same frames, and
  * no sheet has gaps, oversized pages, pivots outside the frame or atlas settings that bleed neighbours.
  */
+import type { ValidationIssue } from '@slop/formats';
 import type { ExportContext } from '../manifest/context.js';
 import type { LayoutSettings } from '../layout/layout.js';
-
-export interface ValidationIssue {
-  level: 'error' | 'warn';
-  code: 'missing_frames' | 'frame_count' | 'rect_mismatch' | 'pivot_mismatch' | 'size_mismatch' | 'timing_mismatch' | 'direction_mismatch' | 'page_size' | 'pivot_outside' | 'bleeding' | 'alignment_mismatch' | 'frame_overflow' | 'style_without_weapon' | 'full_rerender' | 'slice_skipped' | 'state_clip_skipped' | 'state_clip_fallback' | 'state_loop_skipped';
-  message: string;
-}
+// These types are the game-facing contract: defined once in @slop/formats, used and re-exported here.
+export type { ValidationIssue };
 
 const issue = (level: ValidationIssue['level'], code: ValidationIssue['code'], message: string): ValidationIssue => ({ level, code, message });
 
