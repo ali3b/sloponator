@@ -77,8 +77,9 @@ regexes and numbers.
   `worker/rigs/*.json`) stays in the old repo; this package only reads what it produced. P2 decides where the worker
   lives in the Sloponator, how a new pack is ingested into a store this package can read, and whether the ingest
   `meta` JSON format is kept (this package types the keys it reads and keeps the rest).
-- **Bakes on demand.** `bakePath()` returns null for a pairing the old server never baked. P2 needs a `render`/`sprites`
-  side that asks for a retarget (through the worker) and a cache keyed like the old `bakes/a<asset>/n<anim>.glb`.
+- **Bakes on demand:** done in `@slop/bake` (#69). The retarget worker moved there, with its own store keyed by input
+  hashes and Blender/worker versions. `bakePath()` still reports only the old server's bakes, which `@slop/bake`
+  imports.
 - **Search.** Only the FTS5 table and a LIKE fallback are ported; the old search's synonym groups ("first aid" →
   Medkit, FB-075), the broader-word and kind-hint re-ranking (FB-087) and the size/modular/wheels filters are not.
   They belong with the catalogue (`kit find`), which should answer in game words anyway.
