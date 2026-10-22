@@ -1,0 +1,23 @@
+{
+  "name": "@slop/formats",
+  "version": "0.0.0",
+  "private": true,
+  "description": "What a game reads: the TypeScript types and JSON Schemas of the Sloponator's output files (ssg-meta/1, ssg-layers/1, ssg-split/1, ssg-turret/1, the Phaser 3 anims JSON, object data). The contract between the pipeline and slopkit.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@slop/schema": "0.0.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "vitest": "2.1.9"
+  }
+}
