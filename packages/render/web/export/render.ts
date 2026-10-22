@@ -366,10 +366,12 @@ export async function runRender(opts: RenderOptions): Promise<Omit<RenderOutput,
       units.set(`${plan.name}\n${d.name}`, { id: `${plan.name}\n${d.name}`, input, n: plan.times.length, hit: null });
     }
   }
-  if (fc && !fc.bypass) {
+  if (fc) {
+    // Always asked, even when bypassed: the runner needs every unit's key to store what gets rendered (it answers
+    // misses for all of them on a forced render).
     const list = [...units.values()];
     const found = await fc.lookup(list.map((u) => ({ id: u.id, input: u.input, n: u.n }))).catch(() => list.map(() => null));
-    list.forEach((u, i) => {
+    if (!fc.bypass) list.forEach((u, i) => {
       const f = found[i];
       if (f && f.length === u.n) u.hit = f;
     });
