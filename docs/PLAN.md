@@ -86,7 +86,7 @@ They raised **189 feedback entries**. About 92% of them are fixed, usually withi
 | **Game frameworks** | Phaser 3 vs 4 (4.1 is stable, but most training data is Phaser 3), three.js, Babylon, Godot (even frontier agents only manage about 40% on GameCraft-Bench), Kaplay/Excalibur (little training data) | **Phaser 3.80 (pinned) for 2D and three.js 0.186 for 3D.** That is what our games use, and it has the most training data. Lint rules block API drift. |
 | **Game authoring style for weak models** | free-form code; a pure JSON game DSL; data plus marked code hooks | **Data first, code in marked hooks.** Entities, tuning and levels go in schema-checked files with fix-it errors, and behaviour goes in small `// EDIT:` hooks on a fixed runtime API. A pure DSL limits games too much. |
 | **Agent harness for the weak model** | mini-swe-agent (bash only, easiest for weak models), Aider (whole-file edits, architect/editor), OpenCode or Goose (larger tool surface) | **Spike decides between mini-swe-agent and OpenCode.** Fall back to Aider if the model's tool calling is weak. |
-| **Model** | OpenRouter `:free` models with tools (the list rotates; candidates include gpt-oss-120b, Nemotron 3 Super, Qwen3-Coder) | Chosen at spike time through `GET /api/v1/models?supported_parameters=tools`, with a fallback list. It is a config value, never hard-coded. |
+| **Model** | OpenRouter `:free` models with tools (the list rotates), or a cheap paid small model | **`qwen/qwen3.8-27b`** (paid, about $0.04/M input and $1.35/M output), chosen by the user after spike 2 found the free models unavailable for hours. It is a config value, never hard-coded. |
 
 **Risks**
 
