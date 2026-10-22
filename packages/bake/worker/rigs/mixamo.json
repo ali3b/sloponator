@@ -1,0 +1,13 @@
+{
+  "name": "mixamo",
+  "description": "Mixamo skeleton; the mixamorig: / mixamorig_ / mixamorigN: prefix is stripped before matching",
+  "strip_prefix": "^mixamorig\\d*[:_]",
+  "map": {
+    "hips": "Hips", "spine1": "Spine", "spine2": "Spine1", "spine3": "Spine2",
+    "neck": "Neck", "head": "Head",
+    "clavicle_l": "LeftShoulder", "upperarm_l": "LeftArm", "lowerarm_l": "LeftForeArm", "hand_l": "LeftHand",
+    "clavicle_r": "RightShoulder", "upperarm_r": "RightArm", "lowerarm_r": "RightForeArm", "hand_r": "RightHand",
+    "thigh_l": "LeftUpLeg", "calf_l": "LeftLeg", "foot_l": "LeftFoot", "toe_l": "LeftToeBase",
+    "thigh_r": "RightUpLeg", "calf_r": "RightLeg", "foot_r": "RightFoot", "toe_r": "RightToeBase"
+  }
+}

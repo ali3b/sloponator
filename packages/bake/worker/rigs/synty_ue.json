@@ -1,0 +1,12 @@
+{
+  "name": "synty_ue",
+  "description": "Synty UE-style skeleton (SK_Character_*, SK_Chr_*)",
+  "map": {
+    "hips": "Pelvis", "spine1": "spine_01", "spine2": "spine_02", "spine3": "spine_03",
+    "neck": "neck_01", "head": "head",
+    "clavicle_l": "clavicle_l", "upperarm_l": "UpperArm_L", "lowerarm_l": "lowerarm_l", "hand_l": "Hand_L",
+    "clavicle_r": "clavicle_r", "upperarm_r": "UpperArm_R", "lowerarm_r": "lowerarm_r", "hand_r": "Hand_R",
+    "thigh_l": "Thigh_L", "calf_l": "calf_l", "foot_l": "Foot_L", "toe_l": "ball_l",
+    "thigh_r": "Thigh_R", "calf_r": "calf_r", "foot_r": "Foot_R", "toe_r": "ball_r"
+  }
+}
