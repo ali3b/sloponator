@@ -1,0 +1,137 @@
+{
+  "$id": "https://github.com/ali3b/sloponator/blob/master/docs/api/ssg.textures.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "The JSON Schema this file follows (editors use it); ignored."
+    },
+    "comment": {
+      "description": "A note for people; ignored."
+    },
+    "textures": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/texture"
+      },
+      "description": "The textures to keep in the folder."
+    },
+    "defaults": {
+      "description": "Settings for every texture (size, format, pack).",
+      "allOf": [
+        {
+          "$ref": "#/definitions/texture-defaults"
+        }
+      ]
+    }
+  },
+  "required": [
+    "textures"
+  ],
+  "additionalProperties": false,
+  "title": "ssg.textures.json",
+  "description": "Declares the library textures a game keeps in a folder (`slop build` writes each as an image plus a `.json` of its size, background and frame grid, and removes the ones no longer declared).",
+  "definitions": {
+    "texture": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "File name in the folder (without extension); unique. Default: the texture file's own name.",
+          "examples": [
+            "ground-sand"
+          ]
+        },
+        "texture": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          ],
+          "description": "A texture name, a path from `textures --all` (Pack/…/File.png), or an asset id.",
+          "examples": [
+            "POLYGON_Generic_v3/Textures/Generic_Grass.png"
+          ]
+        },
+        "pack": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The pack to look in when several have a texture of that name.",
+          "examples": [
+            "POLYGON_War"
+          ]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 8192,
+          "description": "Largest side in pixels, 8–8192: scaled down to fit, never up.",
+          "examples": [
+            512
+          ]
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "png",
+            "webp"
+          ],
+          "description": "The image format written: png or webp."
+        },
+        "comment": {
+          "description": "A note for people; ignored."
+        }
+      },
+      "required": [
+        "texture"
+      ],
+      "additionalProperties": false,
+      "title": "Texture",
+      "description": "One texture to export: `<name>.png` (or `.webp`) and `<name>.json` (size, background and frame grid) in the folder."
+    },
+    "texture-defaults": {
+      "type": "object",
+      "properties": {
+        "pack": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The pack to look in when several have a texture of that name.",
+          "examples": [
+            "POLYGON_War"
+          ]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 8192,
+          "description": "Largest side in pixels, 8–8192: scaled down to fit, never up.",
+          "examples": [
+            512
+          ]
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "png",
+            "webp"
+          ],
+          "description": "The image format written: png or webp."
+        },
+        "comment": {
+          "description": "A note for people; ignored."
+        }
+      },
+      "additionalProperties": false,
+      "title": "Texture defaults",
+      "description": "Settings every texture starts from (`defaults`): a texture's own keys win."
+    }
+  }
+}
