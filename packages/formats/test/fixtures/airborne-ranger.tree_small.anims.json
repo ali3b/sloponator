@@ -1,0 +1,5 @@
+{
+  "anims": [
+    {"key": "Env_Tree_03/still_SE", "frameRate": 10, "repeat": -1, "flipX": false, "frames": [{"key": "Env_Tree_03", "frame": "still_SE_0"}]}
+  ]
+}

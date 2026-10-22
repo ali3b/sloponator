@@ -1,0 +1,428 @@
+{
+  "generator": {
+    "name": "Synty Sprite Generator",
+    "version": "0.3",
+    "generatedAt": "2026-10-20T09:01:40.435Z"
+  },
+  "asset": {
+    "name": "FX_Sphere_01",
+    "pack": "POLYGON_Particle_FX",
+    "kind": "fx",
+    "category": null
+  },
+  "frameWidth": 274,
+  "frameHeight": 274,
+  "fps": 24,
+  "pivot": {
+    "x": 137,
+    "y": 137
+  },
+  "pixelsPerMetre": 64,
+  "scale": {
+    "mode": "ppm",
+    "pixelsPerMetre": 64
+  },
+  "blend": "add",
+  "view": {
+    "projection": "ortho",
+    "pitch": 0,
+    "fov": 30,
+    "directions": "2",
+    "basis": "world",
+    "mirror": true,
+    "order": "ccw-e",
+    "naming": "compass",
+    "scale": {
+      "mode": "ppm",
+      "ppm": 64
+    },
+    "frameWidth": 16,
+    "frameHeight": 16,
+    "fps": 24,
+    "padding": 2,
+    "quality": {
+      "supersample": 2,
+      "textureFilter": "nearest",
+      "shadow": "off",
+      "style": "clean",
+      "palette": "model",
+      "shadeSteps": 4,
+      "colorLevels": 6,
+      "outline": true,
+      "outlineColor": "#1a1418"
+    }
+  },
+  "pages": [
+    {
+      "index": 0,
+      "file": "FX_Sphere_01_0.png",
+      "width": 260,
+      "height": 2601,
+      "clip": null,
+      "direction": null,
+      "layers": {}
+    }
+  ],
+  "layers": [],
+  "clips": [
+    {
+      "name": "ring_shock",
+      "loop": false,
+      "frameCount": 13,
+      "events": [
+        {
+          "frame": 0,
+          "name": "impact"
+        }
+      ]
+    }
+  ],
+  "directions": [
+    {
+      "name": "E",
+      "screenAngle": 0,
+      "worldAngle": 0,
+      "mirrorOf": null
+    },
+    {
+      "name": "W",
+      "screenAngle": 180,
+      "worldAngle": 180,
+      "mirrorOf": "E"
+    }
+  ],
+  "animations": [
+    {
+      "name": "quake/ring_shock_E",
+      "clip": "ring_shock",
+      "direction": "E",
+      "loop": false,
+      "fps": 24,
+      "flipX": false,
+      "frames": [
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2583,
+          "w": 12,
+          "h": 12,
+          "trimX": 131,
+          "trimY": 131,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2458,
+          "w": 120,
+          "h": 121,
+          "trimX": 77,
+          "trimY": 76,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2273,
+          "w": 181,
+          "h": 181,
+          "trimX": 46,
+          "trimY": 46,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2053,
+          "w": 215,
+          "h": 216,
+          "trimX": 29,
+          "trimY": 28,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1814,
+          "w": 234,
+          "h": 235,
+          "trimX": 20,
+          "trimY": 19,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1564,
+          "w": 245,
+          "h": 246,
+          "trimX": 14,
+          "trimY": 13,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1308,
+          "w": 251,
+          "h": 252,
+          "trimX": 11,
+          "trimY": 10,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1049,
+          "w": 254,
+          "h": 255,
+          "trimX": 10,
+          "trimY": 9,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 788,
+          "w": 256,
+          "h": 257,
+          "trimX": 9,
+          "trimY": 8,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 264,
+          "w": 257,
+          "h": 258,
+          "trimX": 8,
+          "trimY": 7,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 526,
+          "w": 257,
+          "h": 258,
+          "trimX": 8,
+          "trimY": 7,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1,
+          "w": 258,
+          "h": 259,
+          "trimX": 8,
+          "trimY": 7,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2599,
+          "w": 1,
+          "h": 1,
+          "trimX": 0,
+          "trimY": 0,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        }
+      ]
+    },
+    {
+      "name": "quake/ring_shock_W",
+      "clip": "ring_shock",
+      "direction": "W",
+      "loop": false,
+      "fps": 24,
+      "flipX": true,
+      "frames": [
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2583,
+          "w": 12,
+          "h": 12,
+          "trimX": 131,
+          "trimY": 131,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2458,
+          "w": 120,
+          "h": 121,
+          "trimX": 77,
+          "trimY": 76,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2273,
+          "w": 181,
+          "h": 181,
+          "trimX": 46,
+          "trimY": 46,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2053,
+          "w": 215,
+          "h": 216,
+          "trimX": 29,
+          "trimY": 28,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1814,
+          "w": 234,
+          "h": 235,
+          "trimX": 20,
+          "trimY": 19,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1564,
+          "w": 245,
+          "h": 246,
+          "trimX": 14,
+          "trimY": 13,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1308,
+          "w": 251,
+          "h": 252,
+          "trimX": 11,
+          "trimY": 10,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1049,
+          "w": 254,
+          "h": 255,
+          "trimX": 10,
+          "trimY": 9,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 788,
+          "w": 256,
+          "h": 257,
+          "trimX": 9,
+          "trimY": 8,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 264,
+          "w": 257,
+          "h": 258,
+          "trimX": 8,
+          "trimY": 7,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 526,
+          "w": 257,
+          "h": 258,
+          "trimX": 8,
+          "trimY": 7,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 1,
+          "w": 258,
+          "h": 259,
+          "trimX": 8,
+          "trimY": 7,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        },
+        {
+          "page": 0,
+          "x": 1,
+          "y": 2599,
+          "w": 1,
+          "h": 1,
+          "trimX": 0,
+          "trimY": 0,
+          "sourceW": 274,
+          "sourceH": 274,
+          "durationMs": 41.666666666666664
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1851 @@
+{
+  "schema": "ssg-meta/1",
+  "generator": {
+    "name": "Synty Sprite Generator",
+    "version": "0.3",
+    "generatedAt": "2026-10-21T18:57:00.308Z"
+  },
+  "asset": {
+    "name": "Character_American_Soldier_01_legs",
+    "pack": "POLYGON_War",
+    "kind": "character",
+    "category": null
+  },
+  "blend": "normal",
+  "frameWidth": 178,
+  "frameHeight": 212,
+  "fps": 10,
+  "pivot": {
+    "x": 89,
+    "y": 148
+  },
+  "pixelsPerMetre": 45.25483399593904,
+  "scale": {
+    "mode": "tile",
+    "pixelsPerMetre": 45.2548,
+    "tilePx": 64,
+    "tileHeightPx": 32,
+    "metresPerTile": 1,
+    "shape": "diamond"
+  },
+  "note": "Socket positions and boxes are pixels from the untrimmed frame top-left; for flipX animations use x = frameWidth - x (boxes: x = frameWidth - x - w).",
+  "clips": [
+    {
+      "name": "rifle_idle",
+      "loop": true,
+      "frameCount": 20,
+      "events": []
+    },
+    {
+      "name": "rifle_walk",
+      "loop": true,
+      "frameCount": 11,
+      "events": [
+        {
+          "frame": 3,
+          "name": "footstep_l"
+        },
+        {
+          "frame": 9,
+          "name": "footstep_r"
+        }
+      ],
+      "speedMps": 1.22
+    },
+    {
+      "name": "rifle_run",
+      "loop": true,
+      "frameCount": 7,
+      "events": [
+        {
+          "frame": 2,
+          "name": "footstep_l"
+        },
+        {
+          "frame": 6,
+          "name": "footstep_r"
+        }
+      ],
+      "speedMps": 2.81
+    }
+  ],
+  "animations": [
+    {
+      "name": "ranger/legs/rifle_idle_E",
+      "clip": "rifle_idle",
+      "direction": "E",
+      "flipX": false,
+      "sockets": [
+        {
+          "foot_l": {
+            "x": 93.3,
+            "y": 141.4
+          },
+          "foot_r": {
+            "x": 82.4,
+            "y": 147.8
+          },
+          "knee_l": {
+            "x": 93,
+            "y": 127.5
+          },
+          "knee_r": {
+            "x": 88.7,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.5
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.3,
+            "y": 141.5
+          },
+          "foot_r": {
+            "x": 82.4,
+            "y": 147.8
+          },
+          "knee_l": {
+            "x": 93,
+            "y": 127.5
+          },
+          "knee_r": {
+            "x": 88.6,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.5
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.2,
+            "y": 141.5
+          },
+          "foot_r": {
+            "x": 82.3,
+            "y": 147.8
+          },
+          "knee_l": {
+            "x": 92.9,
+            "y": 127.5
+          },
+          "knee_r": {
+            "x": 88.6,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.5
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.2,
+            "y": 141.5
+          },
+          "foot_r": {
+            "x": 82.3,
+            "y": 147.9
+          },
+          "knee_l": {
+            "x": 92.9,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.5,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.5
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.2,
+            "y": 141.6
+          },
+          "foot_r": {
+            "x": 82.3,
+            "y": 147.9
+          },
+          "knee_l": {
+            "x": 92.9,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.4,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.2,
+            "y": 141.6
+          },
+          "foot_r": {
+            "x": 82.3,
+            "y": 147.9
+          },
+          "knee_l": {
+            "x": 92.8,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.4,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.1,
+            "y": 141.6
+          },
+          "foot_r": {
+            "x": 82.2,
+            "y": 148
+          },
+          "knee_l": {
+            "x": 92.8,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.3,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.1,
+            "y": 141.7
+          },
+          "foot_r": {
+            "x": 82.2,
+            "y": 148
+          },
+          "knee_l": {
+            "x": 92.8,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.2,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.1,
+            "y": 141.7
+          },
+          "foot_r": {
+            "x": 82.2,
+            "y": 148
+          },
+          "knee_l": {
+            "x": 92.8,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.2,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93,
+            "y": 141.7
+          },
+          "foot_r": {
+            "x": 82.1,
+            "y": 148.1
+          },
+          "knee_l": {
+            "x": 92.8,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.1,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93,
+            "y": 141.8
+          },
+          "foot_r": {
+            "x": 82.1,
+            "y": 148.1
+          },
+          "knee_l": {
+            "x": 92.9,
+            "y": 127.7
+          },
+          "knee_r": {
+            "x": 88.1,
+            "y": 134.6
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93,
+            "y": 141.9
+          },
+          "foot_r": {
+            "x": 82.1,
+            "y": 148.2
+          },
+          "knee_l": {
+            "x": 93,
+            "y": 127.7
+          },
+          "knee_r": {
+            "x": 88,
+            "y": 134.7
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 92.9,
+            "y": 141.9
+          },
+          "foot_r": {
+            "x": 82.1,
+            "y": 148.2
+          },
+          "knee_l": {
+            "x": 93,
+            "y": 127.7
+          },
+          "knee_r": {
+            "x": 88,
+            "y": 134.7
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 92.9,
+            "y": 142
+          },
+          "foot_r": {
+            "x": 82,
+            "y": 148.3
+          },
+          "knee_l": {
+            "x": 93.1,
+            "y": 127.7
+          },
+          "knee_r": {
+            "x": 88,
+            "y": 134.7
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 92.9,
+            "y": 142
+          },
+          "foot_r": {
+            "x": 82,
+            "y": 148.4
+          },
+          "knee_l": {
+            "x": 93.2,
+            "y": 127.7
+          },
+          "knee_r": {
+            "x": 87.9,
+            "y": 134.7
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 92.8,
+            "y": 142.1
+          },
+          "foot_r": {
+            "x": 81.9,
+            "y": 148.4
+          },
+          "knee_l": {
+            "x": 93.2,
+            "y": 127.8
+          },
+          "knee_r": {
+            "x": 87.9,
+            "y": 134.8
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 92.9,
+            "y": 142.1
+          },
+          "foot_r": {
+            "x": 82,
+            "y": 148.4
+          },
+          "knee_l": {
+            "x": 93.2,
+            "y": 127.8
+          },
+          "knee_r": {
+            "x": 88,
+            "y": 134.8
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93,
+            "y": 141.9
+          },
+          "foot_r": {
+            "x": 82.1,
+            "y": 148.3
+          },
+          "knee_l": {
+            "x": 93.2,
+            "y": 127.7
+          },
+          "knee_r": {
+            "x": 88.1,
+            "y": 134.8
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.4
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.1,
+            "y": 141.7
+          },
+          "foot_r": {
+            "x": 82.2,
+            "y": 148.1
+          },
+          "knee_l": {
+            "x": 93.1,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.4,
+            "y": 134.7
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.5
+          }
+        },
+        {
+          "foot_l": {
+            "x": 93.2,
+            "y": 141.5
+          },
+          "foot_r": {
+            "x": 82.3,
+            "y": 147.9
+          },
+          "knee_l": {
+            "x": 93,
+            "y": 127.6
+          },
+          "knee_r": {
+            "x": 88.6,
+            "y": 134.7
+          },
+          "waist": {
+            "x": 87.7,
+            "y": 110.5
+          }
+        }
+      ],
+      "boxes": [
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 46
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 46
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 16
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 78,
+            "y": 110,
+            "w": 23,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 76,
+            "w": 12,
+            "h": 17
+          },
+          "torso": {
+            "x": 82,
+            "y": 87,
+            "w": 11,
+            "h": 36
+          },
+          "legs": {
+            "x": 79,
+            "y": 110,
+            "w": 22,
+            "h": 45
+          }
+        }
+      ]
+    },
+    {
+      "name": "ranger/legs/rifle_idle_NE",
+      "clip": "rifle_idle",
+      "direction": "NE",
+      "flipX": false,
+      "sockets": [
+        {
+          "foot_l": {
+            "x": 86,
+            "y": 141.2
+          },
+          "foot_r": {
+            "x": 87.3,
+            "y": 149.5
+          },
+          "knee_l": {
+            "x": 86.9,
+            "y": 127.1
+          },
+          "knee_r": {
+            "x": 92.5,
+            "y": 134
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.9
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86,
+            "y": 141.2
+          },
+          "foot_r": {
+            "x": 87.3,
+            "y": 149.5
+          },
+          "knee_l": {
+            "x": 86.9,
+            "y": 127.1
+          },
+          "knee_r": {
+            "x": 92.5,
+            "y": 134
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.9
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86,
+            "y": 141.2
+          },
+          "foot_r": {
+            "x": 87.3,
+            "y": 149.6
+          },
+          "knee_l": {
+            "x": 86.9,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.5,
+            "y": 134
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.9
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.1,
+            "y": 141.3
+          },
+          "foot_r": {
+            "x": 87.3,
+            "y": 149.6
+          },
+          "knee_l": {
+            "x": 86.9,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.4,
+            "y": 134
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.9
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.1,
+            "y": 141.3
+          },
+          "foot_r": {
+            "x": 87.3,
+            "y": 149.6
+          },
+          "knee_l": {
+            "x": 86.9,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.4,
+            "y": 134
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.9
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.1,
+            "y": 141.3
+          },
+          "foot_r": {
+            "x": 87.4,
+            "y": 149.7
+          },
+          "knee_l": {
+            "x": 86.9,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.1,
+            "y": 141.4
+          },
+          "foot_r": {
+            "x": 87.4,
+            "y": 149.7
+          },
+          "knee_l": {
+            "x": 86.9,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.1
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.2,
+            "y": 141.4
+          },
+          "foot_r": {
+            "x": 87.4,
+            "y": 149.7
+          },
+          "knee_l": {
+            "x": 86.9,
+            "y": 127.3
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.1
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.2,
+            "y": 141.4
+          },
+          "foot_r": {
+            "x": 87.5,
+            "y": 149.8
+          },
+          "knee_l": {
+            "x": 87,
+            "y": 127.3
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.1
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.2,
+            "y": 141.5
+          },
+          "foot_r": {
+            "x": 87.5,
+            "y": 149.8
+          },
+          "knee_l": {
+            "x": 87,
+            "y": 127.3
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.1
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.3,
+            "y": 141.5
+          },
+          "foot_r": {
+            "x": 87.6,
+            "y": 149.9
+          },
+          "knee_l": {
+            "x": 87.1,
+            "y": 127.3
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.2
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.4,
+            "y": 141.6
+          },
+          "foot_r": {
+            "x": 87.6,
+            "y": 149.9
+          },
+          "knee_l": {
+            "x": 87.2,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.2
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.4,
+            "y": 141.6
+          },
+          "foot_r": {
+            "x": 87.7,
+            "y": 150
+          },
+          "knee_l": {
+            "x": 87.3,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.2
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.5,
+            "y": 141.7
+          },
+          "foot_r": {
+            "x": 87.7,
+            "y": 150
+          },
+          "knee_l": {
+            "x": 87.3,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.2
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.5,
+            "y": 141.7
+          },
+          "foot_r": {
+            "x": 87.8,
+            "y": 150.1
+          },
+          "knee_l": {
+            "x": 87.4,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.3,
+            "y": 134.3
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.6,
+            "y": 141.8
+          },
+          "foot_r": {
+            "x": 87.8,
+            "y": 150.1
+          },
+          "knee_l": {
+            "x": 87.5,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.4,
+            "y": 134.3
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.6,
+            "y": 141.8
+          },
+          "foot_r": {
+            "x": 87.8,
+            "y": 150.1
+          },
+          "knee_l": {
+            "x": 87.5,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.4,
+            "y": 134.3
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.4,
+            "y": 141.6
+          },
+          "foot_r": {
+            "x": 87.7,
+            "y": 150
+          },
+          "knee_l": {
+            "x": 87.4,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.4,
+            "y": 134.2
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.8
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.3,
+            "y": 141.4
+          },
+          "foot_r": {
+            "x": 87.5,
+            "y": 149.8
+          },
+          "knee_l": {
+            "x": 87.2,
+            "y": 127.2
+          },
+          "knee_r": {
+            "x": 92.5,
+            "y": 134.1
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.9
+          }
+        },
+        {
+          "foot_l": {
+            "x": 86.1,
+            "y": 141.3
+          },
+          "foot_r": {
+            "x": 87.3,
+            "y": 149.6
+          },
+          "knee_l": {
+            "x": 87,
+            "y": 127.1
+          },
+          "knee_r": {
+            "x": 92.5,
+            "y": 134
+          },
+          "waist": {
+            "x": 88.2,
+            "y": 110.9
+          }
+        }
+      ],
+      "boxes": [
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 75,
+            "w": 11,
+            "h": 18
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 75,
+            "w": 12,
+            "h": 18
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 75,
+            "w": 12,
+            "h": 18
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 75,
+            "w": 12,
+            "h": 18
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 83,
+            "y": 75,
+            "w": 12,
+            "h": 18
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 45
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        },
+        {
+          "head": {
+            "x": 84,
+            "y": 76,
+            "w": 11,
+            "h": 17
+          },
+          "torso": {
+            "x": 78,
+            "y": 89,
+            "w": 21,
+            "h": 33
+          },
+          "legs": {
+            "x": 82,
+            "y": 111,
+            "w": 14,
+            "h": 44
+          }
+        }
+      ]
+    }
+  ],
+  "split": {
+    "schema": "ssg-split/1",
+    "at": "waist",
+    "sheet": "legs",
+    "pivot": "waist",
+    "bones": {
+      "hips": "Hips",
+      "spine": "Spine_01"
+    },
+    "legs": {
+      "base": "Character_American_Soldier_01_legs",
+      "files": [
+        "Character_American_Soldier_01_legs_0.png",
+        "Character_American_Soldier_01_legs.json",
+        "Character_American_Soldier_01_legs_anims.json",
+        "Character_American_Soldier_01_legs.meta.json",
+        "Character_American_Soldier_01_legs.sheet.json"
+      ],
+      "clips": [
+        "rifle_idle",
+        "rifle_walk",
+        "rifle_run"
+      ]
+    },
+    "torso": {
+      "base": "Character_American_Soldier_01_torso",
+      "files": [
+        "Character_American_Soldier_01_torso_0.png",
+        "Character_American_Soldier_01_torso.json",
+        "Character_American_Soldier_01_torso_anims.json",
+        "Character_American_Soldier_01_torso.meta.json",
+        "Character_American_Soldier_01_torso.sheet.json"
+      ],
+      "clips": [
+        "rifle_idle",
+        "rifle_walk",
+        "rifle_run",
+        "rifle_shoot",
+        "rifle_reload",
+        "grenade_throw",
+        "law_shoulder_fire"
+      ]
+    },
+    "whole": {
+      "base": "Character_American_Soldier_01",
+      "files": [
+        "Character_American_Soldier_01_0.png",
+        "Character_American_Soldier_01.json",
+        "Character_American_Soldier_01_anims.json",
+        "Character_American_Soldier_01.meta.json",
+        "Character_American_Soldier_01.sheet.json"
+      ],
+      "clips": [
+        "rifle_idle",
+        "rifle_walk",
+        "rifle_run",
+        "rifle_shoot",
+        "rifle_reload",
+        "rifle_prone_idle",
+        "rifle_crawl",
+        "rifle_prone_shoot",
+        "rifle_death",
+        "knife_Knife_Stab_Fore",
+        "grenade_throw",
+        "law_shoulder_fire",
+        "bomb_kneel_place",
+        "medkit_kneel_place",
+        "camera_kneel_shoot"
+      ],
+      "note": "The whole-body sheet of the same character, with the same framing (frame size, scale and feet pivot) as the legs and torso sheets, so a game can swap between it and the composited pair at the same ground point: the whole sheet for moves without mouse aim (keyboard play, prone, death\u2026), the legs + torso pair while aiming apart from the walk."
+    },
+    "draw": [
+      "legs",
+      "torso"
+    ],
+    "note": "Two sheets of one character with one framing. Each frame of both has a `waist` socket (untrimmed-frame pixels; flipX: x = frameWidth - x). Draw the legs frame for the walk direction at the character's ground point (the usual pivot), then the torso frame for the aim direction on top, placed so its waist socket lands on the legs frame's waist socket: torso.x = legs.x + legsWaist.x - torsoWaist.x (same for y), in untrimmed-frame pixels. The torso always draws over the legs. A clip on both sheets (idle, crouch, death\u2026) drawn in one direction is the whole body again."
+  }
+}
