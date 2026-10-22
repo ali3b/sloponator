@@ -1,0 +1,29 @@
+{
+  "name": "@slop/render",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The three.js render bundle (built once by Vite, named by its content hash) and the Node runner that launches Chromium, serves the bundle and answers its data requests from @slop/library in-process. Renders frames; @slop/sprites packs them.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p web/tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@slop/library": "0.0.0",
+    "@slop/sprites": "0.0.0",
+    "pngjs": "7.0.0",
+    "playwright": "1.48.2",
+    "three": "0.170.0",
+    "vite": "5.4.11"
+  },
+  "devDependencies": {
+    "@types/pngjs": "6.0.5",
+    "@types/three": "0.170.0",
+    "vitest": "2.1.9"
+  }
+}

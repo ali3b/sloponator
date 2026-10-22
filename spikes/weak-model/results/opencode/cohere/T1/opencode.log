@@ -1,0 +1,270 @@
+timestamp=2026-10-22T06:19:52.222Z level=INFO run=b0c07aae message="creating instance" directory=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1
+timestamp=2026-10-22T06:19:52.224Z level=INFO run=b0c07aae message=fromDirectory directory=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1
+timestamp=2026-10-22T06:19:52.255Z level=INFO run=b0c07aae message=bootstrapping directory=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1
+timestamp=2026-10-22T06:19:52.263Z level=INFO run=b0c07aae message=loading path=/home/andrew/.config/opencode/config.json
+timestamp=2026-10-22T06:19:52.264Z level=INFO run=b0c07aae message=loading path=/home/andrew/.config/opencode/opencode.json
+timestamp=2026-10-22T06:19:52.264Z level=INFO run=b0c07aae message=loading path=/home/andrew/.config/opencode/opencode.jsonc
+timestamp=2026-10-22T06:19:52.269Z level=INFO run=b0c07aae message=loading path=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/opencode.json
+timestamp=2026-10-22T06:19:52.282Z level=INFO run=b0c07aae message=loading path=/home/andrew/.opencode/opencode.json
+timestamp=2026-10-22T06:19:52.283Z level=INFO run=b0c07aae message=loading path=/home/andrew/.opencode/opencode.jsonc
+timestamp=2026-10-22T06:19:52.333Z level=INFO run=b0c07aae message="all LSPs are disabled"
+timestamp=2026-10-22T06:19:52.334Z level=INFO run=b0c07aae message="all formatters are disabled"
+timestamp=2026-10-22T06:19:52.334Z level=INFO run=b0c07aae message=init
+timestamp=2026-10-22T06:19:52.451Z level=INFO run=b0c07aae message=created id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP slug=stellar-nebula version=1.19.0 projectID=eafb014f30cd49c2dd1ed01e7a594f2de0dc2208 directory=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1 path="" workspaceID=undefined parentID=undefined title=oc-cohere-T1 agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1792649992451 time.updated=1792649992451
+timestamp=2026-10-22T06:19:52.462Z level=INFO run=b0c07aae message="event connected"
+timestamp=2026-10-22T06:19:52.866Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=0
+timestamp=2026-10-22T06:19:52.875Z level=INFO run=b0c07aae message="shell tool using shell" shell=/bin/bash
+timestamp=2026-10-22T06:19:52.892Z level=WARN run=b0c07aae message="duplicate skill name" name=docs existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/docs/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/docs/SKILL.md
+timestamp=2026-10-22T06:19:52.892Z level=WARN run=b0c07aae message="duplicate skill name" name=deep-research existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/deep-research/SKILL.md duplicate=/home/andrew/.claude/skills/.trash/1791477037864-963051-J1pFRM/deep-research/SKILL.md
+timestamp=2026-10-22T06:19:52.892Z level=WARN run=b0c07aae message="duplicate skill name" name=chrome-browser existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/chrome-browser/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/chrome-browser/SKILL.md
+timestamp=2026-10-22T06:19:52.892Z level=WARN run=b0c07aae message="duplicate skill name" name=morning existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/morning/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/morning/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=deep-research existing=/home/andrew/.claude/skills/.trash/1791477037864-963051-J1pFRM/deep-research/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/deep-research/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=computer-use existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/computer-use/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/computer-use/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=pdf existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/pdf/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/pdf/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=xlsx existing=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/xlsx/SKILL.md duplicate=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/xlsx/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=google-workspace existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/google-workspace/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/google-workspace/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=docx existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/docx/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/docx/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=built-in-browser existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/built-in-browser/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/built-in-browser/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=import-memory existing=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/import-memory/SKILL.md duplicate=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/import-memory/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=pptx existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/pptx/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/pptx/SKILL.md
+timestamp=2026-10-22T06:19:52.893Z level=WARN run=b0c07aae message="duplicate skill name" name=chrome-browser existing=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/chrome-browser/SKILL.md duplicate=/home/andrew/.claude/skills/.trash/1791477037864-963051-GufCGU/chrome-browser/SKILL.md
+timestamp=2026-10-22T06:19:52.894Z level=WARN run=b0c07aae message="duplicate skill name" name=computer-use existing=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/computer-use/SKILL.md duplicate=/home/andrew/.claude/skills/.trash/1791477037864-963051-uzUkvi/computer-use/SKILL.md
+timestamp=2026-10-22T06:19:52.894Z level=WARN run=b0c07aae message="duplicate skill name" name=built-in-browser existing=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/built-in-browser/SKILL.md duplicate=/home/andrew/.claude/skills/.trash/1791477037864-963051-Gcr4gM/built-in-browser/SKILL.md
+timestamp=2026-10-22T06:19:52.894Z level=WARN run=b0c07aae message="duplicate skill name" name=skill-creator existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/skill-creator/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/skill-creator/SKILL.md
+timestamp=2026-10-22T06:19:52.894Z level=WARN run=b0c07aae message="duplicate skill name" name=digital-intellect-brand existing=/home/andrew/.claude/skills/synced/20a599ac-9f06-42fc-9cf3-b28087b8fb40_864965b8-e740-4b02-955b-8fc6ca15570f/digital-intellect-brand/SKILL.md duplicate=/home/andrew/.claude/skills/synced/ab26721b-1baa-4bdc-af20-768845139810_85c53aeb-d99a-4381-b5cd-97f5c49f389e/digital-intellect-brand/SKILL.md
+timestamp=2026-10-22T06:19:52.894Z level=INFO run=b0c07aae message=init count=15
+timestamp=2026-10-22T06:19:52.952Z level=INFO run=b0c07aae message="watcher backend" directory=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1 platform=linux backend=inotify
+timestamp=2026-10-22T06:19:52.957Z level=INFO run=b0c07aae message="project copy refresh started" projectID=eafb014f30cd49c2dd1ed01e7a594f2de0dc2208
+error: inotify_add_watch on '/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/.git' failed: No space left on device
+timestamp=2026-10-22T06:19:53.267Z level=ERROR run=b0c07aae message="failed to subscribe" directory=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/.git cause="Error: inotify_add_watch on '/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/.git' failed: No space left on device\n    at SystemPrompt.environment (/$bunfs/root/chunk-brvgys01.js:1142:13770)\n    at SystemPrompt.environment (definition) (/$bunfs/root/chunk-brvgys01.js:995:837)\n    at SessionPrompt.run (/$bunfs/root/chunk-brvgys01.js:1142:15339)\n    at SessionPrompt.run (definition) (/$bunfs/root/chunk-brvgys01.js:1142:10503)\n    at SessionRunState.ensureRunning (/$bunfs/root/chunk-brvgys01.js:1142:15308)\n    at SessionRunState.ensureRunning (definition) (/$bunfs/root/chunk-brvgys01.js:2:8188)\n    at SessionPrompt.loop (/$bunfs/root/chunk-brvgys01.js:1142:10225)\n    at SessionPrompt.loop (definition) (/$bunfs/root/chunk-brvgys01.js:1142:15244)\n    at SessionPrompt.prompt (/$bunfs/root/chunk-rycfnpv4.js:4:13324)\n    at SessionPrompt.prompt (definition) (/$bunfs/root/chunk-brvgys01.js:1142:9844)"
+timestamp=2026-10-22T06:19:53.281Z level=INFO run=b0c07aae message="project copy refresh done" projectID=eafb014f30cd49c2dd1ed01e7a594f2de0dc2208 updated=[] removed=[]
+timestamp=2026-10-22T06:19:53.296Z level=INFO run=b0c07aae message="booting location services" directory=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1 workspaceID=undefined
+timestamp=2026-10-22T06:19:53.299Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162441aa4001994ra31nYpR7o3
+timestamp=2026-10-22T06:19:53.302Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:19:53.315Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:19:56.465Z level=INFO run=b0c07aae message=evaluated permission=read pattern="" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:19:56.605Z level=INFO run=b0c07aae message=evaluated permission=read pattern=AGENTS.md action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:19:56.618Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/AGENTS.md
+timestamp=2026-10-22T06:19:57.082Z level=INFO run=b0c07aae message=evaluated permission=glob pattern=**/*.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:19:57.106Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=1
+timestamp=2026-10-22T06:19:57.123Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162442b33001QeKfcoCFeJDc1V
+timestamp=2026-10-22T06:19:57.123Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:19:57.124Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:20:01.801Z level=INFO run=b0c07aae message=evaluated permission=read pattern=src/scenes/Room.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:01.808Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:02.786Z level=INFO run=b0c07aae message=evaluated permission=read pattern=src/joe.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:02.797Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/joe.ts
+timestamp=2026-10-22T06:20:03.335Z level=INFO run=b0c07aae message=evaluated permission=read pattern=src/hud.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:03.339Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/hud.ts
+timestamp=2026-10-22T06:20:04.124Z level=INFO run=b0c07aae message=evaluated permission=read pattern=src/main.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:04.136Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=2
+timestamp=2026-10-22T06:20:04.141Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/main.ts
+timestamp=2026-10-22T06:20:04.151Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624446aa001VAUIttnGto029l
+timestamp=2026-10-22T06:20:04.152Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:20:04.153Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:20:07.069Z level=INFO run=b0c07aae message=evaluated permission=read pattern=scripts/load-check.mjs action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:07.076Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/scripts/load-check.mjs
+timestamp=2026-10-22T06:20:07.757Z level=INFO run=b0c07aae message=evaluated permission=read pattern=src/scenes/Title.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:07.770Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=3
+timestamp=2026-10-22T06:20:07.774Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Title.ts
+timestamp=2026-10-22T06:20:07.783Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624454db001a2nFkU0dcq11VY
+timestamp=2026-10-22T06:20:07.784Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:20:07.785Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:20:13.826Z level=INFO run=b0c07aae message=evaluated permission=edit pattern=src/scenes/Room.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:13.827Z level=INFO run=b0c07aae message=formatting file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:13.832Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:13.884Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=4
+timestamp=2026-10-22T06:20:13.892Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162446cbe001vdkKtFEY78SsxZ
+timestamp=2026-10-22T06:20:13.893Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:20:13.894Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:20:22.585Z level=INFO run=b0c07aae message=evaluated permission=edit pattern=src/scenes/Room.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:22.586Z level=INFO run=b0c07aae message=formatting file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:22.588Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:22.596Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=5
+timestamp=2026-10-22T06:20:22.612Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162448ec5001hmsScBWbJk5RO4
+timestamp=2026-10-22T06:20:22.612Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:20:22.613Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:20:30.375Z level=INFO run=b0c07aae message=evaluated permission=edit pattern=src/scenes/Room.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:30.375Z level=INFO run=b0c07aae message=formatting file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:30.380Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:30.458Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=6
+timestamp=2026-10-22T06:20:30.476Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_16244ad7c001qPwe5R9462kQlK
+timestamp=2026-10-22T06:20:30.477Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:20:30.478Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:20:40.612Z level=INFO run=b0c07aae message=evaluated permission=edit pattern=src/scenes/Room.ts action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:40.613Z level=INFO run=b0c07aae message=formatting file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:40.615Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/src/scenes/Room.ts
+timestamp=2026-10-22T06:20:40.622Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=7
+timestamp=2026-10-22T06:20:40.640Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_16244d530001A2omC6qwecFmLu
+timestamp=2026-10-22T06:20:40.641Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:20:40.642Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:20:56.497Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="npm run typecheck" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:20:58.021Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=8
+timestamp=2026-10-22T06:20:58.031Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162451927001sRPoVJVonJYA0O
+timestamp=2026-10-22T06:20:58.032Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:20:58.033Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:21:00.878Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="npx vite" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:21:11.019Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=9
+timestamp=2026-10-22T06:21:11.032Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162454bec001PtK3LFKKSEGYeA
+timestamp=2026-10-22T06:21:11.032Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:21:11.033Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:21:14.492Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"npx vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:21:14.720Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite > vite.log 2>&1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:21:15.012Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=10
+timestamp=2026-10-22T06:21:15.035Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162455b86001cs8jEAySq3Om0K
+timestamp=2026-10-22T06:21:15.036Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:21:15.045Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:21:17.711Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 2" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:21:17.711Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="ps aux" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:21:17.711Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep \"npx vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:21:17.711Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep -v grep" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:21:17.960Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="node scripts/load-check.mjs http://localhost:5334 room" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:23:21.269Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=11
+timestamp=2026-10-22T06:23:21.283Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624748b9001RCT02VijHuer2V
+timestamp=2026-10-22T06:23:21.284Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:23:21.286Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:23:23.891Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="ps aux" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:23:23.891Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep \"npx vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:23:23.891Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep -v grep" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:23:24.006Z level=INFO run=b0c07aae message="resolved path" arg=vite.log resolved=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/vite.log
+timestamp=2026-10-22T06:23:24.007Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="cat vite.log" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:23:24.007Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="head -50" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:23:24.061Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=12
+timestamp=2026-10-22T06:23:24.084Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624753a00019tulSfWINIzTD4
+timestamp=2026-10-22T06:23:24.085Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:23:24.086Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:23:27.447Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="node scripts/load-check.mjs http://localhost:5334 room --timeout 30000" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:30.712Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=13
+timestamp=2026-10-22T06:24:30.729Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624857fa001My3Mewu0hNWUWn
+timestamp=2026-10-22T06:24:30.730Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:24:30.731Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:24:35.130Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"npx vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:35.362Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite > vite.log 2>&1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:36.098Z level=INFO run=b0c07aae message="resolved path" arg=vite.log resolved=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/vite.log
+timestamp=2026-10-22T06:24:36.098Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 3" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:36.098Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="cat vite.log" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:39.116Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=14
+timestamp=2026-10-22T06:24:39.123Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624878ce0018p3q7S0lC4mc0p
+timestamp=2026-10-22T06:24:39.124Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:24:39.125Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:24:42.490Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="ss -ltnp" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:42.490Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep 5334" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:43.720Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:43.720Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:43.881Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 2" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:43.881Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="ss -ltnp" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:43.881Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep 5334" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:45.926Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=15
+timestamp=2026-10-22T06:24:45.933Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162489368001JD31JTKgS7S4g0
+timestamp=2026-10-22T06:24:45.934Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:24:45.935Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:24:48.856Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="ss -ltnp" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:48.857Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep 5334" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:49.660Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="kill -9 745608" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:50.036Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:50.037Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:50.456Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 2" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:50.456Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="ss -ltnp" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:50.456Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep 5334" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:55.152Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=16
+timestamp=2026-10-22T06:24:55.161Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_16248b773001lB5l2h3N4aFYtA
+timestamp=2026-10-22T06:24:55.162Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:24:55.163Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:24:57.712Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 2" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:24:57.712Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="node scripts/load-check.mjs http://localhost:5334 room" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:01.106Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=17
+timestamp=2026-10-22T06:25:01.114Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_16248ceb4001YZNixa7PIAMhjP
+timestamp=2026-10-22T06:25:01.114Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:25:01.122Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:25:04.515Z level=INFO run=b0c07aae message="resolved path" arg=vite.log resolved=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/vite.log
+timestamp=2026-10-22T06:25:04.515Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="cat vite.log" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:04.913Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:05.116Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite > vite.log 2>&1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:05.663Z level=INFO run=b0c07aae message="resolved path" arg=vite.log resolved=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/vite.log
+timestamp=2026-10-22T06:25:05.663Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 3" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:05.663Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="cat vite.log" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:08.682Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=18
+timestamp=2026-10-22T06:25:08.689Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_16248ec4c001tCCipOhgM2BipG
+timestamp=2026-10-22T06:25:08.690Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:25:08.690Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:25:11.820Z level=INFO run=b0c07aae message=evaluated permission=read pattern=package.json action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:11.841Z level=INFO run=b0c07aae message="touching file" file=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/package.json
+timestamp=2026-10-22T06:25:11.954Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:11.954Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:12.449Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 5" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:12.449Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="curl -s http://localhost:5334/" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:17.478Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=19
+timestamp=2026-10-22T06:25:17.490Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162490ea9001JfnI4qr8pv4Fu8
+timestamp=2026-10-22T06:25:17.491Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:25:17.492Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:25:20.051Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="npm run check" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:22.005Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=20
+timestamp=2026-10-22T06:25:22.019Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_162492058001cI6BY06mmxa5hF
+timestamp=2026-10-22T06:25:22.030Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:25:22.032Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:25:40.028Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="ss -ltnp" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:40.028Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="grep 5197" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:40.883Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:40.883Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:41.325Z level=INFO run=b0c07aae message="resolved path" arg=vite.log resolved=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/vite.log
+timestamp=2026-10-22T06:25:41.325Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 3" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:41.325Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="cat vite.log" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:41.728Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="node scripts/load-check.mjs http://localhost:5334 room" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:44.344Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=21
+timestamp=2026-10-22T06:25:44.364Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_16249779b001CmYMqihNFdw4Vd
+timestamp=2026-10-22T06:25:44.365Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:25:44.366Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:25:49.002Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:49.299Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="npm run typecheck" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:49.448Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite > vite.log 2>&1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:49.932Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 5" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:49.932Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="curl -I http://localhost:5334" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:55.006Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=22
+timestamp=2026-10-22T06:25:55.026Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_16249a140001EQsIUdtnE7PYgt
+timestamp=2026-10-22T06:25:55.026Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:25:55.027Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:25:59.944Z level=INFO run=b0c07aae message="resolved path" arg=vite.log resolved=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/vite.log
+timestamp=2026-10-22T06:25:59.944Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="cat vite.log" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:25:59.945Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="head -50" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:01.326Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:02.504Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="npm run typecheck" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:03.067Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite > vite.log 2>&1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:03.471Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 5" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:03.471Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="curl -s http://localhost:5334" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:03.471Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="head -10" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:08.561Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=23
+timestamp=2026-10-22T06:26:08.581Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_16249d6330011RS2SW9mbTuomJ
+timestamp=2026-10-22T06:26:08.582Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:26:08.583Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:26:12.523Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:12.599Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite > vite.log 2>&1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:12.908Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 10" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:26:12.908Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="node scripts/load-check.mjs http://localhost:5334 room" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:29:16.291Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=24
+timestamp=2026-10-22T06:29:16.325Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624cb38e001YwF3IwiruW92Ue
+timestamp=2026-10-22T06:29:16.330Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:29:16.359Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:29:21.027Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:29:21.547Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite > vite.log 2>&1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:29:21.801Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 10" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:29:21.801Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="timeout 30 node scripts/load-check.mjs http://localhost:5334 room" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:30:22.078Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=25
+timestamp=2026-10-22T06:30:22.092Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624db481001qA0BWAxBXb0jlB
+timestamp=2026-10-22T06:30:22.092Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:30:22.093Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:30:25.280Z level=INFO run=b0c07aae message="resolved path" arg=vite.log resolved=/tmp/claude-1000/-home-andrew-projects-synty-sprite-generator/1cda9c40-18cc-45d5-b46e-5978712743f8/scratchpad/spike2/opencode/cohere-T1/vite.log
+timestamp=2026-10-22T06:30:25.280Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="cat vite.log" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:30:25.280Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="tail -50" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:30:25.309Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=26
+timestamp=2026-10-22T06:30:25.349Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624dc1200016athX8w9pqExvl
+timestamp=2026-10-22T06:30:25.350Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:30:25.353Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:30:30.930Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="pkill -f \"vite\"" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:30:32.492Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="npm run typecheck" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:30:33.855Z level=INFO run=b0c07aae message=loop session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP step=27
+timestamp=2026-10-22T06:30:33.863Z level=INFO run=b0c07aae message=process session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP messageID=msg_1624de281001kGzMlT5x2F84J1
+timestamp=2026-10-22T06:30:33.863Z level=INFO run=b0c07aae message=stream providerID=openrouter modelID=cohere/north-mini-code:free session.id=ses_e9dbbe6fcffeGoj6eq5x8hR0WP small=false agent=build mode=primary
+timestamp=2026-10-22T06:30:33.864Z level=INFO run=b0c07aae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openrouter llm.model=cohere/north-mini-code:free
+timestamp=2026-10-22T06:30:37.539Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="nohup npx vite > vite.log 2>&1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:30:38.205Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="sleep 5" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-10-22T06:30:38.205Z level=INFO run=b0c07aae message=evaluated permission=bash pattern="node scripts/load-check.mjs http://localhost:5334 room" action.permission=* action.action=allow action.pattern=*
